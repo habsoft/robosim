@@ -1,24 +1,28 @@
 # RoboSim (Robot Simulator)
 
-Java based portable simulator to visualize and understand the Robot Localization, Path planning, Path Smoothing and PID controller concepts.
+Java based portable simulator to visualize and understand the *Robot Localization*, *Path planning*, *Path Smoothing* and *PID controller* concepts.
 
-1.Histogram Filter
-2.Kalman Filter
-3.Particles Filter
-4.Path Planning
-5.Path Smoothing
-6.PID Controller
+# Filters
 
-Path Planning Algorithms
+1. Histogram Filter
+2. Kalman Filter
+3. Particles Filter
+4. Path Planning
+5. Path Smoothing
+6. PID Controller
 
-1.BFS
-2.DFS
-3.A Star
+# Path Planning Algorithms
+
+1. BFS
+2. DFS
+3. A Star
 4. Dynamic Programming
-Heuristics
-i. Euclidean Distance
-ii. Euclidean Distance(+)
-iii. Euclidean Distance(*)
-iv. Euclidean Distance Squared
-v. Manhattan Distance
-vi. Chebyshev Distance
+
+# Heuristics
+
+1. Euclidean Distance
+2. Euclidean Distance(+)
+3. Euclidean Distance(*)
+4. Euclidean Distance Squared
+5. Manhattan Distance
+6. Chebyshev Distance
