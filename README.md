@@ -2,27 +2,27 @@
 
 Java based portable simulator to visualize and understand the *Robot Localization*, *Path planning*, *Path Smoothing* and *PID controller* concepts.
 
-# Filters
-
-1. Histogram Filter
-2. Kalman Filter
-3. Particles Filter
-4. Path Planning
-5. Path Smoothing
-6. PID Controller
+### Contents
+* Filters
+  * Histogram Filters
+  * Kalman Filters
+  * Particles Filters
+* Path Planning
+* Path Smoothing
+* PIC Controller
 
 # Path Planning Algorithms
 
-1. BFS
-2. DFS
-3. A Star
-4. Dynamic Programming
+* BFS
+* DFS
+* A Star
+* Dynamic Programming
 
 # Heuristics
 
-1. Euclidean Distance
-2. Euclidean Distance(+)
-3. Euclidean Distance(*)
-4. Euclidean Distance Squared
-5. Manhattan Distance
-6. Chebyshev Distance
+* Euclidean Distance
+* Euclidean Distance(+)
+* Euclidean Distance(*)
+* Euclidean Distance Squared
+* Manhattan Distance
+* Chebyshev Distance
