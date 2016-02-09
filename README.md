@@ -9,16 +9,16 @@ Java based portable simulator to visualize and understand the *Robot Localizatio
   * Particles Filters
 * Path Planning
 * Path Smoothing
-* PIC Controller
+* PID Controller
 
-# Path Planning Algorithms
+### Path Planning Algorithms
 
 * BFS
 * DFS
 * A Star
 * Dynamic Programming
 
-# Heuristics
+### Heuristics
 
 * Euclidean Distance
 * Euclidean Distance(+)
