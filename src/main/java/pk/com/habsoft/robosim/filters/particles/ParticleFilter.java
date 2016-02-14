@@ -3,6 +3,7 @@ package pk.com.habsoft.robosim.filters.particles;
 import java.util.Random;
 
 import pk.com.habsoft.robosim.filters.particles.internal.IRobot;
+import pk.com.habsoft.robosim.utils.RoboMathUtils;
 import pk.com.habsoft.robosim.utils.Util;
 
 public class ParticleFilter {
@@ -30,7 +31,7 @@ public class ParticleFilter {
 			// orientation is tricky because it is cyclic. By normalizing
 			// around the first particle we are somewhat more robust to
 			// the 0=2pi problem
-			or_sum += (Util.modulus((p[j].getOrientation() - p[0].getOrientation() + Math.PI), (2.0 * Math.PI))
+			or_sum += (RoboMathUtils.modulus((p[j].getOrientation() - p[0].getOrientation() + Math.PI), (2.0 * Math.PI))
 					+ p[0].getOrientation() - Math.PI);
 		}
 		if (p != null && p.length > 0)
@@ -43,9 +44,9 @@ public class ParticleFilter {
 		double sum = 0.0;
 		for (int i = 0; i < p.length; i++) {
 			double norm = World.getWidth() / 2.0;
-			double dx = (Util.modulus(p[i].getX() - myrobot.getX() + norm, World.getWidth()) - norm);
+			double dx = (RoboMathUtils.modulus(p[i].getX() - myrobot.getX() + norm, World.getWidth()) - norm);
 			norm = World.getHeight() / 2.0;
-			double dy = (Util.modulus(p[i].getY() - myrobot.getY() + norm, World.getHeight()) - norm);
+			double dy = (RoboMathUtils.modulus(p[i].getY() - myrobot.getY() + norm, World.getHeight()) - norm);
 			double err = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 			sum += err;
 		}
@@ -82,11 +83,11 @@ public class ParticleFilter {
 			}
 
 			// measurement update
-			double sum = 0;
+			// double sum = 0;
 			double[] w = new double[reSampledParticles];
 			for (int i = 0; i < reSampledParticles; i++) {
 				w[i] = p[i].measurement_prob(z);
-				sum += w[i];
+				// sum += w[i];
 				// System.out.println(i + " : Prob = " + w[i]);
 			}
 			// for (int i = 0; i < particles; i++) {

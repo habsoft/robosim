@@ -1,7 +1,7 @@
 package pk.com.habsoft.robosim.filters.particles;
 
 import pk.com.habsoft.robosim.filters.particles.internal.IRobot;
-import pk.com.habsoft.robosim.utils.Util;
+import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
 public class BigRobot extends Robot {
 
@@ -32,8 +32,8 @@ public class BigRobot extends Robot {
 			double dy = landmark.getY() - this.y;
 			double bearing = Math.atan2(dy, dx) - this.orientation;
 			if (addNoise)
-				bearing += Util.nextGaussian(0, sense_noise);
-			bearing = Util.modulus(bearing, 2 * Math.PI);
+				bearing += RoboMathUtils.nextGaussian(0, sense_noise);
+			bearing = RoboMathUtils.modulus(bearing, 2 * Math.PI);
 			z[i] = bearing;
 		}
 		return z;
@@ -48,10 +48,10 @@ public class BigRobot extends Robot {
 		double error = 1.0;
 		for (int j = 0; j < predicted_measurements.length; j++) {
 			double error_bearing = Math.abs(measurements[j] - predicted_measurements[j]);
-			error_bearing = Util.modulus(error_bearing + Math.PI, 2.0 * Math.PI) - Math.PI;
+			error_bearing = RoboMathUtils.modulus(error_bearing + Math.PI, 2.0 * Math.PI) - Math.PI;
 
 			// update Gaussian
-			double e1 = Util.gaussian(0, Math.pow(sense_noise, 2), Math.pow(error_bearing, 2));
+			double e1 = RoboMathUtils.gaussian(0, Math.pow(sense_noise, 2), Math.pow(error_bearing, 2));
 			error *= e1;
 			// System.out.println("Error bearing " + error_bearing +
 			// " ; ERROR = " + error);
@@ -80,8 +80,8 @@ public class BigRobot extends Robot {
 		// // raise ValueError, 'Robot cant move backwards'
 		// System.err.println("Robot cant move backwards");
 		// }
-		double stearing2 = Util.nextGaussian(stearing, steering_noise);
-		double distance2 = Util.nextGaussian(forward, forward_noise);
+		double stearing2 = RoboMathUtils.nextGaussian(stearing, steering_noise);
+		double distance2 = RoboMathUtils.nextGaussian(forward, forward_noise);
 		// # move, and add randomness to the motion command
 		// # calculate beeta
 
@@ -113,49 +113,5 @@ public class BigRobot extends Robot {
 
 		// # turn, and add randomness to the turning command
 	}
-
-	// tolerance=0.001
-	// public void move(double[] motions, double tolerance) {
-	// double stearing = motions[0];
-	// double distance = motions[1];
-	//
-	// if (Math.abs(stearing) > MAX_STEERING_ANGLE) {
-	// System.err.print("Exceeding maximum stearing angle");
-	// }
-	//
-	// if (distance < 0) {
-	// System.err.println("Robot cant move backwards");
-	// }
-	//
-	// // apply noise
-	// double stearing2 = Util.nextGaussian(stearing, steering_noise);
-	// double distance2 = Util.nextGaussian(distance, forward_noise);
-	//
-	// // Execute motion
-	// double turn = Math.tan(stearing2) * distance2 / length;
-	//
-	// // calculate global coordinates
-	// if (Math.abs(turn) < tolerance) {
-	//
-	// // approximate by straight line motion
-
-	// setX(x + (distance2 * Math.cos(orientation)));
-	// setY(y + (distance2 * Math.sin(orientation)));
-	// setOrientation(Util.modulus(orientation + turn, 2.0 * Math.PI));
-	// } else {
-	//
-	// // approximate bicycle model for motion
-	// double radius = distance2 / turn;
-	// double cx = x - (Math.sin(orientation) * radius);
-	// double cy = y + (Math.cos(orientation) * radius);
-	// setOrientation(Util.modulus(orientation + turn, 2.0 * Math.PI));
-	//
-	// setX(cx + (Math.sin(orientation) * radius));
-	// setY(cy - (Math.cos(orientation) * radius));
-	// setX(Util.modulus(this.x, World.getWidth()));
-	// setY(Util.modulus(this.y, World.getHeight()));
-	// }
-	//
-	// }
 
 }

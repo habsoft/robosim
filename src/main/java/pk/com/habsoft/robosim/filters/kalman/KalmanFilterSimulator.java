@@ -2,7 +2,7 @@ package pk.com.habsoft.robosim.filters.kalman;
 
 import java.text.DecimalFormat;
 
-import pk.com.habsoft.robosim.utils.Util;
+import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
 public class KalmanFilterSimulator {
 
@@ -71,7 +71,7 @@ public class KalmanFilterSimulator {
 			// actual position
 			double carPos = carPos(t);
 			// measured position
-			double measuredPos = Util.nextGaussian(carPos, measurement_variance);
+			double measuredPos = RoboMathUtils.nextGaussian(carPos, measurement_variance);
 
 			// actual velocity
 			double v = carPos - lastPos;

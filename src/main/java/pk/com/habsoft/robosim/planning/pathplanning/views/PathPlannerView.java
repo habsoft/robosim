@@ -28,7 +28,7 @@ import pk.com.habsoft.robosim.planning.common.StatisticsPanel;
 import pk.com.habsoft.robosim.planning.internal.AlgorithmListener;
 import pk.com.habsoft.robosim.planning.internal.DiscreteWorld;
 import pk.com.habsoft.robosim.utils.ImageUtil;
-import pk.com.habsoft.robosim.utils.Util;
+import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
 public class PathPlannerView extends RootView implements AlgorithmListener {
 
@@ -423,9 +423,9 @@ public class PathPlannerView extends RootView implements AlgorithmListener {
 						}
 						lblLocationMap[i][j].setToolTipText(i + " : " + j);
 						if (pnlAlgorithm.isShowHeuristicValue()) {
-							lblLocationMap[i][j].setText("" + Util.round(algorithm.getHeuristic()[i][j], 2));
+							lblLocationMap[i][j].setText("" + RoboMathUtils.round(algorithm.getHeuristic()[i][j], 2));
 						} else {
-							lblLocationMap[i][j].setText("" + Util.round(expand[i][j], 2));
+							lblLocationMap[i][j].setText("" + RoboMathUtils.round(expand[i][j], 2));
 						}
 					}
 				}

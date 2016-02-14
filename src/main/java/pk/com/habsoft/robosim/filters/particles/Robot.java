@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.util.Random;
 
 import pk.com.habsoft.robosim.filters.particles.internal.IRobot;
-import pk.com.habsoft.robosim.utils.Util;
+import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
 public class Robot implements IRobot {
 	// private BufferedImage image = null;
@@ -95,7 +95,7 @@ public class Robot implements IRobot {
 	@Override
 	public void setX(double xx) {
 		if (checkBoundaries)
-			this.x = Util.modulus(xx, World.getWidth());
+			this.x = RoboMathUtils.modulus(xx, World.getWidth());
 		else
 			this.x = xx;
 	}
@@ -108,7 +108,7 @@ public class Robot implements IRobot {
 	@Override
 	public void setY(double yy) {
 		if (checkBoundaries)
-			this.y = Util.modulus(yy, World.getHeight());
+			this.y = RoboMathUtils.modulus(yy, World.getHeight());
 		else
 			this.y = yy;
 	}
@@ -120,7 +120,7 @@ public class Robot implements IRobot {
 
 	@Override
 	public void setOrientation(double orientation) {
-		this.orientation = Util.modulus(orientation, 2 * Math.PI);
+		this.orientation = RoboMathUtils.modulus(orientation, 2 * Math.PI);
 	}
 
 	@Override
@@ -210,8 +210,8 @@ public class Robot implements IRobot {
 		// return getRobot_type() + " [x=" + Util.round(x, 4) + ", y=" +
 		// Util.round(y, 4) + ", orientation=" +
 		// Util.round(Math.toDegrees(Math.abs(orientation)), 4) + "]";
-		return getRobot_type() + " [x=" + Util.round(x, 4) + ", y=" + Util.round(y, 4) + ", orientation="
-				+ Util.round(orientation, 4) + "]";
+		return getRobot_type() + " [x=" + RoboMathUtils.round(x, 4) + ", y=" + RoboMathUtils.round(y, 4)
+				+ ", orientation=" + RoboMathUtils.round(orientation, 4) + "]";
 	}
 
 	@Override
@@ -248,11 +248,11 @@ public class Robot implements IRobot {
 		double distance = motions[1];
 
 		// # turn, and add randomness to the turning command
-		orientation = orientation - stearing + Util.nextGaussian(0, steering_noise);
+		orientation = orientation - stearing + RoboMathUtils.nextGaussian(0, steering_noise);
 		setOrientation(orientation);
 
 		// # move, and add randomness to the motion command
-		double dist = distance + Util.nextGaussian(0, forward_noise);
+		double dist = distance + RoboMathUtils.nextGaussian(0, forward_noise);
 		x = x + (dist * Math.cos(orientation));
 		y = y + (dist * Math.sin(orientation));
 
@@ -268,7 +268,7 @@ public class Robot implements IRobot {
 		double[] myMeasurements = sense(false);
 		for (int j = 0; j < measurements.length; j++) {
 			if (measurements[j] != 0) {
-				prob *= Util.gaussian(myMeasurements[j], sense_noise, measurements[j]);
+				prob *= RoboMathUtils.gaussian(myMeasurements[j], sense_noise, measurements[j]);
 				c++;
 			}
 		}
@@ -297,7 +297,7 @@ public class Robot implements IRobot {
 			double dy = (lm.getY() + World.LANDMARK_SIZE / 2) - (y + getLength() / 2);
 			double dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 			if (addNoise) {
-				dist += Util.nextGaussian(0, sense_noise);
+				dist += RoboMathUtils.nextGaussian(0, sense_noise);
 			}
 			if (isBoundedVision()) {
 				// TODO Limited angle vision
@@ -318,8 +318,8 @@ public class Robot implements IRobot {
 					if (robot_type == RobotType.ROBOT) {
 						System.out.println(i + "  ********************");
 						System.out.println("Dx = " + dx + " , Dy = " + dy);
-						System.out
-								.println("O=" + ort + " , B=" + Util.round(bearing, 2) + " , D=" + Util.round(diff, 2));
+						System.out.println("O=" + ort + " , B=" + RoboMathUtils.round(bearing, 2) + " , D="
+								+ RoboMathUtils.round(diff, 2));
 						if (diff <= laserAngleRange / 2 || (360 - diff <= laserAngleRange / 2)) {
 							lm.blink();
 							System.out.println("LandMark " + lm.x + " : " + lm.y);
@@ -376,7 +376,7 @@ public class Robot implements IRobot {
 				double[] thetas = new double[lines + 1];
 				for (double i = -lines / 2.0; i <= lines / 2.0; i = i + 1) {
 					thetas[j] = Math.toDegrees(orientation) + (incr * i);
-					thetas[j] = Util.modulus(Math.toRadians(thetas[j]), 2 * Math.PI);
+					thetas[j] = RoboMathUtils.modulus(Math.toRadians(thetas[j]), 2 * Math.PI);
 					j++;
 				}
 				for (int i = 0; i < thetas.length; i++) {

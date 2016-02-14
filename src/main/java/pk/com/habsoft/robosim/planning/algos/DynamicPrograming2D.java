@@ -2,7 +2,7 @@ package pk.com.habsoft.robosim.planning.algos;
 
 import pk.com.habsoft.robosim.planning.internal.DiscreteWorld;
 import pk.com.habsoft.robosim.planning.internal.Path;
-import pk.com.habsoft.robosim.utils.Util;
+import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
 /*
  * 2D dynamic programming stochastic
@@ -92,8 +92,8 @@ public class DynamicPrograming2D extends Algorithm {
 							instances++;
 							double v2 = cost;
 							v2 += sProb * getCost(x, y, k);
-							v2 += fProb * getCost(x, y, Util.modulus(k - 1, actions.length, true));
-							v2 += fProb * getCost(x, y, Util.modulus(k + 1, actions.length, true));
+							v2 += fProb * getCost(x, y, RoboMathUtils.modulus(k - 1, actions.length, true));
+							v2 += fProb * getCost(x, y, RoboMathUtils.modulus(k + 1, actions.length, true));
 							if (v2 < expand[x][y]) {
 								change = true;
 								expand[x][y] = v2;

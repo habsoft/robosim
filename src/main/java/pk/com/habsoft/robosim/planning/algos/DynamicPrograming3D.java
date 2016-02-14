@@ -3,7 +3,7 @@ package pk.com.habsoft.robosim.planning.algos;
 import pk.com.habsoft.robosim.planning.internal.DiscreteWorld;
 import pk.com.habsoft.robosim.planning.internal.Path;
 import pk.com.habsoft.robosim.planning.internal.PathNode;
-import pk.com.habsoft.robosim.utils.Util;
+import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
 /*
  * 3D dynamic programming stochastic
@@ -83,7 +83,7 @@ public class DynamicPrograming3D extends Algorithm {
 	}
 
 	private double getCost(int x, int y, int i) {
-		int o2 = Util.modulus(i, d.length, false);
+		int o2 = RoboMathUtils.modulus(i, d.length, false);
 		int x2 = x + d[o2][0];
 		int y2 = y + d[o2][1];
 		if (world.isOpen(x2, y2))
@@ -179,7 +179,7 @@ public class DynamicPrograming3D extends Algorithm {
 				path.addFirst(new PathNode(x, y));
 				while (policy3D[orientation][x][y] != g) {
 					pathSize++;
-					o2 = Util.modulus((orientation + action[policy3D[orientation][x][y]]), d.length, false);
+					o2 = RoboMathUtils.modulus((orientation + action[policy3D[orientation][x][y]]), d.length, false);
 					policy[x][y] = allowDiagonalMotion ? o2 : o2 * 2;
 					heuristic[x][y] = (int) expand3D[orientation][x][y];
 					expand[x][y] = k++;

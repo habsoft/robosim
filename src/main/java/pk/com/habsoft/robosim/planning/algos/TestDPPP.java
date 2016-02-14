@@ -2,7 +2,7 @@ package pk.com.habsoft.robosim.planning.algos;
 
 import java.util.Arrays;
 
-import pk.com.habsoft.robosim.utils.Util;
+import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
 public class TestDPPP {
 
@@ -59,7 +59,7 @@ public class TestDPPP {
 							}
 						} else if (grid[x][y] == 0) {
 							for (int i = 0; i < action.length; i++) {
-								int o2 = Util.modulus((j + action[i]), 4, false);
+								int o2 = RoboMathUtils.modulus((j + action[i]), 4, false);
 								int x2 = x + forward[o2][0];
 								int y2 = y + forward[o2][1];
 								if (x2 >= 0 && x2 < grid.length && y2 >= 0 && y2 < grid[0].length
@@ -94,7 +94,7 @@ public class TestDPPP {
 			// } else if (action_names[policy[orientation][x][y]] == 'L') {
 			// o2 = Util.modulus((orientation + 1), 4, false);
 			// }
-			o2 = Util.modulus((orientation + action[policy3D[orientation][x][y]]), 4, false);
+			o2 = RoboMathUtils.modulus((orientation + action[policy3D[orientation][x][y]]), 4, false);
 			policy[x][y] = o2;
 			x = x + forward[o2][0];
 			y = y + forward[o2][1];

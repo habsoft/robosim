@@ -1,6 +1,6 @@
 package pk.com.habsoft.robosim.planning.internal;
 
-import pk.com.habsoft.robosim.utils.Util;
+import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
 /*
  * This is used to represent path location for path from start to goal.
@@ -53,7 +53,7 @@ public class PathNode implements Cloneable {
 
 	@Override
 	public String toString() {
-		return "Path [x=" + Util.round(x, 3) + ", y=" + Util.round(y, 3) + "]";
+		return "Path [x=" + RoboMathUtils.round(x, 3) + ", y=" + RoboMathUtils.round(y, 3) + "]";
 	}
 
 }

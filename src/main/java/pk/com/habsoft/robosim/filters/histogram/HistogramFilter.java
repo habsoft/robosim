@@ -6,10 +6,6 @@ import pk.com.habsoft.robosim.utils.Util;
 
 public class HistogramFilter {
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
 	DecimalFormat df = new DecimalFormat("####0.0000");
 	private double[][] p;
 	private int[][] world;
@@ -137,21 +133,6 @@ public class HistogramFilter {
 			newNum += length;
 		return newNum;
 	}
-
-	// public int[] getMostLikely() {
-	// int[] res = new int[2];
-	// res[0] = 0;
-	// res[1] = 0;
-	// for (int y = 0; y < p.length; y++) {
-	// for (int x = 0; x < p[y].length; x++) {
-	// if (p[y][x] > p[res[1]][res[0]]) {
-	// res[1] = y;
-	// res[0] = x;
-	// }
-	// }
-	// }
-	// return res;
-	// }
 
 	public String getP(int i, int j) {
 		double num = 0.00;
