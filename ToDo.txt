@@ -1,0 +1,18 @@
+0.i18n support
+1.Logging
+2. Stochastic motion for DFS, BFS and A*
+4.Car speed and Car Velocity in Kalman Filter
+5.Twiddle
+6.PID Controller
+7.Group nearest particles for multiple ghost
+8.Count total created instances in path planning and smoothing
+9.Multiple worlds for path planning
+10.Tie brakers and multiple goal points.
+11.8-puzzule game
+12. Generic algorithms
+13. D* algorithm
+14. Different obstacle to be included(tree, mud, water , etc)
+15. comments/documentation to be added
+16. Impl of test cases
+
+World properties and collision cost addition
