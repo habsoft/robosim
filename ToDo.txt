@@ -1,3 +1,14 @@
+High Priority.
+1. JavaDoc
+2. Installation steps
+3. Maven Build
+4. Contribution to code
+5. Eclipse Formatter
+6. CheckStyle
+7. Travis build
+8. Gradle build
+
+Low Priority
 0.i18n support
 1.Logging
 2. Stochastic motion for DFS, BFS and A*
