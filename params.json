@@ -1,0 +1,6 @@
+{
+  "name": "Robosim",
+  "tagline": "RoboSim (Robot Simulator)",
+  "body": "# RoboSim (Robot Simulator)\r\n\r\nJava based portable simulator to visualize and understand the *Robot Localization*, *Path planning*, *Path Smoothing* and *PID controller* concepts.\r\n\r\n### Contents\r\n* Filters\r\n  * Histogram Filters\r\n  * Kalman Filters\r\n  * Particles Filters\r\n* Path Planning\r\n* Path Smoothing\r\n* PID Controller\r\n\r\n### Path Planning Algorithms\r\n\r\n* BFS\r\n* DFS\r\n* A Star\r\n* Dynamic Programming\r\n\r\n### Heuristics\r\n\r\n* Euclidean Distance\r\n* Euclidean Distance(+)\r\n* Euclidean Distance(*)\r\n* Euclidean Distance Squared\r\n* Manhattan Distance\r\n* Chebyshev Distance\r\n\r\n\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
