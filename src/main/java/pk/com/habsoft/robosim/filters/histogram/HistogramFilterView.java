@@ -49,16 +49,6 @@ public class HistogramFilterView extends RootView {
 	private static final String MAP_ROW_TAG = "MAP_ROW_";
 	private static final String ROBOT_COMMANDS_TAG = "ROBOT_COMMANDS";
 
-	public HistogramFilterView() {
-		super("Histogram Filter (Markov Localization)", "Histogram.properties");
-		setLayout(null);
-		loadProperties();
-
-		setSize(screenSize);
-		setVisible(false);
-		// initGui();
-	}
-
 	private Image image;
 	private Graphics2D graphics;
 	private static int cellSize = 50;
@@ -89,18 +79,16 @@ public class HistogramFilterView extends RootView {
 	JSpinner spnMotionNoise;
 	SpinnerNumberModel spnMotionNoiseModal = new SpinnerNumberModel(0, 0, 1, 0.01);
 	JCheckBox chkCyclic;
-	public final static String[] btnNames = { "Up-Left", "Up", "Up-Right", "Left", "No_Move", "Right", "Down-Left",
-			"Down", "Down-Right" };
-	JButton[] btnMotions = { new JButton(""), new JButton(""), new JButton(""), new JButton(""), new JButton(""),
-			new JButton(""), new JButton(""), new JButton(""), new JButton("") };
+	public final static String[] btnNames = { "Up-Left", "Up", "Up-Right", "Left", "No_Move", "Right", "Down-Left", "Down", "Down-Right" };
+	JButton[] btnMotions = { new JButton(""), new JButton(""), new JButton(""), new JButton(""), new JButton(""), new JButton(""),
+			new JButton(""), new JButton(""), new JButton("") };
 
 	// Robot Sensor Controls
 	JSpinner spnSensorNoise;
 	SpinnerNumberModel spnSensorNoiseModal = new SpinnerNumberModel(0, 0, 1, 0.01);
 	JButton[] btnSensors = { new JButton(""), new JButton(""), new JButton(""), new JButton(""), new JButton("") };
 	JSpinner spnNoOfColors;
-	SpinnerNumberModel spnNoOfColorsModal = new SpinnerNumberModel(DEF_NO_OF_COLORS, MIN_NO_OF_COLORS, MAX_NO_OF_COLORS,
-			1);
+	SpinnerNumberModel spnNoOfColorsModal = new SpinnerNumberModel(DEF_NO_OF_COLORS, MIN_NO_OF_COLORS, MAX_NO_OF_COLORS, 1);
 	JButton btnReset;
 	JButton btnApply;
 	JButton btnWorldConfiguration;
@@ -123,6 +111,15 @@ public class HistogramFilterView extends RootView {
 
 	JRadioButton rbStart, rbStop;
 	JButton btnNext, btnBuildSimulation;
+
+	public HistogramFilterView() {
+		super("Histogram Filter (Markov Localization)", "Histogram.properties");
+		setLayout(null);
+		loadProperties();
+
+		setSize(screenSize);
+		setVisible(false);
+	}
 
 	public void initGUI() {
 		isInit = true;
@@ -184,8 +181,6 @@ public class HistogramFilterView extends RootView {
 
 		pnlLocationMap.pnlPublic.removeAll();
 		lblLocationMap = new JLabel[DEF_NO_OF_ROWS][DEF_NO_OF_COLUMNS];
-		// pnlLocationMap.setLayout(new GridLayout(DEF_NO_OF_ROWS,
-		// DEF_NO_OF_COLUMNS), true);
 		pnlLocationMap.setLayout(null, true);
 		for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
 			for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
@@ -207,14 +202,12 @@ public class HistogramFilterView extends RootView {
 
 	private void createMotionComponents() {
 		// Add Motion buttons
-		int spacing = 5;
-		pnlRobotMotions.setLayout(new GridLayout(3, 3, spacing, spacing), true);
+		pnlRobotMotions.setLayout(new GridLayout(3, 3, 5, 5), true);
 
 		RobotMotionListener motionList = new RobotMotionListener();
 		for (int i = 0; i < btnMotions.length; i++) {
-			btnMotions[i].setActionCommand("" + i);
-			btnMotions[i].setIcon(
-					new ImageIcon(getClass().getResource("/images" + File.separatorChar + btnNames[i] + ".png")));
+			btnMotions[i].setActionCommand(String.valueOf(i));
+			btnMotions[i].setIcon(new ImageIcon(getClass().getResource("/images" + File.separatorChar + btnNames[i] + ".png")));
 			btnMotions[i].setToolTipText(btnNames[i]);
 			pnlRobotMotions.add(btnMotions[i]);
 			btnMotions[i].addActionListener(motionList);
@@ -234,7 +227,7 @@ public class HistogramFilterView extends RootView {
 
 	private void createSimulationComponents() {
 
-		int spacing = 3;
+		int cellSpacing = 3;
 
 		int xLoc = 0;
 		int yLoc = LABEL_HEIGHT;
@@ -244,22 +237,22 @@ public class HistogramFilterView extends RootView {
 		RobotSimulationControlListener listener = new RobotSimulationControlListener();
 
 		btnBuildSimulation = new JButton("Build Simulation");
-		btnBuildSimulation.setBounds(xLoc + spacing, yLoc + spacing, width - spacing, height - spacing);
+		btnBuildSimulation.setBounds(xLoc + cellSpacing, yLoc + cellSpacing, width - cellSpacing, height - cellSpacing);
 		btnBuildSimulation.addActionListener(listener);
 		pnlSimulation.add(btnBuildSimulation);
 
 		btnResetSimulation = new JButton("Reset Simulation");
-		btnResetSimulation.setBounds(xLoc + width + spacing, yLoc + spacing, width - spacing, height - spacing);
+		btnResetSimulation.setBounds(xLoc + width + cellSpacing, yLoc + cellSpacing, width - cellSpacing, height - cellSpacing);
 		btnResetSimulation.addActionListener(listener);
 		pnlSimulation.add(btnResetSimulation);
 
 		rbStart = new JRadioButton("Start");
 		yLoc += height;
-		rbStart.setBounds(xLoc + spacing, yLoc + spacing, width - spacing, height - spacing);
+		rbStart.setBounds(xLoc + cellSpacing, yLoc + cellSpacing, width - cellSpacing, height - cellSpacing);
 		rbStart.addActionListener(listener);
 		pnlSimulation.add(rbStart);
 		rbStop = new JRadioButton("Stop");
-		rbStop.setBounds(xLoc + width + spacing, yLoc + spacing, width - spacing, height - spacing);
+		rbStop.setBounds(xLoc + width + cellSpacing, yLoc + cellSpacing, width - cellSpacing, height - cellSpacing);
 		rbStop.addActionListener(listener);
 		rbStop.setSelected(true);
 		pnlSimulation.add(rbStop);
@@ -269,7 +262,7 @@ public class HistogramFilterView extends RootView {
 
 		btnNext = new JButton("Next Step");
 		yLoc += height;
-		btnNext.setBounds(xLoc + spacing, yLoc + spacing, width - spacing, height - spacing);
+		btnNext.setBounds(xLoc + cellSpacing, yLoc + cellSpacing, width - cellSpacing, height - cellSpacing);
 		btnNext.addActionListener(listener);
 		pnlSimulation.add(btnNext);
 
@@ -347,7 +340,6 @@ public class HistogramFilterView extends RootView {
 		btnWorldConfiguration.addActionListener(controlListener);
 
 		// //////////////////////////////////////////
-		// int southPanelHeight = 30;
 		JLabel header = UIUtils.createLabel(PANEL_WIDTH, LABEL_HEIGHT, "Robot Sensors");
 		yLoc += height;
 		header.setBounds(xLoc + spacing, yLoc + spacing, 2 * width - spacing, height - spacing);
@@ -388,14 +380,6 @@ public class HistogramFilterView extends RootView {
 			}
 		}
 	}
-
-	// private void setBelief() {
-	// for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
-	// for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
-	// lblBeliefMap[i][j].setText(simulator.getP(i, j));
-	// }
-	// }
-	// }
 
 	public void showOutPut(String txt) {
 		ta.append(txt + "\n");
@@ -439,7 +423,7 @@ public class HistogramFilterView extends RootView {
 		public void actionPerformed(ActionEvent e) {
 			JButton o = (JButton) e.getSource();
 			if (o.equals(btnReset)) {
-				filter.reset();
+				filter.resetBelief();
 				repaint();
 			} else if (o.equals(btnApply)) {
 				filter.setMotionNoise(Double.parseDouble(spnMotionNoise.getValue().toString()));
@@ -523,24 +507,21 @@ public class HistogramFilterView extends RootView {
 			for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
 
 				graphics.setPaint(Color.WHITE);
-				graphics.fillRect(j * (cellSize) + spacing, i * (cellSize) + spacing, cellSize - spacing,
-						cellSize - spacing);
+				graphics.fillRect(j * (cellSize) + spacing, i * (cellSize) + spacing, cellSize - spacing, cellSize - spacing);
 
-				Paint p = new Color(0, 0, 0, (int) (255 * Double.parseDouble(filter.getP(i, j))));
+				Paint p = new Color(0, 0, 0, (int) (255 * Double.parseDouble(filter.getProbabilityAt(i, j))));
 				graphics.setPaint(p);
-				graphics.fillRect(j * (cellSize) + spacing, i * (cellSize) + spacing, cellSize - spacing,
-						cellSize - spacing);
+				graphics.fillRect(j * (cellSize) + spacing, i * (cellSize) + spacing, cellSize - spacing, cellSize - spacing);
 
 				graphics.setPaint(Color.RED);
 				graphics.setFont(new Font("Arial", Font.BOLD, Math.min(cellSize, cellSize) / 4));
-				String str = String.valueOf(filter.getP(i, j));
+				String str = String.valueOf(filter.getProbabilityAt(i, j));
 
 				FontMetrics matrix = graphics.getFontMetrics();
 				int ht = matrix.getAscent();
 				int wd = matrix.stringWidth(str);
 
-				graphics.drawString(str, (j * (cellSize) + cellSize / 2 - wd / 2),
-						(i * (cellSize) + cellSize / 2 + ht / 2));
+				graphics.drawString(str, (j * (cellSize) + cellSize / 2 - wd / 2), (i * (cellSize) + cellSize / 2 + ht / 2));
 
 			}
 		}
@@ -561,8 +542,8 @@ public class HistogramFilterView extends RootView {
 				try {
 					int noOfRows = Integer.parseInt(prop.getProperty(NO_OF_ROWS_TAG));
 					if (noOfRows > MAX_NO_OF_ROWS || noOfRows < MIN_NO_OF_ROWS) {
-						System.out.println("Invalid value of tag " + NO_OF_ROWS_TAG + " .Expedted : " + MIN_NO_OF_ROWS
-								+ "-" + MAX_NO_OF_ROWS + ".Loading Default");
+						System.out.println("Invalid value of tag " + NO_OF_ROWS_TAG + " .Expedted : " + MIN_NO_OF_ROWS + "-"
+								+ MAX_NO_OF_ROWS + ".Loading Default");
 					} else {
 						DEF_NO_OF_ROWS = noOfRows;
 					}
@@ -575,8 +556,8 @@ public class HistogramFilterView extends RootView {
 				try {
 					int noOfColumns = Integer.parseInt(prop.getProperty(NO_OF_COLUMNS_TAG));
 					if (noOfColumns > MAX_NO_OF_COLUMNS || noOfColumns < MIN_NO_OF_COLUMNS) {
-						System.out.println("Invalid value of tag " + NO_OF_COLUMNS_TAG + " .Expedted : "
-								+ MIN_NO_OF_COLUMNS + "-" + MAX_NO_OF_COLUMNS + ".Loading Default");
+						System.out.println("Invalid value of tag " + NO_OF_COLUMNS_TAG + " .Expedted : " + MIN_NO_OF_COLUMNS + "-"
+								+ MAX_NO_OF_COLUMNS + ".Loading Default");
 					} else {
 						DEF_NO_OF_COLUMNS = noOfColumns;
 					}
@@ -589,8 +570,8 @@ public class HistogramFilterView extends RootView {
 				try {
 					int noOfColors = Integer.parseInt(prop.getProperty(NO_OF_COLORS_TAG));
 					if (noOfColors > MAX_NO_OF_COLORS || noOfColors < MIN_NO_OF_COLORS) {
-						System.out.println("Invalid value of tag " + NO_OF_COLORS_TAG + " .Expedted : "
-								+ MIN_NO_OF_COLORS + "-" + MAX_NO_OF_COLORS + ".Loading Default");
+						System.out.println("Invalid value of tag " + NO_OF_COLORS_TAG + " .Expedted : " + MIN_NO_OF_COLORS + "-"
+								+ MAX_NO_OF_COLORS + ".Loading Default");
 					} else {
 						DEF_NO_OF_COLORS = noOfColors;
 					}
@@ -611,8 +592,7 @@ public class HistogramFilterView extends RootView {
 				try {
 					double motionNoise = Double.parseDouble(prop.getProperty(MOTION_NOISE_TAG));
 					if (motionNoise > 1 || motionNoise < 0) {
-						System.out.println(
-								"Invalid value of tag " + MOTION_NOISE_TAG + " .Expedted : 0-1. Loading Default");
+						System.out.println("Invalid value of tag " + MOTION_NOISE_TAG + " .Expedted : 0-1. Loading Default");
 					} else {
 						DEFAULT_MOTION_NOISE = motionNoise;
 					}
@@ -625,8 +605,7 @@ public class HistogramFilterView extends RootView {
 				try {
 					double sensorNoise = Double.parseDouble(prop.getProperty(SENSOR_NOISE_TAG));
 					if (sensorNoise > 1 || sensorNoise < 0) {
-						System.out.println(
-								"Invalid value of tag " + SENSOR_NOISE_TAG + " .Expedted : 0-1. Loading Default");
+						System.out.println("Invalid value of tag " + SENSOR_NOISE_TAG + " .Expedted : 0-1. Loading Default");
 					} else {
 						DEFAULT_SENSOR_NOISE = sensorNoise;
 					}
@@ -645,13 +624,11 @@ public class HistogramFilterView extends RootView {
 						try {
 							world[i][j] = Integer.parseInt(row[j]);
 							if (world[i][j] >= DEF_NO_OF_COLORS) {
-								System.out.println(
-										"Invalid value at " + i + "," + j + "  Expecting 0 - " + DEF_NO_OF_COLORS);
+								System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + DEF_NO_OF_COLORS);
 								trueWorld = false;
 							}
 						} catch (Exception e) {
-							System.out
-									.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + DEF_NO_OF_COLORS);
+							System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + DEF_NO_OF_COLORS);
 							trueWorld = false;
 						}
 					}

@@ -82,7 +82,7 @@ public class HistogramSimulator implements Runnable {
 	}
 
 	public void reset() {
-		filter.reset();
+		filter.resetBelief();
 		count = 0;
 		currentMove = 0;
 	}
