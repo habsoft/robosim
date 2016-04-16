@@ -39,7 +39,7 @@ public class ParticleFilterView extends RootView {
 	ParticleSimulator sim;
 
 	public ParticleFilterView() {
-		super("Particle Filter", "Particle.properties");
+		super("Particle Filter", "config/Particle.properties");
 		setLayout(new GridLayout(2, 2));
 		setLayout(null);
 		loadProperties();

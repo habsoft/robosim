@@ -23,7 +23,7 @@ public class PIDControllerView extends RootView {
 	PIDControlPanel pnlControl;
 
 	public PIDControllerView() {
-		super("PID Controller", "PidController.properties");
+		super("PID Controller", "config/PidController.properties");
 		setLayout(null);
 		loadProperties();
 		initGUI();

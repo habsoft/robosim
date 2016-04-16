@@ -10,8 +10,6 @@ import pk.com.habsoft.robosim.filters.particles.ParticleSimulator;
 import pk.com.habsoft.robosim.filters.particles.World;
 import pk.com.habsoft.robosim.filters.particles.internal.SimulationObject;
 
-
-
 public class SimulationPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private ParticleSimulator simulation;
@@ -38,7 +36,6 @@ public class SimulationPanel extends JPanel {
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
-			// if (simulation.isRunning()) {
 			Graphics2D g2d = (Graphics2D) g;
 			for (SimulationObject o : simulation) {
 				o.onPaint(g2d);
@@ -50,7 +47,6 @@ public class SimulationPanel extends JPanel {
 			g.fillRect(World.getWidth() - World.getWallSize(), 0, World.getWallSize(), World.getHeight());// right
 			g.fillRect(0, World.getHeight() - World.getWallSize(), World.getWidth(), World.getWallSize());// bottom
 
-			// }
 		}
 	}
 }

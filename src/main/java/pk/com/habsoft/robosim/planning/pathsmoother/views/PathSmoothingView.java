@@ -39,7 +39,7 @@ public class PathSmoothingView extends RootView implements WorldListener {
 	DrawingControlPanel pnlDrawingControl;
 
 	public PathSmoothingView() {
-		super("Path Smoother", "PathSmoother.properties");
+		super("Path Smoother", "config/PathSmoother.properties");
 		setLayout(null);
 		loadProperties();
 		setSize(screenSize);
