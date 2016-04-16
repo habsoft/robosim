@@ -53,7 +53,7 @@ public class KalmanFilterView extends RootView {
 	KalmanFilterSimulator anim = null;
 
 	public KalmanFilterView() {
-		super("Kalman Filter", "Kalman.properties");
+		super("Kalman Filter", "config/Kalman.properties");
 		loadProperties();
 		// setLayout(new GridLayout(2, 2));
 		setLayout(null);

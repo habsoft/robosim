@@ -1,6 +1,5 @@
 package pk.com.habsoft.robosim.filters.histogram;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,7 +17,6 @@ import java.io.File;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -26,17 +24,14 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 
 import pk.com.habsoft.robosim.internal.RPanel;
 import pk.com.habsoft.robosim.internal.RootView;
 import pk.com.habsoft.robosim.utils.UIUtils;
 
-public class HistogramFilterView extends RootView {
+public class HistogramFilterAdvView extends RootView {
 
 	private static final long serialVersionUID = 1L;
 
@@ -73,7 +68,6 @@ public class HistogramFilterView extends RootView {
 
 	int[][] world;
 	HistogramFilter filter = null;
-	HistogramSimulator simulator = null;
 
 	// Robot Motions Controls
 	JSpinner spnMotionNoise;
@@ -104,15 +98,8 @@ public class HistogramFilterView extends RootView {
 	RPanel pnlLocationMap;
 	RPanel pnlRobotMotions;
 	RPanel pnlRobotSettings;
-	RPanel pnlOutput;
-	RPanel pnlSimulation;
-	private JTextArea ta;
-	int[][] commands = new int[0][0];
 
-	JRadioButton rbStart, rbStop;
-	JButton btnNext, btnBuildSimulation;
-
-	public HistogramFilterView() {
+	public HistogramFilterAdvView() {
 		super("Histogram Filter (Markov Localization)", "config/Histogram.properties");
 		setLayout(null);
 		loadProperties();
@@ -125,15 +112,15 @@ public class HistogramFilterView extends RootView {
 		isInit = true;
 		// Set this world to Localizer
 		filter = new HistogramFilter(world);
-		simulator = new HistogramSimulator(this, filter);
 		// Setting the default noise
 		filter.setMotionNoise(DEFAULT_MOTION_NOISE);
 		filter.setSensorNoise(DEFAULT_SENSOR_NOISE);
 		filter.setCyclic(DEFAULT_CYCLIC_WORLD);
 
-		// Robot Location Panel
-		pnlLocationMap = new RPanel(PANEL_WIDTH, PANEL_HEIGHT, "Robot Location Map");
-		createWorldMapComponents(false);
+		// //////////// Setting Panel
+
+		pnlRobotSettings = new RPanel(PANEL_WIDTH, PANEL_HEIGHT, "Robot Setting");
+		createSensorsComponents(pnlRobotSettings);
 
 		// ////////// Robot Belief Map
 		JLabel header = UIUtils.createLabel(PANEL_WIDTH, LABEL_HEIGHT, "Robot Belief Map");
@@ -146,32 +133,19 @@ public class HistogramFilterView extends RootView {
 		pnlRobotMotions.setLocation(0, PANEL_HEIGHT);
 		createMotionComponents();
 
-		// //////////// Setting Panel
-
-		pnlRobotSettings = new RPanel(PANEL_WIDTH, PANEL_HEIGHT, "Robot Setting");
-		pnlRobotSettings.setLocation(PANEL_WIDTH, PANEL_HEIGHT);
-		createSensorsComponents(pnlRobotSettings);
-
-		// Simulation panel
-
-		pnlOutput = new RPanel(PANEL_WIDTH, PANEL_HEIGHT, "Simulation Output");
-		pnlOutput.setLocation(PANEL_WIDTH * 2, 0);
-		createSimulationOutput();
-
-		pnlSimulation = new RPanel(PANEL_WIDTH, PANEL_HEIGHT, "Simulation Control");
-		pnlSimulation.setLocation(PANEL_WIDTH * 2, PANEL_HEIGHT);
-		createSimulationComponents();
+		// Robot Location Panel
+		pnlLocationMap = new RPanel(PANEL_WIDTH, PANEL_HEIGHT, "Robot Location Map");
+		pnlLocationMap.setLocation(PANEL_WIDTH, PANEL_HEIGHT);
+		createWorldMapComponents();
 
 		// Add panels to frame
 		getContentPane().add(pnlLocationMap);
 		getContentPane().add(pnlRobotMotions);
 		getContentPane().add(pnlRobotSettings);
-		getContentPane().add(pnlOutput);
-		getContentPane().add(pnlSimulation);
 
 	}
 
-	private void createWorldMapComponents(boolean remove) {
+	private void createWorldMapComponents() {
 
 		// Calculate Suitable sell size
 		int cols = (PANEL_WIDTH - 8) / DEF_NO_OF_COLUMNS;
@@ -212,59 +186,6 @@ public class HistogramFilterView extends RootView {
 			pnlRobotMotions.add(btnMotions[i]);
 			btnMotions[i].addActionListener(motionList);
 		}
-
-	}
-
-	private void createSimulationOutput() {
-		pnlOutput.setLayout(new BorderLayout(), true);
-		ta = new JTextArea();
-		ta.setLineWrap(false);
-		ta.setWrapStyleWord(true);
-		JScrollPane scroll = new JScrollPane(ta);
-		scroll.setAutoscrolls(true);
-		pnlOutput.add(scroll, BorderLayout.CENTER);
-	}
-
-	private void createSimulationComponents() {
-
-		int cellSpacing = 3;
-
-		int xLoc = 0;
-		int yLoc = LABEL_HEIGHT;
-		int width = PANEL_WIDTH / 2 - 1;
-		int height = Math.min(PANEL_HEIGHT / 4, 30);
-
-		RobotSimulationControlListener listener = new RobotSimulationControlListener();
-
-		btnBuildSimulation = new JButton("Build Simulation");
-		btnBuildSimulation.setBounds(xLoc + cellSpacing, yLoc + cellSpacing, width - cellSpacing, height - cellSpacing);
-		btnBuildSimulation.addActionListener(listener);
-		pnlSimulation.add(btnBuildSimulation);
-
-		btnResetSimulation = new JButton("Reset Simulation");
-		btnResetSimulation.setBounds(xLoc + width + cellSpacing, yLoc + cellSpacing, width - cellSpacing, height - cellSpacing);
-		btnResetSimulation.addActionListener(listener);
-		pnlSimulation.add(btnResetSimulation);
-
-		rbStart = new JRadioButton("Start");
-		yLoc += height;
-		rbStart.setBounds(xLoc + cellSpacing, yLoc + cellSpacing, width - cellSpacing, height - cellSpacing);
-		rbStart.addActionListener(listener);
-		pnlSimulation.add(rbStart);
-		rbStop = new JRadioButton("Stop");
-		rbStop.setBounds(xLoc + width + cellSpacing, yLoc + cellSpacing, width - cellSpacing, height - cellSpacing);
-		rbStop.addActionListener(listener);
-		rbStop.setSelected(true);
-		pnlSimulation.add(rbStop);
-		ButtonGroup gp = new ButtonGroup();
-		gp.add(rbStart);
-		gp.add(rbStop);
-
-		btnNext = new JButton("Next Step");
-		yLoc += height;
-		btnNext.setBounds(xLoc + cellSpacing, yLoc + cellSpacing, width - cellSpacing, height - cellSpacing);
-		btnNext.addActionListener(listener);
-		pnlSimulation.add(btnNext);
 
 	}
 
@@ -381,43 +302,6 @@ public class HistogramFilterView extends RootView {
 		}
 	}
 
-	public void showOutPut(String txt) {
-		ta.append(txt + "\n");
-		ta.setCaretPosition(ta.getDocument().getLength());
-	}
-
-	private class RobotSimulationControlListener implements ActionListener {
-
-		public void actionPerformed(ActionEvent e) {
-			Object o = e.getSource();
-			if (o.equals(btnBuildSimulation)) {
-				SimulationBuilder sim = new SimulationBuilder(commands, DEF_NO_OF_COLORS, btnNames.length);
-				commands = sim.getNewCommands();
-				simulator.setCommands(commands);
-				simulator.reset();
-				repaint();
-				ta.setText("");
-			} else if (o.equals(btnResetSimulation)) {
-				simulator.reset();
-				ta.setText("");
-			} else if (o.equals(btnNext)) {
-				simulator.nextStep();
-			} else if (o.equals(rbStart)) {
-				simulator.simulate();
-				btnNext.setEnabled(false);
-				btnBuildSimulation.setEnabled(false);
-				btnResetSimulation.setEnabled(false);
-			} else if (o.equals(rbStop)) {
-				simulator.setRunning(false);
-				btnNext.setEnabled(true);
-				btnBuildSimulation.setEnabled(true);
-				btnResetSimulation.setEnabled(true);
-				// btnApplySetting.setEnabled(true);
-			}
-		}
-
-	}
-
 	private class RobotControlListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -443,15 +327,6 @@ public class HistogramFilterView extends RootView {
 				setWorldColors();
 
 				filter.setWorld(world);
-				// review motions commands
-				for (int i = 0; i < commands.length; i++) {
-					if (commands[i][1] == HistogramSimulator.SENSE) {
-						commands[i][0] %= DEF_NO_OF_COLORS;
-					} else if (commands[i][1] == HistogramSimulator.MOVE) {
-						commands[i][0] %= btnNames.length;
-					}
-				}
-				simulator.setCommands(commands);
 				repaint();
 			} else if (o.equals(btnWorldConfiguration)) {
 				WorldBuilder gui = new WorldBuilder(world, DEF_NO_OF_COLORS, sensors);
@@ -461,7 +336,7 @@ public class HistogramFilterView extends RootView {
 					DEF_NO_OF_ROWS = world.length;
 					DEF_NO_OF_COLUMNS = world[0].length;
 					filter.setWorld(world);
-					createWorldMapComponents(true);
+					createWorldMapComponents();
 					// setWorldColors();
 					repaint();
 				}
@@ -647,30 +522,6 @@ public class HistogramFilterView extends RootView {
 					}
 				}
 			}
-			// load robot commands
-			String commands = prop.getProperty(ROBOT_COMMANDS_TAG);
-			int[][] cmd = null;
-			if (commands != null) {
-				String[] arr = commands.split(";");
-				cmd = new int[arr.length][];
-				for (int i = 0; i < arr.length; i++) {
-					String[] temp = arr[i].split(",");
-					cmd[i] = new int[temp.length];
-
-					int moveOrSense = Integer.parseInt(temp[1]) % 2;
-
-					cmd[i][0] = Integer.parseInt(temp[0]);
-					cmd[i][1] = moveOrSense;
-
-					if (moveOrSense == HistogramSimulator.SENSE) {
-						cmd[i][0] %= DEF_NO_OF_COLORS;
-					} else if (moveOrSense == HistogramSimulator.MOVE) {
-						cmd[i][0] %= btnMotions.length;
-					}
-
-				}
-				this.commands = cmd;
-			}
 		}
 		return true;
 	}
@@ -696,17 +547,6 @@ public class HistogramFilterView extends RootView {
 			prop.setProperty(MAP_ROW_TAG + (i + 1), row);
 		}
 
-		// Save Robot Commands
-		StringBuffer buff = new StringBuffer(commands.length);
-		int i = 0;
-		for (; i < commands.length - 1; i++) {
-			buff.append(commands[i][0] + "," + commands[i][1] + ";");
-		}
-		if (commands.length > 0) {
-			buff.append(commands[i][0] + "," + commands[i][1]);
-			prop.setProperty(ROBOT_COMMANDS_TAG, buff.toString());
-		}
-
 		super.saveProperties();
 
 	}
@@ -717,7 +557,7 @@ public class HistogramFilterView extends RootView {
 		JDesktopPane desk = new JDesktopPane();
 		frame.setContentPane(desk);
 
-		HistogramFilterView view1 = new HistogramFilterView();
+		HistogramFilterAdvView view1 = new HistogramFilterAdvView();
 		view1.initGUI();
 
 		desk.add(view1);

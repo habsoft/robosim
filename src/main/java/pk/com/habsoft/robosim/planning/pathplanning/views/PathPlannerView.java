@@ -47,7 +47,7 @@ public class PathPlannerView extends RootView implements AlgorithmListener {
 	JButton btnModifyWorld, btnApplyCostSettings;
 
 	public PathPlannerView() {
-		super("Path Planner", "PathPlanner.properties");
+		super("Path Planner", "config/PathPlanner.properties");
 		setLayout(null);
 		loadProperties();
 		setLocation(0, 0);

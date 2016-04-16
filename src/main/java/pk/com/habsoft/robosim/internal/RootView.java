@@ -72,7 +72,8 @@ abstract public class RootView extends JInternalFrame implements PropertiesListe
 	@Override
 	public void saveProperties() {
 		try {
-			FileOutputStream out = new FileOutputStream(propertyFile);
+			File f = new File(getClass().getClassLoader().getResource(propertyFile).getFile());
+			FileOutputStream out = new FileOutputStream(f);
 			prop.store(out, "");
 			out.close();
 		} catch (Exception e) {
