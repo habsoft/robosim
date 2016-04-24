@@ -18,8 +18,8 @@ public class RPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public static Font labelFont = new Font("Comic", Font.BOLD, 16);
 	public static int LABEL_HEIGHT = 30;
-	public JPanel pnlPublic;
 	private JPanel pnlPrivate;
+	public JPanel pnlPublic;
 
 	public RPanel(double width, double height, String label) {
 		pnlPrivate = new JPanel(null);

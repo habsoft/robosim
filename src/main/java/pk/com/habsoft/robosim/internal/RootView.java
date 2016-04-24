@@ -50,8 +50,14 @@ abstract public class RootView extends JInternalFrame implements PropertiesListe
 	@Override
 	public boolean loadProperties() {
 		if (propertyFile != null && propertyFile.trim().length() > 0) {
-			System.out.println(getClass().getClassLoader().getResource(propertyFile).getFile());
-			File f = new File(getClass().getClassLoader().getResource(propertyFile).getFile());
+			File f = new File(propertyFile);
+			// If property file not exists then copy from default config folder.
+			if (!f.exists()) {
+				File ff = new File(getClass().getClassLoader().getResource(propertyFile).getFile());
+				System.out.println(ff);
+				f = ff;
+			}
+			System.out.println(f.getPath());
 			if (f.exists()) {
 				try {
 					FileInputStream fis = new FileInputStream(f);
@@ -62,6 +68,7 @@ abstract public class RootView extends JInternalFrame implements PropertiesListe
 					return false;
 				}
 			} else {
+
 				System.out.println("Property file not exists : " + f.getAbsolutePath());
 				return false;
 			}
@@ -72,7 +79,9 @@ abstract public class RootView extends JInternalFrame implements PropertiesListe
 	@Override
 	public void saveProperties() {
 		try {
-			File f = new File(getClass().getClassLoader().getResource(propertyFile).getFile());
+			// File f = new
+			// File(getClass().getClassLoader().getResource(propertyFile).getFile());
+			File f = new File(propertyFile);
 			FileOutputStream out = new FileOutputStream(f);
 			prop.store(out, "");
 			out.close();
@@ -121,6 +130,7 @@ abstract public class RootView extends JInternalFrame implements PropertiesListe
 	}
 
 	public void this_internalFrameClosing(InternalFrameEvent e) {
+		System.out.println("saving");
 		if (isInit) {
 			saveProperties();
 		}

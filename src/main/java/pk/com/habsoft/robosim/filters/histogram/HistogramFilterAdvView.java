@@ -2,21 +2,13 @@ package pk.com.habsoft.robosim.filters.histogram;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Paint;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -42,12 +34,6 @@ public class HistogramFilterAdvView extends RootView {
 	private static final String MOTION_NOISE_TAG = "MOTION_NOISE";
 	private static final String SENSOR_NOISE_TAG = "SENSOR_NOISE";
 	private static final String MAP_ROW_TAG = "MAP_ROW_";
-	private static final String ROBOT_COMMANDS_TAG = "ROBOT_COMMANDS";
-
-	private Image image;
-	private Graphics2D graphics;
-	private static int cellSize = 50;
-	private static final int spacing = 2;
 
 	static int MAX_NO_OF_ROWS = 6;
 	static int MIN_NO_OF_ROWS = 1;
@@ -63,7 +49,6 @@ public class HistogramFilterAdvView extends RootView {
 	public final static String[] sensorNames = { "Red", "Green", "Blue", "Cyan", "Magenta" };
 	final static Color[] sensors = { Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA };
 
-	JLabel[][] lblLocationMap;
 	JLabel[][] lblBeliefMap;
 
 	int[][] world;
@@ -95,9 +80,9 @@ public class HistogramFilterAdvView extends RootView {
 	static int PANEL_WIDTH = 300;
 	static int PANEL_HEIGHT = 300;
 
-	RPanel pnlLocationMap;
 	RPanel pnlRobotMotions;
 	RPanel pnlRobotSettings;
+	RPanel pnlBeliefMap;
 
 	public HistogramFilterAdvView() {
 		super("Histogram Filter (Markov Localization)", "config/Histogram.properties");
@@ -123,9 +108,9 @@ public class HistogramFilterAdvView extends RootView {
 		createSensorsComponents(pnlRobotSettings);
 
 		// ////////// Robot Belief Map
-		JLabel header = UIUtils.createLabel(PANEL_WIDTH, LABEL_HEIGHT, "Robot Belief Map");
-		header.setLocation(PANEL_WIDTH, 0);
-		add(header);
+		pnlBeliefMap = new RobotBeliefMap(this, PANEL_WIDTH * 2, PANEL_HEIGHT * 2, "Robot Belief Map", DEF_NO_OF_ROWS, DEF_NO_OF_COLUMNS);
+		pnlBeliefMap.setLocation(PANEL_WIDTH, 0);
+		add(pnlBeliefMap);
 
 		// ////////// Controls Panel
 
@@ -133,45 +118,10 @@ public class HistogramFilterAdvView extends RootView {
 		pnlRobotMotions.setLocation(0, PANEL_HEIGHT);
 		createMotionComponents();
 
-		// Robot Location Panel
-		pnlLocationMap = new RPanel(PANEL_WIDTH, PANEL_HEIGHT, "Robot Location Map");
-		pnlLocationMap.setLocation(PANEL_WIDTH, PANEL_HEIGHT);
-		createWorldMapComponents();
-
 		// Add panels to frame
-		getContentPane().add(pnlLocationMap);
 		getContentPane().add(pnlRobotMotions);
 		getContentPane().add(pnlRobotSettings);
 
-	}
-
-	private void createWorldMapComponents() {
-
-		// Calculate Suitable sell size
-		int cols = (PANEL_WIDTH - 8) / DEF_NO_OF_COLUMNS;
-		int rows = (PANEL_HEIGHT - LABEL_HEIGHT - 8) / DEF_NO_OF_ROWS;
-
-		cellSize = Math.min(rows, cols);
-
-		pnlLocationMap.pnlPublic.removeAll();
-		lblLocationMap = new JLabel[DEF_NO_OF_ROWS][DEF_NO_OF_COLUMNS];
-		pnlLocationMap.setLayout(null, true);
-		for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
-			for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
-				lblLocationMap[i][j] = new JLabel();
-				lblLocationMap[i][j].setBounds(j * cellSize, i * cellSize, cellSize, cellSize);
-				lblLocationMap[i][j].setPreferredSize(new Dimension(cellSize, cellSize));
-				lblLocationMap[i][j].setBackground(sensors[world[i][j]]);
-				lblLocationMap[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				lblLocationMap[i][j].setOpaque(true);
-				pnlLocationMap.add(lblLocationMap[i][j]);
-			}
-		}
-		pnlLocationMap.pnlPublic.doLayout();
-		setWorldColors();
-
-		image = new BufferedImage(DEF_NO_OF_COLUMNS * cellSize, DEF_NO_OF_ROWS * cellSize, BufferedImage.BITMASK);
-		graphics = (Graphics2D) image.getGraphics();
 	}
 
 	private void createMotionComponents() {
@@ -294,21 +244,13 @@ public class HistogramFilterAdvView extends RootView {
 		}
 	}
 
-	private void setWorldColors() {
-		for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
-			for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
-				lblLocationMap[i][j].setBackground(sensors[world[i][j] % DEF_NO_OF_COLORS]);
-			}
-		}
-	}
-
 	private class RobotControlListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			JButton o = (JButton) e.getSource();
 			if (o.equals(btnReset)) {
 				filter.resetBelief();
-				repaint();
+				pnlBeliefMap.repaint();
 			} else if (o.equals(btnApply)) {
 				filter.setMotionNoise(Double.parseDouble(spnMotionNoise.getValue().toString()));
 				filter.setSensorNoise(Double.parseDouble(spnSensorNoise.getValue().toString()));
@@ -324,10 +266,9 @@ public class HistogramFilterAdvView extends RootView {
 				}
 				DEF_NO_OF_COLORS = newSensors;
 				enableSensors();
-				setWorldColors();
 
 				filter.setWorld(world);
-				repaint();
+				pnlBeliefMap.repaint();
 			} else if (o.equals(btnWorldConfiguration)) {
 				WorldBuilder gui = new WorldBuilder(world, DEF_NO_OF_COLORS, sensors);
 				gui.setVisible(true);
@@ -336,9 +277,7 @@ public class HistogramFilterAdvView extends RootView {
 					DEF_NO_OF_ROWS = world.length;
 					DEF_NO_OF_COLUMNS = world[0].length;
 					filter.setWorld(world);
-					createWorldMapComponents();
-					// setWorldColors();
-					repaint();
+					pnlBeliefMap.repaint();
 				}
 			}
 		}
@@ -352,7 +291,6 @@ public class HistogramFilterAdvView extends RootView {
 			try {
 				int actionIdx = Integer.parseInt(action);
 				filter.move(actionIdx);
-				repaint();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
@@ -367,41 +305,10 @@ public class HistogramFilterAdvView extends RootView {
 			try {
 				int actionIdx = Integer.parseInt(action);
 				filter.sense(actionIdx);
-				repaint();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
 		}
-	}
-
-	public void paint(Graphics g) {
-		super.paint(g);
-		graphics.setBackground(Color.red);
-		graphics.setPaint(Color.RED);
-		for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
-			for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
-
-				graphics.setPaint(Color.WHITE);
-				graphics.fillRect(j * (cellSize) + spacing, i * (cellSize) + spacing, cellSize - spacing, cellSize - spacing);
-
-				Paint p = new Color(0, 0, 0, (int) (255 * Double.parseDouble(filter.getProbabilityAt(i, j))));
-				graphics.setPaint(p);
-				graphics.fillRect(j * (cellSize) + spacing, i * (cellSize) + spacing, cellSize - spacing, cellSize - spacing);
-
-				graphics.setPaint(Color.RED);
-				graphics.setFont(new Font("Arial", Font.BOLD, Math.min(cellSize, cellSize) / 4));
-				String str = String.valueOf(filter.getProbabilityAt(i, j));
-
-				FontMetrics matrix = graphics.getFontMetrics();
-				int ht = matrix.getAscent();
-				int wd = matrix.stringWidth(str);
-
-				graphics.drawString(str, (j * (cellSize) + cellSize / 2 - wd / 2), (i * (cellSize) + cellSize / 2 + ht / 2));
-
-			}
-		}
-
-		g.drawImage(image, PANEL_WIDTH + 10, 30 + LABEL_HEIGHT, this);
 	}
 
 	public boolean loadProperties() {

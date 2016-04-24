@@ -14,7 +14,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -207,7 +206,7 @@ public class HistogramFilterView extends RootView {
 		RobotMotionListener motionList = new RobotMotionListener();
 		for (int i = 0; i < btnMotions.length; i++) {
 			btnMotions[i].setActionCommand(String.valueOf(i));
-			btnMotions[i].setIcon(new ImageIcon(getClass().getResource("/images" + File.separatorChar + btnNames[i] + ".png")));
+			btnMotions[i].setIcon(new ImageIcon(getClass().getResource("/images/" + btnNames[i] + ".png")));
 			btnMotions[i].setToolTipText(btnNames[i]);
 			pnlRobotMotions.add(btnMotions[i]);
 			btnMotions[i].addActionListener(motionList);
