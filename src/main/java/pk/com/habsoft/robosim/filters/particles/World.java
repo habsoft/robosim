@@ -17,12 +17,12 @@ import org.apache.log4j.Logger;
 import pk.com.habsoft.robosim.utils.RobotLogger;
 
 public class World {
-	private static String propertyFile = "Particle.properties";
+	private static String propertyFile = "config/Particle.properties";
 	final static String TAG_WALL_THICKNESS = "WALL_THICKNESS";
 
 	final static String DEF_WORLD_WALL = "10";
 
-	final static String DEF_LANDMARK_FILE = "landmarks.properties";
+	final static String DEF_LANDMARK_FILE = "config/landmarks.properties";
 	final static int NUM_OF_LANDMARKS = 6;
 	public static int LANDMARK_SIZE = 10;
 	private Random r = new Random();
@@ -83,9 +83,8 @@ public class World {
 					// landmark is within the world boundary
 				} else {
 					// load random landmark
-					logger.error("Value out of range " + x + " : " + y + " expecting :  "
-							+ (maxWidth - thikness * 2 - LANDMARK_SIZE) + " - "
-							+ (maxHeight - thikness * 2 - LANDMARK_SIZE));
+					logger.error("Value out of range " + x + " : " + y + " expecting :  " + (maxWidth - thikness * 2 - LANDMARK_SIZE)
+							+ " - " + (maxHeight - thikness * 2 - LANDMARK_SIZE));
 					x = thikness + r.nextInt(maxWidth - thikness * 2 - LANDMARK_SIZE);
 					y = thikness + r.nextInt(maxHeight - thikness * 2 - LANDMARK_SIZE);
 				}
