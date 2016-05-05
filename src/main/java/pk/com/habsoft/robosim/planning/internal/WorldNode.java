@@ -100,7 +100,7 @@ public class WorldNode implements Comparable<WorldNode> {
 
 	@Override
 	public int compareTo(WorldNode that) {
-		int returnValue = 0;
+		int returnValue;
 		// f = g + h
 
 		if (this.getCost() == that.getCost())
