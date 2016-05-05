@@ -308,7 +308,7 @@ public class SimulationBuilder extends JDialog {
 class DataModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = 1L;
-	static final PersonTableColumn m_columns[] = { new PersonTableColumn("S #", 20, JLabel.LEFT),
+	static final PersonTableColumn[] m_columns = { new PersonTableColumn("S #", 20, JLabel.LEFT),
 			new PersonTableColumn("Sense", 50, JLabel.LEFT), new PersonTableColumn("Move", 50, JLabel.LEFT) };
 
 	public static final int COUNT = 0;
