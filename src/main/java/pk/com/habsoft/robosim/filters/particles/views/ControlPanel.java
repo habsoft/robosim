@@ -286,68 +286,68 @@ public class ControlPanel extends JPanel implements ActionListener, ChangeListen
 	@Override
 	public boolean loadProperties() {
 		try {
-			DEF_PARTICLES = Integer.parseInt(prop.getProperty(TAG_PARTICLES, "" + DEF_PARTICLES));
+			DEF_PARTICLES = Integer.parseInt(prop.getProperty(TAG_PARTICLES, Integer.toString(DEF_PARTICLES)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_PARTICLES);
 		}
 		try {
-			DEF_SENSE_NOISE = Double.parseDouble(prop.getProperty(TAG_SENSE_NOISE, "" + DEF_SENSE_NOISE));
+			DEF_SENSE_NOISE = Double.parseDouble(prop.getProperty(TAG_SENSE_NOISE, Double.toString(DEF_SENSE_NOISE)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_SENSE_NOISE);
 		}
 		try {
-			DEF_STEERING_NOISE = Integer.parseInt(prop.getProperty(TAG_STEERING_NOISE, "" + DEF_STEERING_NOISE));
+			DEF_STEERING_NOISE = Integer.parseInt(prop.getProperty(TAG_STEERING_NOISE, Integer.toString(DEF_STEERING_NOISE)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_STEERING_NOISE);
 		}
 		try {
-			DEF_FORWARD_NOISE = Double.parseDouble(prop.getProperty(TAG_FORWARD_NOISE, "" + DEF_FORWARD_NOISE));
+			DEF_FORWARD_NOISE = Double.parseDouble(prop.getProperty(TAG_FORWARD_NOISE, Double.toString(DEF_FORWARD_NOISE)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_FORWARD_NOISE);
 		}
 		try {
-			DEF_ROBOT_SIZE = Integer.parseInt(prop.getProperty(TAG_ROBOT_SIZE, "" + DEF_ROBOT_SIZE));
+			DEF_ROBOT_SIZE = Integer.parseInt(prop.getProperty(TAG_ROBOT_SIZE, Integer.toString(DEF_ROBOT_SIZE)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_ROBOT_SIZE);
 		}
 		try {
-			DEF_GHOST_SIZE = Integer.parseInt(prop.getProperty(TAG_GHOST_SIZE, "" + DEF_GHOST_SIZE));
+			DEF_GHOST_SIZE = Integer.parseInt(prop.getProperty(TAG_GHOST_SIZE, Integer.toString(DEF_GHOST_SIZE)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_GHOST_SIZE);
 		}
 		try {
-			DEF_PARTICLE_SIZE = Integer.parseInt(prop.getProperty(TAG_PARTICLE_SIZE, "" + DEF_PARTICLE_SIZE));
+			DEF_PARTICLE_SIZE = Integer.parseInt(prop.getProperty(TAG_PARTICLE_SIZE, Integer.toString(DEF_PARTICLE_SIZE)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_PARTICLE_SIZE);
 		}
 		try {
-			DEF_LANDMARK_SIZE = Integer.parseInt(prop.getProperty(TAG_LANDMARK_SIZE, "" + DEF_LANDMARK_SIZE));
+			DEF_LANDMARK_SIZE = Integer.parseInt(prop.getProperty(TAG_LANDMARK_SIZE, Integer.toString(DEF_LANDMARK_SIZE)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_LANDMARK_SIZE);
 		}
 
 		try {
-			DEF_MOTION_ANGLE = Integer.parseInt(prop.getProperty(TAG_MOTION_ANGLE, "" + DEF_MOTION_ANGLE));
+			DEF_MOTION_ANGLE = Integer.parseInt(prop.getProperty(TAG_MOTION_ANGLE, Integer.toString(DEF_MOTION_ANGLE)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_MOTION_ANGLE);
 		}
 		try {
-			DEF_MOTIONS_SPEED = Double.parseDouble(prop.getProperty(TAG_MOTIONS_SPEED, "" + DEF_MOTIONS_SPEED));
+			DEF_MOTIONS_SPEED = Double.parseDouble(prop.getProperty(TAG_MOTIONS_SPEED, Double.toString(DEF_MOTIONS_SPEED)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_MOTIONS_SPEED);
 		}
 		try {
-			DEF_NEW_PARTICLES_RATIO = Double.parseDouble(prop.getProperty(TAG_NEW_PARTICLES_RATIO, "" + DEF_NEW_PARTICLES_RATIO));
+			DEF_NEW_PARTICLES_RATIO = Double.parseDouble(prop.getProperty(TAG_NEW_PARTICLES_RATIO, Double.toString(DEF_NEW_PARTICLES_RATIO)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_NEW_PARTICLES_RATIO);
 		}
 		try {
-			DEF_UNSAMPLED_PARTICLES_RATIO = Double.parseDouble(prop.getProperty(TAG_UNSAMPLED_PARTICLES_RATIO, "" + DEF_UNSAMPLED_PARTICLES_RATIO));
+			DEF_UNSAMPLED_PARTICLES_RATIO = Double.parseDouble(prop.getProperty(TAG_UNSAMPLED_PARTICLES_RATIO, Double.toString(DEF_UNSAMPLED_PARTICLES_RATIO)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_UNSAMPLED_PARTICLES_RATIO);
 		}
 		try {
-			DEF_SIMULATION_SPEED = Integer.parseInt(prop.getProperty(TAG_SIMULATION_SPEED, "" + DEF_SIMULATION_SPEED));
+			DEF_SIMULATION_SPEED = Integer.parseInt(prop.getProperty(TAG_SIMULATION_SPEED, Integer.toString(DEF_SIMULATION_SPEED)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_SIMULATION_SPEED);
 		}
@@ -359,12 +359,12 @@ public class ControlPanel extends JPanel implements ActionListener, ChangeListen
 			log.error("Invalid value of tag " + TAG_BOUNDED_VISION);
 		}
 		try {
-			DEF_LASER_RANGE = Integer.parseInt(prop.getProperty(TAG_LASER_RANGE, "" + DEF_LASER_RANGE));
+			DEF_LASER_RANGE = Integer.parseInt(prop.getProperty(TAG_LASER_RANGE, Integer.toString(DEF_LASER_RANGE)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_LASER_RANGE);
 		}
 		try {
-			DEF_LASER_ANGLE = Integer.parseInt(prop.getProperty(TAG_LASER_ANGLE, "" + DEF_LASER_ANGLE));
+			DEF_LASER_ANGLE = Integer.parseInt(prop.getProperty(TAG_LASER_ANGLE, Integer.toString(DEF_LASER_ANGLE)));
 		} catch (NumberFormatException e) {
 			log.error("Invalid value of tag " + TAG_LASER_ANGLE);
 		}
@@ -376,23 +376,23 @@ public class ControlPanel extends JPanel implements ActionListener, ChangeListen
 	public void saveProperties() {
 
 		// Save these properties
-		prop.setProperty(TAG_PARTICLES, "" + DEF_PARTICLES);
-		prop.setProperty(TAG_SENSE_NOISE, "" + DEF_SENSE_NOISE);
-		prop.setProperty(TAG_STEERING_NOISE, "" + DEF_STEERING_NOISE);
-		prop.setProperty(TAG_FORWARD_NOISE, "" + DEF_FORWARD_NOISE);
-		prop.setProperty(TAG_ROBOT_SIZE, "" + DEF_ROBOT_SIZE);
-		prop.setProperty(TAG_GHOST_SIZE, "" + DEF_GHOST_SIZE);
-		prop.setProperty(TAG_PARTICLE_SIZE, "" + DEF_PARTICLE_SIZE);
-		prop.setProperty(TAG_LANDMARK_SIZE, "" + DEF_LANDMARK_SIZE);
+		prop.setProperty(TAG_PARTICLES, Integer.toString(DEF_PARTICLES));
+		prop.setProperty(TAG_SENSE_NOISE, "" + Double.toString(DEF_SENSE_NOISE));
+		prop.setProperty(TAG_STEERING_NOISE, Double.toString(DEF_STEERING_NOISE));
+		prop.setProperty(TAG_FORWARD_NOISE, Double.toString(DEF_FORWARD_NOISE));
+		prop.setProperty(TAG_ROBOT_SIZE, Integer.toString(DEF_ROBOT_SIZE));
+		prop.setProperty(TAG_GHOST_SIZE, Integer.toString(DEF_GHOST_SIZE));
+		prop.setProperty(TAG_PARTICLE_SIZE, Integer.toString(DEF_PARTICLE_SIZE));
+		prop.setProperty(TAG_LANDMARK_SIZE, Integer.toString(DEF_LANDMARK_SIZE));
 
-		prop.setProperty(TAG_MOTION_ANGLE, "" + DEF_MOTION_ANGLE);
-		prop.setProperty(TAG_MOTIONS_SPEED, "" + DEF_MOTIONS_SPEED);
-		prop.setProperty(TAG_NEW_PARTICLES_RATIO, "" + DEF_NEW_PARTICLES_RATIO);
-		prop.setProperty(TAG_UNSAMPLED_PARTICLES_RATIO, "" + DEF_UNSAMPLED_PARTICLES_RATIO);
-		prop.setProperty(TAG_SIMULATION_SPEED, "" + DEF_SIMULATION_SPEED);
-		prop.setProperty(TAG_LASER_RANGE, "" + DEF_LASER_RANGE);
-		prop.setProperty(TAG_LASER_ANGLE, "" + DEF_LASER_ANGLE);
-		prop.setProperty(TAG_BOUNDED_VISION, "" + DEF_BOUNDED_VISION);
+		prop.setProperty(TAG_MOTION_ANGLE, Integer.toString(DEF_MOTION_ANGLE));
+		prop.setProperty(TAG_MOTIONS_SPEED, Double.toString(DEF_MOTIONS_SPEED));
+		prop.setProperty(TAG_NEW_PARTICLES_RATIO, Double.toString(DEF_NEW_PARTICLES_RATIO));
+		prop.setProperty(TAG_UNSAMPLED_PARTICLES_RATIO, Double.toString(DEF_UNSAMPLED_PARTICLES_RATIO));
+		prop.setProperty(TAG_SIMULATION_SPEED, Integer.toString(DEF_SIMULATION_SPEED));
+		prop.setProperty(TAG_LASER_RANGE, Integer.toString(DEF_LASER_RANGE));
+		prop.setProperty(TAG_LASER_ANGLE, Integer.toString(DEF_LASER_ANGLE));
+        prop.setProperty(TAG_BOUNDED_VISION, Boolean.toString(DEF_BOUNDED_VISION));
 	}
 
 }
