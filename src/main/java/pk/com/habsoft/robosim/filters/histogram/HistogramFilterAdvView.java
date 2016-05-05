@@ -46,8 +46,8 @@ public class HistogramFilterAdvView extends RootView {
 	final static int MIN_NO_OF_COLORS = 1;
 	static int DEF_NO_OF_COLORS = 3;
 
-	public final static String[] sensorNames = { "Red", "Green", "Blue", "Cyan", "Magenta" };
-	final static Color[] sensors = { Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA };
+	protected final static String[] sensorNames = { "Red", "Green", "Blue", "Cyan", "Magenta" };
+	protected final static Color[] sensors = { Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA };
 
 	JLabel[][] lblBeliefMap;
 
