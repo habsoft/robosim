@@ -86,7 +86,7 @@ public class DrawingPanel extends JPanel implements MouseMotionListener, MouseLi
 		}
 
 		// draw path
-		if (path != null && path.size() > 0 && showActualPath) {
+		if (path != null && !path.isEmpty() && showActualPath) {
 			g2.setStroke(new BasicStroke(2));
 			g2.setColor(Color.RED);
 			// Splitting path
@@ -110,7 +110,7 @@ public class DrawingPanel extends JPanel implements MouseMotionListener, MouseLi
 		}
 
 		// draw smoothed path
-		if (sPath != null && sPath.size() > 0 && showSmoothPath) {
+		if (sPath != null && !sPath.isEmpty() && showSmoothPath) {
 			g2.setStroke(new BasicStroke(2));
 			g2.setColor(Color.GREEN);
 			// Splitting path
@@ -173,7 +173,7 @@ public class DrawingPanel extends JPanel implements MouseMotionListener, MouseLi
 
 	public void smooth() {
 
-		if (path != null && path.size() > 0) {
+		if (path != null && !path.isEmpty()) {
 			List<PathNode> temp = splitPath(cellDivisions);
 			sPath = GradientDescent.smooth(temp, weightData, weightSmooth, 0.0001, smoothingTimeout,
 					smoothBoundryPoints);
