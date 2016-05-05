@@ -13,6 +13,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
 public class UIUtils {
+    
+    private UIUtils() {
+        
+    }
 
 	public static Font labelFont = new Font("Comic", Font.BOLD, 16);
 

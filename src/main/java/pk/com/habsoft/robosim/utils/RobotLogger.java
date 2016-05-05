@@ -6,6 +6,11 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 public class RobotLogger {
+    
+    private RobotLogger() {
+        
+    }
+    
 	public static Logger getLogger(String name) {
 
 		// very simple configuration to print on console
