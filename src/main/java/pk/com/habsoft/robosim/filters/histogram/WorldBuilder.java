@@ -126,7 +126,7 @@ public class WorldBuilder extends JDialog implements ActionListener {
 				btnArray[i][j] = new JButton();
 				int newColor = newWorld[i][j] % totalColors;
 				btnArray[i][j].setBackground(colors[newColor]);
-				btnArray[i][j].setActionCommand("" + newColor);
+				btnArray[i][j].setActionCommand(Integer.toString(newColor));
 				btnArray[i][j].addActionListener(this);
 				// btnArray[i][j].setOpaque(true);
 				// btnArray[i][j].setBorderPainted(false);
@@ -160,7 +160,7 @@ public class WorldBuilder extends JDialog implements ActionListener {
 					if (o.equals(btnArray[i][j])) {
 						int newColor = Integer.parseInt(o.getActionCommand());
 						newColor = (newColor + 1) % totalColors;
-						o.setActionCommand("" + newColor);
+						o.setActionCommand(Integer.toString(newColor));
 						newWorld[i][j] = newColor;
 						o.setBackground(colors[newColor]);
 						worldChanged = true;
