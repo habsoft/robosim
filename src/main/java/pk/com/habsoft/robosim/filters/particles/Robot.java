@@ -314,22 +314,20 @@ public class Robot implements IRobot {
 				// bearing += 360;
 
 				// bearing = Util.modulus((bearing), 2 * Math.PI);
-				if (dist <= laserRange) {
-					if (robot_type == RobotType.ROBOT) {
-						System.out.println(i + "  ********************");
-						System.out.println("Dx = " + dx + " , Dy = " + dy);
-						System.out.println("O=" + ort + " , B=" + RoboMathUtils.round(bearing, 2) + " , D="
-								+ RoboMathUtils.round(diff, 2));
-						if (diff <= laserAngleRange / 2 || (360 - diff <= laserAngleRange / 2)) {
-							lm.blink();
-							System.out.println("LandMark " + lm.x + " : " + lm.y);
-							// System.out.println("Robot " + x + " : " + y);
-							z[i] = dist;
-						} else {
-							lm.unblink();
-						}
-					}
-				}
+				if (dist <= laserRange && robot_type == RobotType.ROBOT) {
+                    System.out.println(i + "  ********************");
+                    System.out.println("Dx = " + dx + " , Dy = " + dy);
+                    System.out.println("O=" + ort + " , B=" + RoboMathUtils.round(bearing, 2) + " , D="
+                            + RoboMathUtils.round(diff, 2));
+                    if (diff <= laserAngleRange / 2 || (360 - diff <= laserAngleRange / 2)) {
+                        lm.blink();
+                        System.out.println("LandMark " + lm.x + " : " + lm.y);
+                        // System.out.println("Robot " + x + " : " + y);
+                        z[i] = dist;
+                    } else {
+                        lm.unblink();
+                    }
+                }
 				// else {
 				// lm.unblink();
 				// }
