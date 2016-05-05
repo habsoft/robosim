@@ -97,8 +97,21 @@ public class WorldNode implements Comparable<WorldNode> {
 		WorldNode that = (WorldNode) obj;
 		return this.xLoc == that.xLoc && this.yLoc == that.yLoc;
 	}
+	
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + action;
+        result = prime * result + depth;
+        long temp;
+        temp = Double.doubleToLongBits(heuristic);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + xLoc;
+        result = prime * result + yLoc;
+        return result;
+    }
 
-	@Override
+    @Override
 	public int compareTo(WorldNode that) {
 		int returnValue = 0;
 		// f = g + h
