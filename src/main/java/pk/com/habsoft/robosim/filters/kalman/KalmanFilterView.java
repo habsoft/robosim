@@ -95,7 +95,8 @@ public class KalmanFilterView extends RootView {
 		pnlControls.add(UIUtils.createSpinnerPanel("Car Speed", spnCarSpeed, DEFAULT_CAR_SPEED, MIN_CAR_SPEED,
 				MAX_CAR_SPEED, 0.1));
 
-		pnlControls.add(btnUpdate = new JButton("Update"));
+		btnUpdate = new JButton("Update");
+		pnlControls.add(btnUpdate);
 		// pnlControls.setBounds(0, pnlHeight * 2, pnlWidth * 2, (int)
 		// (getSize().getHeight() - (pnlHeight * 2)));
 		pnlControls.setLocation(0, pnlHeight * 2);

@@ -90,9 +90,11 @@ public class WorldBuilder extends JDialog implements ActionListener {
 		});
 
 		pnlSouth.add(new JLabel("Click on any cell to change its color"));
-		pnlSouth.add(btnOk = new JButton("Ok"));
+		btnOk = new JButton("Ok");
+		pnlSouth.add(btnOk);
 		btnOk.addActionListener(this);
-		pnlSouth.add(btnCancel = new JButton("Cancel"));
+		btnCancel = new JButton("Cancel");
+		pnlSouth.add(btnCancel);
 		btnCancel.addActionListener(this);
 
 		createComponents();

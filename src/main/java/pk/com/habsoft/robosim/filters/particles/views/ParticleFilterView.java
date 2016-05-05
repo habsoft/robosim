@@ -63,7 +63,8 @@ public class ParticleFilterView extends RootView {
 
 		World.setMaxWidth(PNL_WORLD_WIDTH);
 		World.setMaxHeight(PNL_WORLD_HEIGHT);
-		pnlWorld = new SimulationPanel(sim = new ParticleSimulator());
+		sim = new ParticleSimulator();
+		pnlWorld = new SimulationPanel(sim);
 		pnlWorld.setBounds(0, 0, PNL_WORLD_WIDTH, PNL_WORLD_HEIGHT);
 		pnlWorld.setBorder(lineBorder);
 		sim.setSimulationPanel(pnlWorld);

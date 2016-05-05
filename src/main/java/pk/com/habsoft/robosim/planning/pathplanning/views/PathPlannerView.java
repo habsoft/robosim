@@ -130,7 +130,8 @@ public class PathPlannerView extends RootView implements AlgorithmListener {
 
 	private void createSouthPanelContents(RPanel pnlSouth) {
 		pnlSouth.setLayout(new FlowLayout(), false);
-		pnlSouth.add(btnModifyWorld = new JButton("Modify World"));
+		btnModifyWorld = new JButton("Modify World");
+		pnlSouth.add(btnModifyWorld);
 		btnModifyWorld.addActionListener(new ActionListener() {
 
 			@Override
