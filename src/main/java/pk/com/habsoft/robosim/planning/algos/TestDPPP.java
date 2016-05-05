@@ -82,7 +82,7 @@ public class TestDPPP {
 		int x = init[0];
 		int y = init[1];
 		int orientation = init[2];
-		int o2 = orientation;
+		int o2;
 
 		// policy2D[x][y] = policy[orientation][x][y];
 		// pol[x][y] = forward_names[orientation];

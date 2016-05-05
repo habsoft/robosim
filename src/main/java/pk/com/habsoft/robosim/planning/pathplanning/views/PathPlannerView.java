@@ -203,7 +203,7 @@ public class PathPlannerView extends RootView implements AlgorithmListener {
 
 		for (int i = 0; i < world.getRows(); i++) {
 			String row = "";
-			int value = 0;
+			int value;
 			for (int j = 0; j < world.getColumns(); j++) {
 				value = world.getGrid()[i][j];
 				if (value > 1) {
