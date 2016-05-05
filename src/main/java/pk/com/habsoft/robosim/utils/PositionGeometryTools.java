@@ -31,6 +31,10 @@ import java.awt.*;
  */
 
 public class PositionGeometryTools {
+    
+    private PositionGeometryTools() {
+        
+    }
 
 	/**
 	 * Calculate the distance between two X and Y points assuming that their
