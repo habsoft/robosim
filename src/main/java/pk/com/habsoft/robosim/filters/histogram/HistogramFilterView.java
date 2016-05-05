@@ -696,7 +696,7 @@ public class HistogramFilterView extends RootView {
 		}
 
 		// Save Robot Commands
-		StringBuffer buff = new StringBuffer(commands.length);
+		StringBuilder buff = new StringBuilder(commands.length);
 		int i = 0;
 		for (; i < commands.length - 1; i++) {
 			buff.append(commands[i][0] + "," + commands[i][1] + ";");
