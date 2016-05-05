@@ -195,7 +195,8 @@ public class AlgorithmPanel extends RPanel implements ActionListener, Properties
 		pnlNorth.add(UIUtils.createSpinnerPanel(" Go Straight Cost", spGoStraightCost, goStraightCost, 0, 50, 1));
 		spGoStraightCost.setEnabled(cbConsiderOrientation.isSelected() && rbDP.isSelected());
 
-		pnlNorth.add(btnApplyCostSettings = new JButton("Apply Cost Settings"));
+		btnApplyCostSettings = new JButton("Apply Cost Settings");
+		pnlNorth.add(btnApplyCostSettings);
 		btnApplyCostSettings.addActionListener(this);
 		// btnApplyCostSettings.setEnabled(cbConsiderOrientation.isSelected());
 
