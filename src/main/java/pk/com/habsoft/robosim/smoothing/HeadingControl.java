@@ -349,7 +349,7 @@ public class HeadingControl extends PIDController {
 		double currentAngle = transformAngle((double) device.getOrientation());
 
 		/* difference between the current heading and the goal heading */
-		double deltaAngle = (angle - currentAngle);
+		double deltaAngle = angle - currentAngle;
 
 		if (deltaAngle != 0) {
 			if (deltaAngle <= 180 && deltaAngle > 0)

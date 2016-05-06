@@ -105,13 +105,13 @@ public class DrawingControlPanel extends JPanel implements ActionListener, Chang
 				drawingPanel.clear();
 			}
 		} else if (obj.equals(rbDraw)) {
-			drawMod = (tbEditWorld.isSelected()) ? DrawingPanel.DRAW : DrawingPanel.NONE;
+			drawMod = tbEditWorld.isSelected() ? DrawingPanel.DRAW : DrawingPanel.NONE;
 		} else if (obj.equals(rbErase)) {
-			drawMod = (tbEditWorld.isSelected()) ? DrawingPanel.ERASE : DrawingPanel.NONE;
+			drawMod = tbEditWorld.isSelected() ? DrawingPanel.ERASE : DrawingPanel.NONE;
 		} else if (obj.equals(rbStart)) {
-			drawMod = (tbEditWorld.isSelected()) ? DrawingPanel.START : DrawingPanel.NONE;
+			drawMod = tbEditWorld.isSelected() ? DrawingPanel.START : DrawingPanel.NONE;
 		} else if (obj.equals(rbFinish)) {
-			drawMod = (tbEditWorld.isSelected()) ? DrawingPanel.FINISH : DrawingPanel.NONE;
+			drawMod = tbEditWorld.isSelected() ? DrawingPanel.FINISH : DrawingPanel.NONE;
 		} else if (obj.equals(tbEditWorld)) {
 			spnRows.setEnabled(tbEditWorld.isSelected());
 			spnColumns.setEnabled(tbEditWorld.isSelected());
