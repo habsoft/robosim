@@ -5,6 +5,8 @@ import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
 public class BigRobot extends Robot {
 
+    double MAX_STEERING_ANGLE = Math.PI / 4.0;
+    
 	public BigRobot() {
 		super();
 	}
