@@ -95,7 +95,7 @@ public class WorldNode implements Comparable<WorldNode> {
 	@Override
 	public boolean equals(Object obj) {
 		WorldNode that = (WorldNode) obj;
-		return (this.xLoc == that.xLoc && this.yLoc == that.yLoc);
+		return this.xLoc == that.xLoc && this.yLoc == that.yLoc;
 	}
 
 	@Override
