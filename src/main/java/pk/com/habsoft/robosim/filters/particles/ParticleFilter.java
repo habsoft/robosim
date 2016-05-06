@@ -20,7 +20,7 @@ public class ParticleFilter {
 		this.forward_noise = forward_noise;
 	}
 
-	public double[] get_average_position(IRobot[] p) {
+	public double[] getAveragePosition(IRobot[] p) {
 		double x_sum = 0.0;
 		double y_sum = 0.0;
 		double or_sum = 0.0;
@@ -86,7 +86,7 @@ public class ParticleFilter {
 			// double sum = 0;
 			double[] w = new double[reSampledParticles];
 			for (int i = 0; i < reSampledParticles; i++) {
-				w[i] = p[i].measurement_prob(z);
+				w[i] = p[i].measurementProb(z);
 				// sum += w[i];
 				// System.out.println(i + " : Prob = " + w[i]);
 			}
@@ -113,7 +113,7 @@ public class ParticleFilter {
 				}
 
 				// Update Ghost
-				ghost.setLocation(get_average_position(p));
+				ghost.setLocation(getAveragePosition(p));
 			}
 
 		}

@@ -164,7 +164,7 @@ public class PIDSimulator {
 		robot.setLocation(0, 1, 0);
 		robot.setCheckBoundaries(false);
 		if (drift)
-			robot.setSteering_drift(Math.toRadians(steerDrift));		
+			robot.setSteeringDrift(Math.toRadians(steerDrift));		
 		return robot;
 	}
 

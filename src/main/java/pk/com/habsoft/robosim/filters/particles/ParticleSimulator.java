@@ -80,7 +80,7 @@ public class ParticleSimulator implements Runnable, Iterable<SimulationObject> {
 		this.robot = car;
 
 		IRobot gh = new Robot(ghostSize, RobotType.GHOST);
-		gh.setLocation(filter.get_average_position(particleList));
+		gh.setLocation(filter.getAveragePosition(particleList));
 		this.ghost = gh;
 		showGhost(this.showGhost);
 
