@@ -3,6 +3,10 @@ package pk.com.habsoft.robosim.filters.kalman;
 //http://www.udacity-forums.com/cs373/questions/10153/what-are-all-those-matrices-for-the-kalman-filter-part-i-x-f-p-h-r-u
 
 public class KalmanFilterTest {
+    
+    private KalmanFilterTest() {
+        
+    }
 
 	public static void main(String[] args) {
 

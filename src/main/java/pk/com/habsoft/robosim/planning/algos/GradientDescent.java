@@ -6,6 +6,10 @@ import java.util.List;
 import pk.com.habsoft.robosim.planning.internal.PathNode;
 
 public class GradientDescent {
+    
+    private GradientDescent() {
+        
+    }
 
 	public static void main(String[] args) {
 		List<PathNode> path = new ArrayList<PathNode>();
