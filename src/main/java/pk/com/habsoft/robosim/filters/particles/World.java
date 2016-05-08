@@ -104,7 +104,7 @@ public class World {
 				BufferedWriter bw = new BufferedWriter(new FileWriter(new File(file)));
 				for (int i = 0; i < landmarks.size(); i++) {
 					LandMark p = landmarks.get(i);
-					bw.write((int) p.getX() + "," + (int) p.getY() + "\n");
+					bw.write(p.getX() + "," + p.getY() + "\n");
 				}
 				bw.flush();
 				bw.close();
