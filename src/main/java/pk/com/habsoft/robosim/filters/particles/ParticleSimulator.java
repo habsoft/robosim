@@ -65,7 +65,7 @@ public class ParticleSimulator implements Runnable, Iterable<SimulationObject> {
 		// add particles
 		for (int i = 0; i < paricles; i++) {
 			try {
-				IRobot r = (IRobot) temp.clone();
+				IRobot r = temp.clone();
 				r.setNoise(sense_noise, steering_noise, forward_noise);
 				r.random();
 				objects.add(r);
