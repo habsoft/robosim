@@ -43,7 +43,7 @@ public abstract class Algorithm {
 			{ -1, 1 } // up-right
 	};
 
-	public static final String[] DELTA_NAMES2 = { "^", "", "<", "", "v", "", ">", "" };;
+	protected static final String[] DELTA_NAMES2 = { "^", "", "<", "", "v", "", ">", "" };;
 	int[][] deltas2 = { { -1, 0 }, // go up
 			{ 0, -1 }, // go left
 			{ 1, 0 }, // go down
