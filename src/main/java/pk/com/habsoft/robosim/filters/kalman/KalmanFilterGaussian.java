@@ -3,6 +3,10 @@ package pk.com.habsoft.robosim.filters.kalman;
 import pk.com.habsoft.robosim.utils.Util;
 
 public class KalmanFilterGaussian {
+    
+    private KalmanFilterGaussian() {
+        
+    }
 
 	/**
 	 * 
