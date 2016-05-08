@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
@@ -316,7 +317,7 @@ class DataModel extends DefaultTableModel {
 	public static final int MOVE = 2;
 
 	protected SimulationBuilder m_parent;
-	protected Vector<RobotCommands> m_vector;
+	protected List<RobotCommands> m_vector;
 
 	public DataModel(SimulationBuilder parent) {
 		m_parent = parent;
@@ -324,7 +325,7 @@ class DataModel extends DefaultTableModel {
 	}
 
 	public void insertData(RobotCommands r) {
-		m_vector.addElement(new RobotCommands(r.getCount(), r.getSense(), r.getMove()));
+		m_vector.add(new RobotCommands(r.getCount(), r.getSense(), r.getMove()));
 	}
 
 	@Override
@@ -352,7 +353,7 @@ class DataModel extends DefaultTableModel {
 		if (nRow < 0 || nRow >= getRowCount()) {
 			return "";
 		}
-		RobotCommands row = m_vector.elementAt(nRow);
+		RobotCommands row = m_vector.get(nRow);
 		switch (nCol) {
 		case COUNT:
 			return row.getCount();
@@ -369,7 +370,7 @@ class DataModel extends DefaultTableModel {
 		if (nRow < 0 || nRow >= getRowCount()) {
 			return;
 		}
-		RobotCommands row = m_vector.elementAt(nRow);
+		RobotCommands row = m_vector.get(nRow);
 
 		switch (nCol) {
 		case COUNT:
