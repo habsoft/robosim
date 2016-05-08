@@ -40,7 +40,7 @@ public class BigRobot extends Robot {
 	}
 
 	@Override
-	public double measurement_prob(double[] measurements) {
+	public double measurementProb(double[] measurements) {
 		// calculate the correct measurement
 		double[] predicted_measurements = sense(false);
 
