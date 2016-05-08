@@ -280,19 +280,19 @@ public class AlgorithmPanel extends RPanel implements ActionListener, Properties
 	@Override
 	public void saveProperties() {
 		if (prop != null) {
-			prop.setProperty(LEFT_TURN_COST, "" + leftTurnCost);
-			prop.setProperty(RIGHT_TURN_COST, "" + rightTurnCost);
-			prop.setProperty(GO_STRAIGHT_COST, "" + goStraightCost);
+			prop.setProperty(LEFT_TURN_COST, Integer.toString(leftTurnCost));
+			prop.setProperty(RIGHT_TURN_COST, Integer.toString(rightTurnCost));
+			prop.setProperty(GO_STRAIGHT_COST, Integer.toString(goStraightCost));
 
-			prop.setProperty(USE_STOCHASTIC_MOTION, "" + cbStochasticMotion.isSelected());
-			prop.setProperty(P_SUCCESS, "" + successProb);
+			prop.setProperty(USE_STOCHASTIC_MOTION, Boolean.toString(cbStochasticMotion.isSelected()));
+			prop.setProperty(P_SUCCESS, Double.toString(successProb));
 
-			prop.setProperty(ALGORITHM, "" + algorithm);
-			prop.setProperty(USE_HEURISTICS, "" + cbUseHeuristic.isSelected());
-			prop.setProperty(SHOW_HEURISTICS, "" + cbShowHuristicVal.isSelected());
-			prop.setProperty(DIAGONAL_MOTION, "" + cbAllowDiagonalMotion.isSelected());
-			prop.setProperty(USE_ORIENTATION, "" + cbConsiderOrientation.isSelected());
-			prop.setProperty(HEURISTICS, "" + cmbHeuristics.getSelectedIndex());
+			prop.setProperty(ALGORITHM, Integer.toString(algorithm));
+			prop.setProperty(USE_HEURISTICS, Boolean.toString(cbUseHeuristic.isSelected()));
+			prop.setProperty(SHOW_HEURISTICS, Boolean.toString(cbShowHuristicVal.isSelected()));
+			prop.setProperty(DIAGONAL_MOTION, Boolean.toString(cbAllowDiagonalMotion.isSelected()));
+			prop.setProperty(USE_ORIENTATION, Boolean.toString(cbConsiderOrientation.isSelected()));
+			prop.setProperty(HEURISTICS, Integer.toString(cmbHeuristics.getSelectedIndex()));
 		} else {
 			System.out.println("Saving Null properties in Drawing Panel");
 		}
