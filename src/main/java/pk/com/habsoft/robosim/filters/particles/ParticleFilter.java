@@ -44,9 +44,9 @@ public class ParticleFilter {
 		double sum = 0.0;
 		for (int i = 0; i < p.length; i++) {
 			double norm = World.getWidth() / 2.0;
-			double dx = (RoboMathUtils.modulus(p[i].getX() - myrobot.getX() + norm, World.getWidth()) - norm);
+			double dx = RoboMathUtils.modulus(p[i].getX() - myrobot.getX() + norm, World.getWidth()) - norm;
 			norm = World.getHeight() / 2.0;
-			double dy = (RoboMathUtils.modulus(p[i].getY() - myrobot.getY() + norm, World.getHeight()) - norm);
+			double dy = RoboMathUtils.modulus(p[i].getY() - myrobot.getY() + norm, World.getHeight()) - norm;
 			double err = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 			sum += err;
 		}

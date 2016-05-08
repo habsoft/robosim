@@ -111,7 +111,7 @@ public class DiscreteWorld {
 	}
 
 	public boolean isGoal(int xLoc, int yLoc) {
-		return (goal.getxLoc() == xLoc && goal.getyLoc() == yLoc);
+		return goal.getxLoc() == xLoc && goal.getyLoc() == yLoc;
 	}
 
 	public boolean isStart(WorldNode node) {
@@ -119,12 +119,12 @@ public class DiscreteWorld {
 	}
 
 	public boolean isStart(int xLoc, int yLoc) {
-		return (start.getxLoc() == xLoc && start.getyLoc() == yLoc);
+		return start.getxLoc() == xLoc && start.getyLoc() == yLoc;
 	}
 
 	public boolean isOpen(WorldNode node) {
 		try {
-			return (grid[node.getxLoc()][node.getyLoc()] == OPEN || grid[node.getxLoc()][node.getyLoc()] == HIDDEN);
+			return grid[node.getxLoc()][node.getyLoc()] == OPEN || grid[node.getxLoc()][node.getyLoc()] == HIDDEN;
 		} catch (Exception e) {
 			return false;
 		}
@@ -132,7 +132,7 @@ public class DiscreteWorld {
 
 	public boolean isOpen(int x, int y) {
 		try {
-			return (grid[x][y] == OPEN || grid[x][y] == HIDDEN);
+			return grid[x][y] == OPEN || grid[x][y] == HIDDEN;
 		} catch (Exception e) {
 			return false;
 		}
@@ -140,7 +140,7 @@ public class DiscreteWorld {
 
 	public boolean isHidden(int x, int y) {
 		try {
-			return (grid[x][y] == HIDDEN);
+			return grid[x][y] == HIDDEN;
 		} catch (Exception e) {
 			return false;
 		}
