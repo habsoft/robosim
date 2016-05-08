@@ -12,6 +12,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ImageUtil {
+    
+    private ImageUtil() {
+        
+    }
 
 	public static double[] loadImageData(String name) {
 		BufferedImage bi = null;
