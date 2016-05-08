@@ -61,13 +61,13 @@ public class StatisticsPanel extends RPanel implements AlgorithmListener {
 	@Override
 	public void algorithmUpdate(Algorithm algorithm) {
 		if (algorithm != null) {
-			lblExplored.setText(Util.padRight("" + algorithm.getExploredSize(), 20));
-			lblUnExplored.setText(Util.padRight("" + algorithm.getUnExploredSize(), 20));
-			lblBlocked.setText(Util.padRight("" + algorithm.getBlockedSize(), 20));
-			lblTotal.setText(Util.padRight("" + algorithm.getTotalSize(), 20));
-			lblPathSize.setText(Util.padRight("" + algorithm.getPathSize(), 20));
-			lblResult.setText(Util.padRight("" + algorithm.getResult(), 20));
-			lblInstances.setText(Util.padRight("" + algorithm.getTotalInstances(), 20));
+			lblExplored.setText(Util.padRight(Integer.toString(algorithm.getExploredSize()), 20));
+			lblUnExplored.setText(Util.padRight(Integer.toString(algorithm.getUnExploredSize()), 20));
+			lblBlocked.setText(Util.padRight(Integer.toString(algorithm.getBlockedSize()), 20));
+			lblTotal.setText(Util.padRight(Integer.toString(algorithm.getTotalSize()), 20));
+			lblPathSize.setText(Util.padRight(Integer.toString(algorithm.getPathSize()), 20));
+			lblResult.setText(Util.padRight(algorithm.getResult(), 20));
+			lblInstances.setText(Util.padRight(Integer.toString(algorithm.getTotalInstances()), 20));
 		} else {
 			lblExplored.setText("0");
 			lblUnExplored.setText("0");

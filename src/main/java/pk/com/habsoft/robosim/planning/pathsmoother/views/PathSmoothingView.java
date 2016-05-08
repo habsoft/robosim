@@ -116,8 +116,8 @@ public class PathSmoothingView extends RootView implements WorldListener {
 		prop.clear();
 		// save world
 
-		prop.setProperty(NO_OF_ROWS_TAG, "" + world.getRows());
-		prop.setProperty(NO_OF_COLUMNS_TAG, "" + world.getColumns());
+		prop.setProperty(NO_OF_ROWS_TAG, Integer.toString(world.getRows()));
+		prop.setProperty(NO_OF_COLUMNS_TAG, Integer.toString(world.getColumns()));
 
 		for (int i = 0; i < world.getRows(); i++) {
 			String row = "";

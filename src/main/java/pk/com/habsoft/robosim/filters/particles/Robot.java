@@ -309,7 +309,7 @@ public class Robot implements IRobot {
 				if (bearing < 0)
 					bearing += 360;
 				double diff = Math.abs(ort - bearing);
-				lm.setText(bearing + "");
+				lm.setText(Double.toString(bearing));
 				// if (ort > 180)
 				// bearing += 360;
 

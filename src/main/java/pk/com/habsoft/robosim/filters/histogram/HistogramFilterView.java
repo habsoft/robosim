@@ -349,7 +349,7 @@ public class HistogramFilterView extends RootView {
 		pnlSouth.setBounds(xLoc + spacing, yLoc + spacing, 2 * width - spacing, height - spacing);
 		RobotSensorListener sensorListener = new RobotSensorListener();
 		for (int i = 0; i < MAX_NO_OF_COLORS; i++) {
-			btnSensors[i].setActionCommand("" + i);
+			btnSensors[i].setActionCommand(String.valueOf(i));
 			btnSensors[i].setBackground(sensors[i]);
 			btnSensors[i].addActionListener(sensorListener);
 			pnlSouth.add(btnSensors[i]);
@@ -676,14 +676,14 @@ public class HistogramFilterView extends RootView {
 
 	public void saveProperties() {
 
-		prop.setProperty(CYCLIC_WORLD_TAG, "" + chkCyclic.isSelected());
+		prop.setProperty(CYCLIC_WORLD_TAG, Boolean.toString(chkCyclic.isSelected()));
 		prop.setProperty(MOTION_NOISE_TAG, spnMotionNoise.getValue().toString());
 		prop.setProperty(SENSOR_NOISE_TAG, spnSensorNoise.getValue().toString());
 
 		// save world
-		prop.setProperty(NO_OF_ROWS_TAG, "" + DEF_NO_OF_ROWS);
-		prop.setProperty(NO_OF_COLUMNS_TAG, "" + DEF_NO_OF_COLUMNS);
-		prop.setProperty(NO_OF_COLORS_TAG, "" + DEF_NO_OF_COLORS);
+		prop.setProperty(NO_OF_ROWS_TAG, Integer.toString(DEF_NO_OF_ROWS));
+		prop.setProperty(NO_OF_COLUMNS_TAG, Integer.toString(DEF_NO_OF_COLUMNS));
+		prop.setProperty(NO_OF_COLORS_TAG, Integer.toString(DEF_NO_OF_COLORS));
 
 		for (int i = 0; i < world.length; i++) {
 			String row = "";
@@ -691,7 +691,7 @@ public class HistogramFilterView extends RootView {
 			for (; j < world[i].length - 1; j++) {
 				row += world[i][j] + ",";
 			}
-			row += "" + world[i][j];
+			row += Integer.toString(world[i][j]);
 			prop.setProperty(MAP_ROW_TAG + (i + 1), row);
 		}
 
