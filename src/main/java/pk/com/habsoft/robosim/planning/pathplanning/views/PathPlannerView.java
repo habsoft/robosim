@@ -198,8 +198,8 @@ public class PathPlannerView extends RootView implements AlgorithmListener {
 
 		prop.clear();
 		// save world
-		prop.setProperty(NO_OF_ROWS_TAG, "" + DEF_NO_OF_ROWS);
-		prop.setProperty(NO_OF_COLUMNS_TAG, "" + DEF_NO_OF_COLUMNS);
+		prop.setProperty(NO_OF_ROWS_TAG, Integer.toString(DEF_NO_OF_ROWS));
+		prop.setProperty(NO_OF_COLUMNS_TAG, Integer.toString(DEF_NO_OF_COLUMNS));
 
 		for (int i = 0; i < world.getRows(); i++) {
 			String row = "";

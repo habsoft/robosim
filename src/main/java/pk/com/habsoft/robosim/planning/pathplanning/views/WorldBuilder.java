@@ -158,7 +158,7 @@ public class WorldBuilder extends JDialog implements ActionListener {
 			for (int j = 0; j < newGrid[i].length; j++) {
 				btnArray[i][j] = new JButton();
 				btnArray[i][j].setBackground(colors[newGrid[i][j]]);
-				btnArray[i][j].setActionCommand("" + newGrid[i][j]);
+				btnArray[i][j].setActionCommand(Integer.toString(newGrid[i][j]));
 				btnArray[i][j].addActionListener(this);
 
 				pnlNorth.add(btnArray[i][j]);
