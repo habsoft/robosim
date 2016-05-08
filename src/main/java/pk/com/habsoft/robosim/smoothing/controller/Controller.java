@@ -59,6 +59,6 @@ public abstract class Controller {
 	 */
 	protected double deltaE() {
 		// System.out.println("Delta : "+(currE - lastE));
-		return (currE - lastE);
+		return currE - lastE;
 	}
 }

@@ -86,7 +86,7 @@ public class KalmanFilterSimulator {
 			// predicted next position
 			double[][] x = filter.getX().getData();
 
-			veloc_measurement[t] = (mv);
+			veloc_measurement[t] = mv;
 			car_veloc[t] = v;
 			veloc_kalman[t] = x[1][0];
 
@@ -95,9 +95,9 @@ public class KalmanFilterSimulator {
 			position_kalman[t] = x[0][0];
 
 			measurement_error[t] = measuredPos - carPos;
-			measurement_verror[t] = (mv - v);
+			measurement_verror[t] = mv - v;
 
-			kalman_position_error[t] = (x[0][0] - carPos);
+			kalman_position_error[t] = x[0][0] - carPos;
 			kalman_veloc_error[t] = x[1][0] - v;
 
 			lastPos = carPos;// #assume dPos/dT ^= veloc

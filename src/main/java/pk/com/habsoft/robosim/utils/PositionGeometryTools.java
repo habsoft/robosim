@@ -43,7 +43,7 @@ public class PositionGeometryTools {
 	 * @return distance between [X, 0] and [0, Y] as a float
 	 */
 	public static float calcDist(float x, float y) {
-		double d = (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
+		double d = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 		return Math.round(d);
 	}
 
@@ -75,8 +75,8 @@ public class PositionGeometryTools {
 	 * @return the X coordinate of the point
 	 */
 	public static float calcX(Point initP, float dist, float angle) {
-		double tmp = (dist * Math.cos(Math.toRadians(angle)));
-		return (initP.x + Math.round(tmp));
+		double tmp = dist * Math.cos(Math.toRadians(angle));
+		return initP.x + Math.round(tmp);
 	}
 
 	/**
@@ -92,8 +92,8 @@ public class PositionGeometryTools {
 	 * @return the Y coordinate of the point
 	 */
 	public static float calcY(Point initP, float dist, float angle) {
-		double tmp = (dist * Math.sin(Math.toRadians(angle)));
-		return (initP.y + Math.round(tmp));
+		double tmp = dist * Math.sin(Math.toRadians(angle));
+		return initP.y + Math.round(tmp);
 	}
 
 	/**
@@ -109,9 +109,9 @@ public class PositionGeometryTools {
 	 * @return the coordinates of the new point as a Point (AWT)
 	 */
 	public static Point calcDistPoint(Point initP, float dist, float angle) {
-		double tmp = (dist * Math.cos(Math.toRadians(angle)));
+		double tmp = dist * Math.cos(Math.toRadians(angle));
 		float x = initP.x + Math.round(tmp);
-		tmp = (dist * Math.sin(Math.toRadians(angle)));
+		tmp = dist * Math.sin(Math.toRadians(angle));
 		float y = initP.y + Math.round(tmp);
 		Point p = new Point();
 		p.setLocation(x, y);
