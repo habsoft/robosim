@@ -65,7 +65,7 @@ public class HeadingControl extends PIDController {
 
 		IRobot robot = new BigRobot(20);
 		robot.setLocation(0, 1, 0);
-		robot.setSteering_drift(Math.toRadians(10));
+		robot.setSteeringDrift(Math.toRadians(10));
 		robot.setCheckBoundaries(false);
 		// Controller c = new PController(0.5);
 		double tau_p = 0.2, tau_d = 3.0, tau_i = 0.004;

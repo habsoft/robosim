@@ -39,7 +39,7 @@ public class Robot implements IRobot {
 
 	public Robot(double length, RobotType type) {
 		this(length);
-		this.setRobot_type(type);
+		this.setRobotType(type);
 	}
 
 	public Robot(IRobot r) {
@@ -47,9 +47,9 @@ public class Robot implements IRobot {
 		this.setX(r.getX());
 		this.setY(r.getY());
 		this.setOrientation(r.getOrientation());
-		this.setSense_noise(r.getSense_noise());
-		this.setSteering_noise(r.getSteering_noise());
-		this.setForward_noise(r.getForward_noise());
+		this.setSenseNoise(r.getSenseNoise());
+		this.setSteeringNoise(r.getSteeringNoise());
+		this.setForwardNoise(r.getForwardNoise());
 
 	}
 
@@ -82,9 +82,9 @@ public class Robot implements IRobot {
 
 	@Override
 	public void setNoise(double sense_noise, double steering_noise, double forward_noise) {
-		this.setSense_noise(sense_noise);
-		this.setSteering_noise(steering_noise);
-		this.setForward_noise(forward_noise);
+		this.setSenseNoise(sense_noise);
+		this.setSteeringNoise(steering_noise);
+		this.setForwardNoise(forward_noise);
 	}
 
 	@Override
@@ -133,48 +133,48 @@ public class Robot implements IRobot {
 	}
 
 	@Override
-	public double getSense_noise() {
+	public double getSenseNoise() {
 		return sense_noise;
 	}
 
-	public void setSense_noise(double sense_noise) {
+	public void setSenseNoise(double sense_noise) {
 		this.sense_noise = sense_noise;
 	}
 
 	@Override
-	public double getSteering_noise() {
+	public double getSteeringNoise() {
 		return steering_noise;
 	}
 
-	public void setSteering_noise(double steering_noise) {
+	public void setSteeringNoise(double steering_noise) {
 		this.steering_noise = steering_noise;
 	}
 
 	@Override
-	public double getForward_noise() {
+	public double getForwardNoise() {
 		return forward_noise;
 	}
 
-	public void setForward_noise(double forward_noise) {
+	public void setForwardNoise(double forward_noise) {
 		this.forward_noise = forward_noise;
 	}
 
 	@Override
-	public void setSteering_drift(double steering_drift) {
+	public void setSteeringDrift(double steering_drift) {
 		this.steering_drift = steering_drift;
 	}
 
 	@Override
-	public double getSteering_drift() {
+	public double getSteeringDrift() {
 		return steering_drift;
 	}
 
-	public void setRobot_type(RobotType robot_type) {
+	public void setRobotType(RobotType robot_type) {
 		this.robot_type = robot_type;
 	}
 
 	@Override
-	public RobotType getRobot_type() {
+	public RobotType getRobotType() {
 		return robot_type;
 	}
 
@@ -183,7 +183,7 @@ public class Robot implements IRobot {
 		this.laserRange = laser_range;
 	}
 
-	public int getLaser_range() {
+	public int getLaserRange() {
 		return laserRange;
 	}
 
@@ -192,7 +192,7 @@ public class Robot implements IRobot {
 		this.laserAngleRange = laser_angle;
 	}
 
-	public int getLaser_angle() {
+	public int getLaserAngle() {
 		return laserAngleRange;
 	}
 
@@ -210,14 +210,14 @@ public class Robot implements IRobot {
 		// return getRobot_type() + " [x=" + Util.round(x, 4) + ", y=" +
 		// Util.round(y, 4) + ", orientation=" +
 		// Util.round(Math.toDegrees(Math.abs(orientation)), 4) + "]";
-		return getRobot_type() + " [x=" + RoboMathUtils.round(x, 4) + ", y=" + RoboMathUtils.round(y, 4)
+		return getRobotType() + " [x=" + RoboMathUtils.round(x, 4) + ", y=" + RoboMathUtils.round(y, 4)
 				+ ", orientation=" + RoboMathUtils.round(orientation, 4) + "]";
 	}
 
 	@Override
 	public void update(IRobot obj) {
 		this.setLocation(obj.getX(), obj.getY(), obj.getOrientation());
-		this.setNoise(obj.getSense_noise(), obj.getSteering_noise(), obj.getForward_noise());
+		this.setNoise(obj.getSenseNoise(), obj.getSteeringNoise(), obj.getForwardNoise());
 	}
 
 	// //Source
@@ -262,7 +262,7 @@ public class Robot implements IRobot {
 	}
 
 	@Override
-	public double measurement_prob(double[] measurements) {
+	public double measurementProb(double[] measurements) {
 		double prob = 1.0;
 		int c = 0;
 		double[] myMeasurements = sense(false);
@@ -365,7 +365,7 @@ public class Robot implements IRobot {
 		int r = (int) length / 2;
 		int cx = (int) x + r;
 		int cy = (int) y + r;
-		if (getRobot_type() == RobotType.ROBOT) {
+		if (getRobotType() == RobotType.ROBOT) {
 			g.setColor(Color.GREEN);
 			g.fillOval((int) x, (int) y, (int) length, (int) length);
 
@@ -387,11 +387,11 @@ public class Robot implements IRobot {
 				}
 			}
 			g.setStroke(new BasicStroke(2));
-		} else if (getRobot_type() == RobotType.GHOST) {
+		} else if (getRobotType() == RobotType.GHOST) {
 			g.setColor(Color.RED);
 			g.fillOval((int) x, (int) y, (int) length, (int) length);
 			g.setStroke(new BasicStroke(2));
-		} else if (getRobot_type() == RobotType.PARTICLE) {
+		} else if (getRobotType() == RobotType.PARTICLE) {
 			g.setColor(Color.BLACK);
 			g.fillOval((int) x, (int) y, (int) length, (int) length);
 			g.setStroke(new BasicStroke(1));
