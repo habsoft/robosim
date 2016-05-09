@@ -99,7 +99,7 @@ public class World {
 	}
 
 	public void saveToFile(String file) {
-		if (landmarks != null && landmarks.size() > 0) {
+		if (landmarks != null && !landmarks.isEmpty()) {
 			try {
 				BufferedWriter bw = new BufferedWriter(new FileWriter(new File(file)));
 				for (int i = 0; i < landmarks.size(); i++) {
