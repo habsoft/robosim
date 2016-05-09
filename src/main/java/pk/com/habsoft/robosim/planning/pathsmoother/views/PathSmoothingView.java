@@ -335,7 +335,7 @@ public class PathSmoothingView extends RootView implements WorldListener {
 		int y = world.getTempStart().getyLoc();
 		for (int i = 0; i < world.getRows(); i++) {
 			for (int j = 0; j < world.getColumns(); j++) {
-				int d = (int) Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
+				int d = (int) Math.sqrt(Math.pow((double)x - i, 2) + Math.pow((double)y - j, 2));
 				if (d <= range) {
 					if (world.isHidden(i, j)) {
 						world.setStatus(i, j, DiscreteWorld.BLOCK);

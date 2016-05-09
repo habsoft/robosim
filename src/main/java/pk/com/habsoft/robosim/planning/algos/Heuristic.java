@@ -40,13 +40,13 @@ public class Heuristic {
 		if (heuristicType == NONE) {
 			h = 0;
 		} else if (heuristicType == EUCLIDEAN) {
-			h = Math.sqrt(Math.pow(x - goalX, 2) + Math.pow(y - goalY, 2));
+			h = Math.sqrt(Math.pow((double)x - goalX, 2) + Math.pow(y - goalY, 2));
 		} else if (heuristicType == EUCLIDEAN_MULTIPLY) {
-			h = Math.sqrt(Math.pow(x - goalX, 2) * Math.pow(y - goalY, 2));
+			h = Math.sqrt(Math.pow((double)x - goalX, 2) * Math.pow(y - goalY, 2));
 		} else if (heuristicType == EUCLIDEAN_SQUARED) {
 			h = Math.pow(x - goalX, 2) + Math.pow(y - goalY, 2);
 		} else if (heuristicType == MANHATTAN) {
-			h = Math.abs(x - goalX) + Math.abs(y - goalY);
+			h = (double)Math.abs(x - goalX) + Math.abs(y - goalY);
 		} else if (heuristicType == CHEBYSHEV) {
 			h = Math.max(Math.abs(x - goalX), Math.abs(y - goalY));
 		}
