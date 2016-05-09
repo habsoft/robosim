@@ -129,7 +129,7 @@ public class WorldNode implements Comparable<WorldNode> {
 		PriorityQueue<WorldNode> q = new PriorityQueue<WorldNode>();
 		for (int i = 0; i < 5; i++) {
 			WorldNode s = new WorldNode(i, i);
-			s.setHeuristic(5 - i);
+			s.setHeuristic((double)5 - i);
 			s.setDepth(i * 2);
 			q.add(s);
 			System.out.println("Adding " + s);
