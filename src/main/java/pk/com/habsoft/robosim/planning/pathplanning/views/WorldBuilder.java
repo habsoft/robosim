@@ -80,11 +80,14 @@ public class WorldBuilder extends JDialog implements ActionListener {
 		pnlSouth = new JPanel();
 		pnlSouth.setBounds(0, PNL_NORTH_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT - PNL_NORTH_HEIGHT);
 
-		pnlSouth.add(chkStart = new JRadioButton("Specify Start State"));
+		chkStart = new JRadioButton("Specify Start State");
+		pnlSouth.add(chkStart);
 		chkStart.addActionListener(this);
-		pnlSouth.add(chkGoal = new JRadioButton("Specify Gaol State"));
+		chkGoal = new JRadioButton("Specify Gaol State");
+		pnlSouth.add(chkGoal);
 		chkGoal.addActionListener(this);
-		pnlSouth.add(chkWorld = new JRadioButton("Modify World"));
+		chkWorld = new JRadioButton("Modify World");
+		pnlSouth.add(chkWorld);
 		chkWorld.addActionListener(this);
 		chkWorld.setSelected(true);
 		ButtonGroup gp = new ButtonGroup();
@@ -114,10 +117,13 @@ public class WorldBuilder extends JDialog implements ActionListener {
 			}
 		});
 
-		pnlSouth.add(lblText = new JLabel("Click on any cell to change its status."));
-		pnlSouth.add(btnOk = new JButton("Ok"));
+		lblText = new JLabel("Click on any cell to change its status.");
+		pnlSouth.add(lblText);
+		btnOk = new JButton("Ok");
+		pnlSouth.add(btnOk);
 		btnOk.addActionListener(this);
-		pnlSouth.add(btnCancel = new JButton("Cancel"));
+		btnCancel = new JButton("Cancel");
+		pnlSouth.add(btnCancel);
 		btnCancel.addActionListener(this);
 
 		// ////////////////////////////////////////////

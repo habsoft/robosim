@@ -191,10 +191,12 @@ public class ControlPanel extends JPanel implements ActionListener, ChangeListen
 
 		pnlEast.add(UIUtils.createSpinnerPanel("UnSampled %", spnUnsampledRatio, DEF_UNSAMPLED_PARTICLES_RATIO, 0, 1, 0.01));
 
-		pnlEast.add(chkBoundedVision = new JCheckBox("Bounded Vision"));
+		chkBoundedVision = new JCheckBox("Bounded Vision");
+		pnlEast.add(chkBoundedVision);
 		chkBoundedVision.setSelected(DEF_BOUNDED_VISION);
 
-		pnlEast.add(chkShowGhost = new JCheckBox("Show Ghost"));
+		chkShowGhost = new JCheckBox("Show Ghost");
+		pnlEast.add(chkShowGhost);
 		chkShowGhost.setSelected(DEF_SHOW_GHOST);
 
 		pnlEast.add(UIUtils.createSpinnerPanel("Laser Range", spnLaserRange, DEF_LASER_RANGE, 0, hypotenous, 1));

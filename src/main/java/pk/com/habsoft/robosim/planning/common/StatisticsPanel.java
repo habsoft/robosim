@@ -41,19 +41,26 @@ public class StatisticsPanel extends RPanel implements AlgorithmListener {
 		pnlOutput.setLayout(new GridLayout(4, 2, 5, 3));
 
 		pnlOutput.add(new JLabel(strExplored));
-		pnlOutput.add(lblExplored = new JLabel());
+		lblExplored = new JLabel();
+		pnlOutput.add(lblExplored);
 		pnlOutput.add(new JLabel(strBlocked));
-		pnlOutput.add(lblBlocked = new JLabel());
+		lblBlocked = new JLabel();
+		pnlOutput.add(lblBlocked);
 		pnlOutput.add(new JLabel(strUnExplored));
-		pnlOutput.add(lblUnExplored = new JLabel());
+		lblUnExplored = new JLabel();
+		pnlOutput.add(lblUnExplored);
 		pnlOutput.add(new JLabel(strTotal));
-		pnlOutput.add(lblTotal = new JLabel());
+		lblTotal = new JLabel();
+		pnlOutput.add(lblTotal);
 		pnlOutput.add(new JLabel(strPathSize));
-		pnlOutput.add(lblPathSize = new JLabel());
+		lblPathSize = new JLabel();
+		pnlOutput.add(lblPathSize);
 		pnlOutput.add(new JLabel(strInstances));
-		pnlOutput.add(lblInstances = new JLabel());
+		lblInstances = new JLabel();
+		pnlOutput.add(lblInstances);
 		pnlOutput.add(new JLabel(strResult));
-		pnlOutput.add(lblResult = new JLabel());
+		lblResult = new JLabel();
+		pnlOutput.add(lblResult);
 		lblResult.setForeground(Color.RED);
 
 	}
