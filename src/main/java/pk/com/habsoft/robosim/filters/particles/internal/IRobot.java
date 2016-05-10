@@ -8,8 +8,6 @@ public interface IRobot extends Cloneable, SimulationObject {
 
 	public void random();
 
-	double MAX_STEERING_ANGLE = Math.PI / 4.0;
-
 	public double[] sense(boolean addNoise);
 
 	public void move(double[] motions);
