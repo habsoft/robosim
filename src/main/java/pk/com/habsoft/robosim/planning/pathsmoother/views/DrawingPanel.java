@@ -213,25 +213,23 @@ public class DrawingPanel extends JPanel implements MouseMotionListener, MouseLi
 			// System.out.println("w = " + e.getX() + " , h = " + e.getY() +
 			// " == x = " + x + " , y = " + y);
 
-			if (x >= 0 && x < w.getColumns() && y >= 0 && y < w.getRows()) {
-				if (drawMod != NONE) {
-					if (drawMod == DRAW) {
-						if (!w.isGoal(y, x) && !w.isStart(y, x)) {
-							w.setStatus(y, x, DiscreteWorld.BLOCK);
-						}
-					} else if (drawMod == ERASE) {
-						w.setStatus(y, x, DiscreteWorld.OPEN);
-					} else if (drawMod == START && !w.isGoal(y, x)) {
-						w.setStartNode(y, x);
-						w.setStatus(y, x, DiscreteWorld.OPEN);
-					} else if (drawMod == FINISH && !w.isStart(y, x)) {
-						w.setGoalNode(y, x);
-						w.setStatus(y, x, DiscreteWorld.OPEN);
-					}
-					repaint();
-					// System.out.println(w.printWorld());
-				}
-			}
+			if (x >= 0 && x < w.getColumns() && y >= 0 && y < w.getRows() && drawMod != NONE) {
+                if (drawMod == DRAW) {
+                    if (!w.isGoal(y, x) && !w.isStart(y, x)) {
+                        w.setStatus(y, x, DiscreteWorld.BLOCK);
+                    }
+                } else if (drawMod == ERASE) {
+                    w.setStatus(y, x, DiscreteWorld.OPEN);
+                } else if (drawMod == START && !w.isGoal(y, x)) {
+                    w.setStartNode(y, x);
+                    w.setStatus(y, x, DiscreteWorld.OPEN);
+                } else if (drawMod == FINISH && !w.isStart(y, x)) {
+                    w.setGoalNode(y, x);
+                    w.setStatus(y, x, DiscreteWorld.OPEN);
+                }
+                repaint();
+                // System.out.println(w.printWorld());
+            }
 		} catch (ArrayIndexOutOfBoundsException ex) {
 			// System.out.println(ex.getMessage());
 		}
