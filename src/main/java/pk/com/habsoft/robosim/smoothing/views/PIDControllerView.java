@@ -68,16 +68,6 @@ public class PIDControllerView extends RootView {
 		super.saveProperties();
 	}
 
-	@Override
-	public void dispose() {
-		super.dispose();
-	}
-
-	@Override
-	public void hide() {
-
-		super.hide();
-	}
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
