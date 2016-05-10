@@ -296,7 +296,7 @@ public class PathSmoothingView extends RootView implements WorldListener {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				if (e.getID() == WindowEvent.WINDOW_CLOSING) {
-					JInternalFrame frms[] = desk.getAllFrames();
+					JInternalFrame[] frms = desk.getAllFrames();
 					for (int i = 0; i < frms.length; i++) {
 						try {
 							if (frms[i] instanceof RootView) {
