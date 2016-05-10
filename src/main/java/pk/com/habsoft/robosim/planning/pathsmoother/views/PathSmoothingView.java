@@ -336,14 +336,12 @@ public class PathSmoothingView extends RootView implements WorldListener {
 		for (int i = 0; i < world.getRows(); i++) {
 			for (int j = 0; j < world.getColumns(); j++) {
 				int d = (int) Math.sqrt(Math.pow((double)x - i, 2) + Math.pow((double)y - j, 2));
-				if (d <= range) {
-					if (world.isHidden(i, j)) {
-						world.setStatus(i, j, DiscreteWorld.BLOCK);
-						// lblLocationMap[i][j].setBackground(Algorithm.colors[Algorithm.BLOCK]);
-						// lblLocationMap[i][j].setBackground(Color.BLACK);
-						// lblLocationMap[i][j].setIcon(null);
-					}
-				}
+				if (d <= range && world.isHidden(i, j)) {
+                    world.setStatus(i, j, DiscreteWorld.BLOCK);
+                    // lblLocationMap[i][j].setBackground(Algorithm.colors[Algorithm.BLOCK]);
+                    // lblLocationMap[i][j].setBackground(Color.BLACK);
+                    // lblLocationMap[i][j].setIcon(null);
+                }
 			}
 		}
 	}
