@@ -648,7 +648,7 @@ public class HistogramFilterView extends RootView {
 			}
 			// load robot commands
 			String commands = prop.getProperty(ROBOT_COMMANDS_TAG);
-			int[][] cmd = null;
+			int[][] cmd;
 			if (commands != null) {
 				String[] arr = commands.split(";");
 				cmd = new int[arr.length][];

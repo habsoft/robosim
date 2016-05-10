@@ -72,7 +72,7 @@ public class World {
 
 	public void loadFromFile(String file) throws Exception {
 		BufferedReader in = new BufferedReader(new FileReader(file));
-		String line = null;
+		String line;
 		while ((line = in.readLine()) != null) {
 			if (line.trim().length() > 0) {
 				String[] args = line.split(",");
