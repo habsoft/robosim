@@ -91,18 +91,8 @@ abstract public class RootView extends JInternalFrame implements PropertiesListe
 		System.out.println("** Saving properties file. " + propertyFile);
 	}
 
-	@Override
-	public void setBounds(int x, int y, int width, int height) {
-		super.setBounds(x, y, width, height);
-	}
-
 	public void setBounds(double x, double y, double width, double height) {
 		super.setBounds((int) x, (int) y, (int) width, (int) height);
-	}
-
-	@Override
-	public void setSize(int width, int height) {
-		super.setSize(width, height);
 	}
 
 	public void setSize(double width, double height) {
