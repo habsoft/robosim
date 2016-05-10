@@ -80,21 +80,25 @@ public class SmoothingControlPanel extends RPanel implements ActionListener, Pro
 		JPanel pnl = new JPanel();
 		pnl.setLayout(new GridLayout(5, 2, 10, 3));
 
-		pnl.add(cbShowActualPath = new JCheckBox("Show Actual Path"));
+		cbShowActualPath = new JCheckBox("Show Actual Path");
+		pnl.add(cbShowActualPath);
 		cbShowActualPath.setBackground(Color.RED);
 		cbShowActualPath.addActionListener(this);
 		cbShowActualPath.setSelected(showActualPath);
 
-		pnl.add(cbShowSmoothPath = new JCheckBox("Show Smooth Path"));
+		cbShowSmoothPath = new JCheckBox("Show Smooth Path");
+		pnl.add(cbShowSmoothPath);
 		cbShowSmoothPath.setBackground(Color.GREEN);
 		cbShowSmoothPath.addActionListener(this);
 		cbShowSmoothPath.setSelected(showSmoothPath);
 
-		pnl.add(cbShowGrid = new JCheckBox(" Show Grid"));
+		cbShowGrid = new JCheckBox(" Show Grid");
+		pnl.add(cbShowGrid);
 		cbShowGrid.addActionListener(this);
 		cbShowGrid.setSelected(showGrid);
 
-		pnl.add(cbSmoothBoundryPoints = new JCheckBox(" Smooth Boundry Points"));
+		cbSmoothBoundryPoints = new JCheckBox(" Smooth Boundry Points");
+		pnl.add(cbSmoothBoundryPoints);
 		cbSmoothBoundryPoints.addActionListener(this);
 		cbSmoothBoundryPoints.setSelected(smoothBoundryPoints);
 
@@ -112,7 +116,8 @@ public class SmoothingControlPanel extends RPanel implements ActionListener, Pro
 		pnl.add(UIUtils.createSpinnerPanel(" Weight Smooth( " + BEETA + " )", spWeightSmooth, weightSmooth, 0, 1,
 				0.01));
 
-		pnl.add(btnApply = new JButton("Apply Setting"));
+		btnApply = new JButton("Apply Setting");
+		pnl.add(btnApply);
 		btnApply.addActionListener(this);
 
 		add(pnl, BorderLayout.NORTH);
