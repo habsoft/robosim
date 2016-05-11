@@ -35,7 +35,7 @@ public class KalmanFilterSimulator {
 
 	KalmanFilter filter = new KalmanFilter(xx, pp, uu, ff, hh, rr);
 
-	public static DecimalFormat df = new DecimalFormat("####0.000");
+	public static final DecimalFormat df = new DecimalFormat("####0.000");
 
 	public KalmanFilterSimulator(int total_time, double variance, double carSpeed) {
 		this.total_time = total_time;

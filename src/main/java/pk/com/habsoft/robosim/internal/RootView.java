@@ -26,7 +26,7 @@ abstract public class RootView extends JInternalFrame implements PropertiesListe
 	public Border lineBorder;
 	public boolean isInit = false;
 	// TODO subtract 100 pixels
-	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	public static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 	protected String propertyFile = "";
 	protected Properties prop = new Properties();
