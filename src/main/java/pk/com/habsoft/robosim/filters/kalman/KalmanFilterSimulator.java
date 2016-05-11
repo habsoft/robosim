@@ -37,24 +37,24 @@ public class KalmanFilterSimulator {
 
 	public static DecimalFormat df = new DecimalFormat("####0.000");
 
-	public KalmanFilterSimulator(int total_time, double variance, double carSpeed) {
-		this.total_time = total_time;
+	public KalmanFilterSimulator(int totalTime, double variance, double carSpeed) {
+		this.total_time = totalTime;
 		this.measurement_variance = variance;
 		this.carSpeed = carSpeed;
 
-		position_measurements = new double[total_time];
-		car_positions = new double[total_time];
-		position_kalman = new double[total_time];
+		position_measurements = new double[totalTime];
+		car_positions = new double[totalTime];
+		position_kalman = new double[totalTime];
 
-		veloc_measurement = new double[total_time];
-		car_veloc = new double[total_time];
-		veloc_kalman = new double[total_time];
+		veloc_measurement = new double[totalTime];
+		car_veloc = new double[totalTime];
+		veloc_kalman = new double[totalTime];
 
-		measurement_error = new double[total_time];
-		kalman_position_error = new double[total_time];
+		measurement_error = new double[totalTime];
+		kalman_position_error = new double[totalTime];
 
-		measurement_verror = new double[total_time];
-		kalman_veloc_error = new double[total_time];
+		measurement_verror = new double[totalTime];
+		kalman_veloc_error = new double[totalTime];
 	}
 
 	// #Returns car distance given of time(t)

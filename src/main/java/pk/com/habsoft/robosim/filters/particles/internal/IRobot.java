@@ -18,7 +18,7 @@ public interface IRobot extends Cloneable, SimulationObject {
 
 	public void setLocation(double[] measurements);
 
-	public void setNoise(double sense_noise, double steering_noise, double forward_noise);
+	public void setNoise(double senseNoise, double steeringNoise, double forwardNoise);
 
 	public double measurementProb(double[] measurements);
 
@@ -56,6 +56,6 @@ public interface IRobot extends Cloneable, SimulationObject {
 
 	public double getSteeringDrift();
 
-	public void setSteeringDrift(double steering_drift);
+	public void setSteeringDrift(double steeringDrift);
 
 }

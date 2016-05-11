@@ -14,30 +14,30 @@ public class ParticleFilter {
 	public ParticleFilter() {
 	}
 
-	public void setNoise(double sense_noise, double steering_noise, double forward_noise) {
-		this.sense_noise = sense_noise;
-		this.steering_noise = steering_noise;
-		this.forward_noise = forward_noise;
+	public void setNoise(double senseNoise, double steeringNoise, double forwardNoise) {
+		this.sense_noise = senseNoise;
+		this.steering_noise = steeringNoise;
+		this.forward_noise = forwardNoise;
 	}
 
 	public double[] getAveragePosition(IRobot[] p) {
-		double x_sum = 0.0;
-		double y_sum = 0.0;
-		double or_sum = 0.0;
+		double xSum = 0.0;
+		double ySum = 0.0;
+		double orSum = 0.0;
 		for (int j = 0; j < p.length; j++) {
-			x_sum += p[j].getX();
-			y_sum += p[j].getY();
+			xSum += p[j].getX();
+			ySum += p[j].getY();
 			// System.out.println(p.get(j));
 			// orientation is tricky because it is cyclic. By normalizing
 			// around the first particle we are somewhat more robust to
 			// the 0=2pi problem
-			or_sum += (RoboMathUtils.modulus((p[j].getOrientation() - p[0].getOrientation() + Math.PI), (2.0 * Math.PI))
+			orSum += (RoboMathUtils.modulus((p[j].getOrientation() - p[0].getOrientation() + Math.PI), (2.0 * Math.PI))
 					+ p[0].getOrientation() - Math.PI);
 		}
 		if (p != null && p.length > 0)
-			return new double[] { x_sum / p.length, y_sum / p.length, or_sum / p.length };
+			return new double[] { xSum / p.length, ySum / p.length, orSum / p.length };
 		else
-			return new double[] { x_sum, y_sum, or_sum };
+			return new double[] { xSum, ySum, orSum };
 	}
 
 	public double eval(IRobot myrobot, IRobot[] p) {
