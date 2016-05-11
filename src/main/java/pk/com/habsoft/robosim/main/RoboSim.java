@@ -34,7 +34,7 @@ import pk.com.habsoft.robosim.smoothing.views.PIDControllerView;
 
 public class RoboSim extends JFrame implements ActionListener {
 	// Numbus, Napkin
-	final static String title = "RoboSim (Robot Simulator)";
+	final static String appTitle = "RoboSim (Robot Simulator)";
 	// First version
 	// final static String version = "1.0.3.2012-07-12";
 	// final static String version = "1.1.0.2012-09-26";
@@ -251,7 +251,7 @@ public class RoboSim extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 
-		RoboSim robosim = new RoboSim(title + version);
+		RoboSim robosim = new RoboSim(appTitle + version);
 
 		Toolkit tool = Toolkit.getDefaultToolkit();
 		robosim.setSize(tool.getScreenSize());

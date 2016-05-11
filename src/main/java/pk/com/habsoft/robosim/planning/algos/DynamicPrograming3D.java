@@ -35,7 +35,6 @@ public class DynamicPrograming3D extends Algorithm {
 	int g = -100;
 	int orient;
 
-	DiscreteWorld world;
 	Heuristic h;
 
 	public static void main(String[] args) {
