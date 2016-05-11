@@ -28,7 +28,7 @@ public class StatisticsPanel extends RPanel implements AlgorithmListener {
 	public StatisticsPanel(int width, int height, String label) {
 		super(width, height, label);
 
-		setLayout(new BorderLayout(), true);
+		setLayoutMgr(new BorderLayout());
 
 		JPanel pnl = new JPanel();
 		createOutputPanelContents(pnl);

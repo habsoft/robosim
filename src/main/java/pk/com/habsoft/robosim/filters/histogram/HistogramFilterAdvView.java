@@ -126,7 +126,7 @@ public class HistogramFilterAdvView extends RootView {
 
 	private void createMotionComponents() {
 		// Add Motion buttons
-		pnlRobotMotions.setLayout(new GridLayout(3, 3, 5, 5), true);
+		pnlRobotMotions.setLayoutMgr(new GridLayout(3, 3, 5, 5));
 
 		RobotMotionListener motionList = new RobotMotionListener();
 		for (int i = 0; i < btnMotions.length; i++) {

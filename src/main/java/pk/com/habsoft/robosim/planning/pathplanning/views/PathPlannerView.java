@@ -113,7 +113,7 @@ public class PathPlannerView extends RootView implements AlgorithmListener {
 	private void createWorldMap() {
 		pnlLocationMap.removeAll();
 		lblLocationMap = new JLabel[DEF_NO_OF_ROWS][DEF_NO_OF_COLUMNS];
-		pnlLocationMap.setLayout(new GridLayout(DEF_NO_OF_ROWS, DEF_NO_OF_COLUMNS, 1, 1), true);
+		pnlLocationMap.setLayoutMgr(new GridLayout(DEF_NO_OF_ROWS, DEF_NO_OF_COLUMNS, 1, 1));
 
 		for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
 			for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
@@ -129,7 +129,7 @@ public class PathPlannerView extends RootView implements AlgorithmListener {
 	}
 
 	private void createSouthPanelContents(RPanel pnlSouth) {
-		pnlSouth.setLayout(new FlowLayout(), false);
+		pnlSouth.setLayoutMgr(new FlowLayout());
 		btnModifyWorld = new JButton("Modify World");
 		pnlSouth.add(btnModifyWorld);
 		btnModifyWorld.addActionListener(new ActionListener() {

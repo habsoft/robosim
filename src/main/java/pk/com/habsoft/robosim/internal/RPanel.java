@@ -49,7 +49,7 @@ public class RPanel extends JPanel {
 		pnlPublic.add(comp, border);
 	}
 
-	public void setLayout(LayoutManager mgr, boolean ok) {
+	public void setLayoutMgr(LayoutManager mgr) {
 		pnlPublic.setLayout(mgr);
 	}
 
