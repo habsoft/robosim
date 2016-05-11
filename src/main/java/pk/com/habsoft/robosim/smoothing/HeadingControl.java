@@ -68,8 +68,8 @@ public class HeadingControl extends PIDController {
 		robot.setSteeringDrift(Math.toRadians(10));
 		robot.setCheckBoundaries(false);
 		// Controller c = new PController(0.5);
-		double tau_p = 0.2, tau_d = 3.0, tau_i = 0.004;
-		Controller c = new PIDController(tau_p, tau_i, tau_d);
+		double tauP = 0.2, tauD = 3.0, tauI = 0.004;
+		Controller c = new PIDController(tauP, tauI, tauD);
 		double speed = 1;
 		int iter = 10;
 		for (int i = 0; i < iter; i++) {

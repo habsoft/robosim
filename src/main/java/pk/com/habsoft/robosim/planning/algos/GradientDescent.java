@@ -32,7 +32,7 @@ public class GradientDescent {
 
 	}
 
-	public static List<PathNode> smooth(List<PathNode> pathList, double weight_data, double weight_smooth,
+	public static List<PathNode> smooth(List<PathNode> pathList, double weightData, double weightSmooth,
 			double tolerance, int timeout, boolean smoothBoundries) {
 		double[][] path = new double[pathList.size()][2];
 		double[][] newpath = new double[pathList.size()][2];
@@ -59,15 +59,15 @@ public class GradientDescent {
 				for (int j = 0; j < newpath[i].length; j++) {
 					double aux = newpath[i][j];
 					// here we should apply simultaneous update
-					double alpha_value = weight_data * ((path[i][j]) - newpath[i][j]);
-					double beeta_value = 0;
+					double alphaValue = weightData * ((path[i][j]) - newpath[i][j]);
+					double beetaValue = 0;
 					if (smoothBoundries) {
 						if (i < newpath.length - 1)
-							beeta_value = weight_smooth * (newpath[i + 1][j] - newpath[i][j]);
+							beetaValue = weightSmooth * (newpath[i + 1][j] - newpath[i][j]);
 					} else {
-						beeta_value = weight_smooth * (newpath[i - 1][j] + newpath[i + 1][j] - (2.0 * newpath[i][j]));
+						beetaValue = weightSmooth * (newpath[i - 1][j] + newpath[i + 1][j] - (2.0 * newpath[i][j]));
 					}
-					newpath[i][j] += alpha_value + beeta_value;
+					newpath[i][j] += alphaValue + beetaValue;
 					change += Math.abs(aux - newpath[i][j]);
 				}
 			}
