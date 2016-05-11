@@ -35,7 +35,7 @@ public class AStarAlgorithm extends Algorithm {
 	public Heuristic h;
 	private boolean allowDiagonalMotion;
 
-	public AStarAlgorithm(DiscreteWorld world, int heuristicType, boolean diagonalMotion, double successProb) {
+	public AStarAlgorithm(DiscreteWorld world, int heuristicType, boolean diagonalMotion) {
 		this.world = world;
 		this.allowDiagonalMotion = diagonalMotion;
 		path = new Path();

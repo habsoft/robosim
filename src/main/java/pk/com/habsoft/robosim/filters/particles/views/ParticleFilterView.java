@@ -51,7 +51,7 @@ public class ParticleFilterView extends RootView {
 
 		pnlOutput = new RPanel(PNL_OUTPUT_WIDTH, PNL_OUTPUT_HEIGHT, "Output Panel");
 		pnlOutput.setLocation(PNL_WORLD_WIDTH, 0);
-		pnlOutput.setLayout(new BorderLayout(), true);
+		pnlOutput.setLayoutMgr(new BorderLayout());
 		ta = new JTextArea();
 		// ta.setLineWrap(false);
 		// ta.setWrapStyleWord(false);
