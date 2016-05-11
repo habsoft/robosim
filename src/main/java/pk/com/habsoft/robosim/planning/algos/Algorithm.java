@@ -20,12 +20,12 @@ public abstract class Algorithm {
 	public final static int A_STAR = 0, DFS = 1, BFS = 2, DP = 3;
 	DiscreteWorld world;
 
-	public static int UP = 0, UP_LEFT = 1, LEFT = 2, DOWN_LEFT = 3, DOWN = 4, DOWN_RIGHT = 5, RIGHT = 6, UP_RIGHT = 7,
+	public static final int UP = 0, UP_LEFT = 1, LEFT = 2, DOWN_LEFT = 3, DOWN = 4, DOWN_RIGHT = 5, RIGHT = 6, UP_RIGHT = 7,
 			EXPLORED = 8, NOT_EXPLORED = 9, BLOCK = 10, HIDDEN = 11, START = 12, GOAL = 13;
 	int[] actionArray = { UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT, UP_RIGHT, EXPLORED, NOT_EXPLORED,
 			BLOCK, HIDDEN, START, GOAL };
-	public static Color pathColor = Color.ORANGE;
-	public static Color[] colors = { pathColor, pathColor, pathColor, pathColor, pathColor, pathColor, pathColor,
+	public static final Color pathColor = Color.ORANGE;
+	public static final Color[] colors = { pathColor, pathColor, pathColor, pathColor, pathColor, pathColor, pathColor,
 			pathColor, Color.MAGENTA, Color.WHITE, Color.BLACK, Color.LIGHT_GRAY, Color.RED, Color.GREEN };
 
 	// Used for images(up,left,down,right)
