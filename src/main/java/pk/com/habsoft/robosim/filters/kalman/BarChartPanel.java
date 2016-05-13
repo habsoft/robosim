@@ -20,8 +20,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 public class BarChartPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private double[] measurement_error;
-	private double[] kalman_error;
+	private double[] measurementError;
+	private double[] kalmanError;
 	private String xLabel, yLabel;
 	private String mLabel, kLabel;
 	ChartPanel chartPanel = null;
@@ -36,9 +36,9 @@ public class BarChartPanel extends JPanel {
 		add(chartPanel);
 	}
 
-	public void setData(double[] measurement_error, double[] kalman_error) {
-		this.measurement_error = measurement_error;
-		this.kalman_error = kalman_error;
+	public void setData(double[] measurementError, double[] kalmanError) {
+		this.measurementError = measurementError;
+		this.kalmanError = kalmanError;
 		updateChart();
 	}
 
@@ -64,12 +64,12 @@ public class BarChartPanel extends JPanel {
 
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-		for (int i = 0; i < measurement_error.length; i++) {
-			dataset.addValue(measurement_error[i], mLabel, String.valueOf(i));
+		for (int i = 0; i < measurementError.length; i++) {
+			dataset.addValue(measurementError[i], mLabel, String.valueOf(i));
 		}
 
-		for (int i = 0; i < kalman_error.length; i++) {
-			dataset.addValue(kalman_error[i], kLabel, String.valueOf(i));
+		for (int i = 0; i < kalmanError.length; i++) {
+			dataset.addValue(kalmanError[i], kLabel, String.valueOf(i));
 		}
 
 		return dataset;
