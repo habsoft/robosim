@@ -100,15 +100,21 @@ public class World {
 
 	public void saveToFile(String file) {
 		if (landmarks != null && !landmarks.isEmpty()) {
+		    BufferedWriter bw = null;
 			try {
-				BufferedWriter bw = new BufferedWriter(new FileWriter(new File(file)));
+				bw = new BufferedWriter(new FileWriter(new File(file)));
 				for (int i = 0; i < landmarks.size(); i++) {
 					LandMark p = landmarks.get(i);
 					bw.write(p.getX() + "," + p.getY() + "\n");
 				}
-				bw.flush();
-				bw.close();
+				bw.flush();				
 			} catch (IOException e) {
+			} finally {
+			    try {
+                    bw.close();
+                } catch (IOException e) {
+                    // ignore
+                }
 			}
 		}
 	}
