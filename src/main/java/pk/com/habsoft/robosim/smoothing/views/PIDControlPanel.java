@@ -86,7 +86,7 @@ public class PIDControlPanel extends JPanel implements PropertiesListener, Actio
 	private void initGUI() {
 
 		RPanel pnlController = new RPanel(getWidth() - 30, 220, "Controller Setting");
-		pnlController.setLayout(new GridLayout(7, 1), false);
+		pnlController.setLayoutMgr(new GridLayout(7, 1));
 
 		spProportional = new JSpinner();
 		pnlController.add(UIUtils.createSpinnerPanel("P (Proportional)", spProportional, tauP, -10, 10, 0.1));
@@ -109,7 +109,7 @@ public class PIDControlPanel extends JPanel implements PropertiesListener, Actio
 		// ////////////////////////////////////////////////////////////////////////////////////
 
 		RPanel pnlGrapth = new RPanel(getWidth() - 30, 220, "Chart Setting");
-		pnlGrapth.setLayout(new GridLayout(7, 1), false);
+		pnlGrapth.setLayoutMgr(new GridLayout(7, 1));
 
 		cbRef = new JCheckBox("Show Reference");
 		cbRef.setSelected(showRef);
@@ -174,7 +174,7 @@ public class PIDControlPanel extends JPanel implements PropertiesListener, Actio
 		// /////////////
 
 		RPanel pnlScenario = new RPanel(getWidth() - 30, 220, "Scenario");
-		pnlScenario.setLayout(new BorderLayout(), false);
+		pnlScenario.setLayoutMgr(new BorderLayout());
 		JTextArea area = new JTextArea();
 		area.setLineWrap(true);
 		area.setEditable(false);

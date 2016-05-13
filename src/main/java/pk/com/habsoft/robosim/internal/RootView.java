@@ -111,7 +111,7 @@ abstract public class RootView extends JInternalFrame implements PropertiesListe
 
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
-				this_internalFrameClosing(e);
+				this_internalFrameClosing();
 			}
 		});
 	}
@@ -119,7 +119,7 @@ abstract public class RootView extends JInternalFrame implements PropertiesListe
 	public void this_internalFrameActivated(InternalFrameEvent e) {
 	}
 
-	public void this_internalFrameClosing(InternalFrameEvent e) {
+	public void this_internalFrameClosing() {
 		System.out.println("saving");
 		if (isInit) {
 			saveProperties();

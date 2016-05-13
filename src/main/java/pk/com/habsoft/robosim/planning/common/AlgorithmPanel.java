@@ -81,7 +81,7 @@ public class AlgorithmPanel extends RPanel implements ActionListener, Properties
 		this.prop = props;
 		loadProperties();
 
-		setLayout(new BorderLayout(), true);
+		setLayoutMgr(new BorderLayout());
 
 		JPanel pnl = new JPanel();
 		createControlPanelContents(pnl);
@@ -359,7 +359,7 @@ public class AlgorithmPanel extends RPanel implements ActionListener, Properties
 				} else {
 					heuristic = Heuristic.NONE;
 				}
-				algo = new AStarAlgorithm(world, heuristic, cbAllowDiagonalMotion.isSelected(), successProb);
+				algo = new AStarAlgorithm(world, heuristic, cbAllowDiagonalMotion.isSelected());
 			} else if (algorithm == Algorithm.DP) {
 				if (cbConsiderOrientation.isSelected()) {
 					int[] cost = { rightTurnCost, goStraightCost, leftTurnCost };
