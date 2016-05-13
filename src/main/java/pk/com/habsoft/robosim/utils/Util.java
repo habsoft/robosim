@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 import org.apache.commons.math3.linear.RealMatrix;
 
 public class Util {
-	public static DecimalFormat df = new DecimalFormat("####0.##########");
+	public static final DecimalFormat df = new DecimalFormat("####0.##########");
 
 	public static void printMatrix(RealMatrix m) {
 		printArrayP(m.getData());

@@ -184,7 +184,7 @@ public class ParticleSimulator implements Runnable, Iterable<SimulationObject> {
 		return objects.iterator();
 	}
 
-	public static boolean runa = true;
+	public static final boolean runa = true;
 
 	/**
 	 * This will draw new objects on Canvas

@@ -18,7 +18,7 @@ public class UIUtils {
         
     }
 
-	public static Font labelFont = new Font("Comic", Font.BOLD, 16);
+	public static final Font labelFont = new Font("Comic", Font.BOLD, 16);
 
 	public static JPanel createSpinnerPanel(String text, JSpinner spn, int value, int min, int max, int step) {
 		JPanel pnl = new JPanel();
