@@ -124,8 +124,8 @@ public class KalmanFilterView extends RootView {
 
 	}
 
-	public void update(int total_time, double variance, double carSpeed) {
-		anim = new KalmanFilterSimulator(total_time, variance, carSpeed);
+	public void update(int totalTime, double variance, double carSpeed) {
+		anim = new KalmanFilterSimulator(totalTime, variance, carSpeed);
 		anim.simulate();
 		pnlPosition.clearData();
 		pnlPosition.addData("Measurement", anim.getPositionMeasurements());

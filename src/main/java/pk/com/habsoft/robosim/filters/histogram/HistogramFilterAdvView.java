@@ -399,9 +399,9 @@ public class HistogramFilterAdvView extends RootView {
 			boolean trueWorld = true;
 			world = new int[DEF_NO_OF_ROWS][DEF_NO_OF_COLUMNS];
 			for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
-				String row_tag = MAP_ROW_TAG + (i + 1);
+				String rowTag = MAP_ROW_TAG + (i + 1);
 				try {
-					String[] row = prop.getProperty(row_tag).split(",");
+					String[] row = prop.getProperty(rowTag).split(",");
 					for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
 						try {
 							world[i][j] = Integer.parseInt(row[j]);
@@ -415,7 +415,7 @@ public class HistogramFilterAdvView extends RootView {
 						}
 					}
 				} catch (Exception e) {
-					System.out.println("Invalid value of tag " + row_tag + " ." + e.getMessage());
+					System.out.println("Invalid value of tag " + rowTag + " ." + e.getMessage());
 					trueWorld = false;
 				}
 			}

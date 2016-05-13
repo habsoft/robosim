@@ -81,10 +81,10 @@ public class Robot implements IRobot {
 	}
 
 	@Override
-	public void setNoise(double sense_noise, double steering_noise, double forward_noise) {
-		this.setSenseNoise(sense_noise);
-		this.setSteeringNoise(steering_noise);
-		this.setForwardNoise(forward_noise);
+	public void setNoise(double senseNoise, double steeringNoise, double forwardNoise) {
+		this.setSenseNoise(senseNoise);
+		this.setSteeringNoise(steeringNoise);
+		this.setForwardNoise(forwardNoise);
 	}
 
 	@Override
@@ -137,8 +137,8 @@ public class Robot implements IRobot {
 		return sense_noise;
 	}
 
-	public void setSenseNoise(double sense_noise) {
-		this.sense_noise = sense_noise;
+	public void setSenseNoise(double senseNoise) {
+		this.sense_noise = senseNoise;
 	}
 
 	@Override
@@ -146,8 +146,8 @@ public class Robot implements IRobot {
 		return steering_noise;
 	}
 
-	public void setSteeringNoise(double steering_noise) {
-		this.steering_noise = steering_noise;
+	public void setSteeringNoise(double steeringNoise) {
+		this.steering_noise = steeringNoise;
 	}
 
 	@Override
@@ -155,13 +155,13 @@ public class Robot implements IRobot {
 		return forward_noise;
 	}
 
-	public void setForwardNoise(double forward_noise) {
-		this.forward_noise = forward_noise;
+	public void setForwardNoise(double forwardNoise) {
+		this.forward_noise = forwardNoise;
 	}
 
 	@Override
-	public void setSteeringDrift(double steering_drift) {
-		this.steering_drift = steering_drift;
+	public void setSteeringDrift(double steeringDrift) {
+		this.steering_drift = steeringDrift;
 	}
 
 	@Override
@@ -169,8 +169,8 @@ public class Robot implements IRobot {
 		return steering_drift;
 	}
 
-	public void setRobotType(RobotType robot_type) {
-		this.robot_type = robot_type;
+	public void setRobotType(RobotType robotType) {
+		this.robot_type = robotType;
 	}
 
 	@Override
@@ -179,8 +179,8 @@ public class Robot implements IRobot {
 	}
 
 	@Override
-	public void setLaserRange(int laser_range) {
-		this.laserRange = laser_range;
+	public void setLaserRange(int laserRange) {
+		this.laserRange = laserRange;
 	}
 
 	public int getLaserRange() {
@@ -188,8 +188,8 @@ public class Robot implements IRobot {
 	}
 
 	@Override
-	public void setLaserAngle(int laser_angle) {
-		this.laserAngleRange = laser_angle;
+	public void setLaserAngle(int laserAngle) {
+		this.laserAngleRange = laserAngle;
 	}
 
 	public int getLaserAngle() {

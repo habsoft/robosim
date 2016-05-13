@@ -44,16 +44,16 @@ public class BigRobot extends Robot {
 	@Override
 	public double measurementProb(double[] measurements) {
 		// calculate the correct measurement
-		double[] predicted_measurements = sense(false);
+		double[] predictedMeasurements = sense(false);
 
 		// compute errors
 		double error = 1.0;
-		for (int j = 0; j < predicted_measurements.length; j++) {
-			double error_bearing = Math.abs(measurements[j] - predicted_measurements[j]);
-			error_bearing = RoboMathUtils.modulus(error_bearing + Math.PI, 2.0 * Math.PI) - Math.PI;
+		for (int j = 0; j < predictedMeasurements.length; j++) {
+			double errorBearing = Math.abs(measurements[j] - predictedMeasurements[j]);
+			errorBearing = RoboMathUtils.modulus(errorBearing + Math.PI, 2.0 * Math.PI) - Math.PI;
 
 			// update Gaussian
-			double e1 = RoboMathUtils.gaussian(0, Math.pow(sense_noise, 2), Math.pow(error_bearing, 2));
+			double e1 = RoboMathUtils.gaussian(0, Math.pow(sense_noise, 2), Math.pow(errorBearing, 2));
 			error *= e1;
 			// System.out.println("Error bearing " + error_bearing +
 			// " ; ERROR = " + error);
@@ -99,13 +99,13 @@ public class BigRobot extends Robot {
 			setOrientation(orientation);
 		} else {
 			// Apply by-cycle modal
-			double turning_radius = distance2 / beeta;
-			double cx = x - (Math.sin(orientation) * turning_radius);
-			double cy = y + (Math.cos(orientation) * turning_radius);
+			double turningRadius = distance2 / beeta;
+			double cx = x - (Math.sin(orientation) * turningRadius);
+			double cy = y + (Math.cos(orientation) * turningRadius);
 
 			// # calculate the local coordinates
-			x = cx + (Math.sin(orientation + beeta) * turning_radius);
-			y = cy - (Math.cos(orientation + beeta) * turning_radius);
+			x = cx + (Math.sin(orientation + beeta) * turningRadius);
+			y = cy - (Math.cos(orientation + beeta) * turningRadius);
 
 			setOrientation(orientation + beeta);
 		}
