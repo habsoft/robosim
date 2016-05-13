@@ -26,7 +26,7 @@ public class Robot implements IRobot {
 	protected int laserRange = 100;
 	protected int laserAngleRange = 60;// in degrees
 
-	private Random r = new Random();
+	private Random rnd = new Random();
 
 	public Robot() {
 		this(3);
@@ -63,9 +63,9 @@ public class Robot implements IRobot {
 	 */
 	@Override
 	public void random() {
-		this.setX(r.nextInt((int) (World.getWidth() - length)));
-		this.setY(r.nextInt((int) (World.getHeight() - length)));
-		this.setOrientation(r.nextDouble() * 2 * Math.PI);
+		this.setX(rnd.nextInt((int) (World.getWidth() - length)));
+		this.setY(rnd.nextInt((int) (World.getHeight() - length)));
+		this.setOrientation(rnd.nextDouble() * 2 * Math.PI);
 	}
 
 	@Override
