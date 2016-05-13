@@ -16,7 +16,6 @@ public class DynamicPrograming2D extends Algorithm {
 	// double[][] expand;
 	int[][] actions;
 
-	DiscreteWorld world;
 	int initCost = 1000000;
 	int collisionCost = 100;
 	double sProb = 0.8;
