@@ -132,7 +132,7 @@ public class HistogramFilterView extends RootView {
 
 		// Robot Location Panel
 		pnlLocationMap = new RPanel(PANEL_WIDTH, PANEL_HEIGHT, "Robot Location Map");
-		createWorldMapComponents(false);
+		createWorldMapComponents();
 
 		// ////////// Robot Belief Map
 		JLabel header = UIUtils.createLabel(PANEL_WIDTH, LABEL_HEIGHT, "Robot Belief Map");
@@ -170,7 +170,7 @@ public class HistogramFilterView extends RootView {
 
 	}
 
-	private void createWorldMapComponents(boolean remove) {
+	private void createWorldMapComponents() {
 
 		// Calculate Suitable sell size
 		int cols = (PANEL_WIDTH - 8) / DEF_NO_OF_COLUMNS;
@@ -180,7 +180,7 @@ public class HistogramFilterView extends RootView {
 
 		pnlLocationMap.pnlPublic.removeAll();
 		lblLocationMap = new JLabel[DEF_NO_OF_ROWS][DEF_NO_OF_COLUMNS];
-		pnlLocationMap.setLayout(null, true);
+		pnlLocationMap.setLayoutMgr(null);
 		for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
 			for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
 				lblLocationMap[i][j] = new JLabel();
@@ -201,7 +201,7 @@ public class HistogramFilterView extends RootView {
 
 	private void createMotionComponents() {
 		// Add Motion buttons
-		pnlRobotMotions.setLayout(new GridLayout(3, 3, 5, 5), true);
+		pnlRobotMotions.setLayoutMgr(new GridLayout(3, 3, 5, 5));
 
 		RobotMotionListener motionList = new RobotMotionListener();
 		for (int i = 0; i < btnMotions.length; i++) {
@@ -215,7 +215,7 @@ public class HistogramFilterView extends RootView {
 	}
 
 	private void createSimulationOutput() {
-		pnlOutput.setLayout(new BorderLayout(), true);
+		pnlOutput.setLayoutMgr(new BorderLayout());
 		ta = new JTextArea();
 		ta.setLineWrap(false);
 		ta.setWrapStyleWord(true);
@@ -460,7 +460,7 @@ public class HistogramFilterView extends RootView {
 					DEF_NO_OF_ROWS = world.length;
 					DEF_NO_OF_COLUMNS = world[0].length;
 					filter.setWorld(world);
-					createWorldMapComponents(true);
+					createWorldMapComponents();
 					// setWorldColors();
 					repaint();
 				}

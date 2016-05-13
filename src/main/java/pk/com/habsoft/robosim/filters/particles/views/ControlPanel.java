@@ -124,7 +124,7 @@ public class ControlPanel extends JPanel implements ActionListener, ChangeListen
 
 		// //////////////// Filter Setting ////////////////////////////
 		RPanel pnlWest = new RPanel(width * pnlWestRatio, height, "Filter Settings");
-		pnlWest.setLayout(new BorderLayout(), true);
+		pnlWest.setLayoutMgr(new BorderLayout());
 		pnlWest.setBounds(0, 0, (int) (width * pnlWestRatio), height);
 
 		// Create North Panel
@@ -180,7 +180,7 @@ public class ControlPanel extends JPanel implements ActionListener, ChangeListen
 
 		RPanel pnlEast = new RPanel(width * (1 - pnlWestRatio), height, "Runtime Settings");
 		pnlEast.setLocation((int) (width * pnlWestRatio), 0);
-		pnlEast.setLayout(new GridLayout(5, 2, 10, 2), true);
+		pnlEast.setLayoutMgr(new GridLayout(5, 2, 10, 2));
 
 		// Motion Controls
 		pnlEast.add(UIUtils.createSpinnerPanel("Turning Angle(" + degree + ")", spnMotionAngle, DEF_MOTION_ANGLE, -360, 360, 1));

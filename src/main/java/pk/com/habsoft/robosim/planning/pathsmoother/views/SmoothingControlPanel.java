@@ -75,7 +75,7 @@ public class SmoothingControlPanel extends RPanel implements ActionListener, Pro
 		this.props = props;
 		loadProperties();
 
-		setLayout(new BorderLayout(), true);
+		setLayoutMgr(new BorderLayout());
 
 		JPanel pnl = new JPanel();
 		pnl.setLayout(new GridLayout(5, 2, 10, 3));
