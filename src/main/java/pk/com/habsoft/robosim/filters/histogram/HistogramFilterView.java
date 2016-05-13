@@ -268,7 +268,6 @@ public class HistogramFilterView extends RootView {
 	}
 
 	private void createSensorsComponents(JPanel pnlRobotSetting) {
-		int spacing = 3;
 
 		int xLoc = 0;
 		int yLoc = 0;

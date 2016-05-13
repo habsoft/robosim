@@ -90,10 +90,10 @@ public class DrawingPanel extends JPanel implements MouseMotionListener, MouseLi
 			g2.setStroke(new BasicStroke(2));
 			g2.setColor(Color.RED);
 			// Splitting path
-			List<PathNode> path = mapPathToScreen();
-			PathNode last = path.get(0);
-			for (int i = 1; i < path.size(); i++) {
-				PathNode node = path.get(i);
+			List<PathNode> robotPath = mapPathToScreen();
+			PathNode last = robotPath.get(0);
+			for (int i = 1; i < robotPath.size(); i++) {
+				PathNode node = robotPath.get(i);
 				int x1, y1, x2, y2;
 				x1 = (int) last.getX();
 				y1 = (int) last.getY();
@@ -184,10 +184,10 @@ public class DrawingPanel extends JPanel implements MouseMotionListener, MouseLi
 
 	private List<PathNode> splitPath(double cnt) {
 		List<PathNode> newPath = new ArrayList<PathNode>();
-		List<PathNode> path = mapPathToScreen();
-		PathNode last = path.get(0);
-		for (int i = 1; i < path.size(); i++) {
-			PathNode node = path.get(i);
+		List<PathNode> robotPath = mapPathToScreen();
+		PathNode last = robotPath.get(0);
+		for (int i = 1; i < robotPath.size(); i++) {
+			PathNode node = robotPath.get(i);
 			int x1, y1, x2, y2;
 			x1 = (int) last.getX();
 			y1 = (int) last.getY();
