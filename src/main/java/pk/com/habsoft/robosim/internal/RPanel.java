@@ -16,8 +16,8 @@ import pk.com.habsoft.robosim.utils.UIUtils;
 public class RPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	public static Font labelFont = new Font("Comic", Font.BOLD, 16);
-	public static int LABEL_HEIGHT = 30;
+	public static final Font labelFont = new Font("Comic", Font.BOLD, 16);
+	public static final int LABEL_HEIGHT = 30;
 	private JPanel pnlPrivate;
 	public JPanel pnlPublic;
 
