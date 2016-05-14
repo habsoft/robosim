@@ -16,7 +16,7 @@ public class DFSAlgorithm extends Algorithm {
 	List<WorldNode> closed = new ArrayList<WorldNode>();
 	private boolean allowDiagonalMotion;
 
-	int collision_cost = 5000;
+	int collisionCost = 5000;
 	double sProb = 0.7;
 	double fProb = (1 - sProb) / 2;
 
