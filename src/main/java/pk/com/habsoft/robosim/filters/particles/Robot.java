@@ -15,12 +15,12 @@ public class Robot implements IRobot {
 	protected double y;
 	protected double orientation;
 	protected double length;
-	protected double sense_noise = 0.0;// for sense function.
-	protected double steering_noise = 0.0; // for move function.
-	protected double forward_noise = 0.0;// for move function.
-	protected double steering_drift = 0.0;// for PID controller
+	protected double senseNoise = 0.0;// for sense function.
+	protected double steeringNoise = 0.0; // for move function.
+	protected double forwardNoise = 0.0;// for move function.
+	protected double steeringDrift = 0.0;// for PID controller
 
-	protected RobotType robot_type = RobotType.PARTICLE;
+	protected RobotType robotType = RobotType.PARTICLE;
 
 	protected boolean boundedVision = false;
 	protected int laserRange = 100;
@@ -134,48 +134,48 @@ public class Robot implements IRobot {
 
 	@Override
 	public double getSenseNoise() {
-		return sense_noise;
+		return senseNoise;
 	}
 
 	public void setSenseNoise(double senseNoise) {
-		this.sense_noise = senseNoise;
+		this.senseNoise = senseNoise;
 	}
 
 	@Override
 	public double getSteeringNoise() {
-		return steering_noise;
+		return steeringNoise;
 	}
 
 	public void setSteeringNoise(double steeringNoise) {
-		this.steering_noise = steeringNoise;
+		this.steeringNoise = steeringNoise;
 	}
 
 	@Override
 	public double getForwardNoise() {
-		return forward_noise;
+		return forwardNoise;
 	}
 
 	public void setForwardNoise(double forwardNoise) {
-		this.forward_noise = forwardNoise;
+		this.forwardNoise = forwardNoise;
 	}
 
 	@Override
 	public void setSteeringDrift(double steeringDrift) {
-		this.steering_drift = steeringDrift;
+		this.steeringDrift = steeringDrift;
 	}
 
 	@Override
 	public double getSteeringDrift() {
-		return steering_drift;
+		return steeringDrift;
 	}
 
 	public void setRobotType(RobotType robotType) {
-		this.robot_type = robotType;
+		this.robotType = robotType;
 	}
 
 	@Override
 	public RobotType getRobotType() {
-		return robot_type;
+		return robotType;
 	}
 
 	@Override
@@ -248,11 +248,11 @@ public class Robot implements IRobot {
 		double distance = motions[1];
 
 		// # turn, and add randomness to the turning command
-		orientation = orientation - stearing + RoboMathUtils.nextGaussian(0, steering_noise);
+		orientation = orientation - stearing + RoboMathUtils.nextGaussian(0, steeringNoise);
 		setOrientation(orientation);
 
 		// # move, and add randomness to the motion command
-		double dist = distance + RoboMathUtils.nextGaussian(0, forward_noise);
+		double dist = distance + RoboMathUtils.nextGaussian(0, forwardNoise);
 		x = x + (dist * Math.cos(orientation));
 		y = y + (dist * Math.sin(orientation));
 
@@ -268,7 +268,7 @@ public class Robot implements IRobot {
 		double[] myMeasurements = sense(false);
 		for (int j = 0; j < measurements.length; j++) {
 			if (measurements[j] != 0) {
-				prob *= RoboMathUtils.gaussian(myMeasurements[j], sense_noise, measurements[j]);
+				prob *= RoboMathUtils.gaussian(myMeasurements[j], senseNoise, measurements[j]);
 				c++;
 			}
 		}
@@ -297,7 +297,7 @@ public class Robot implements IRobot {
 			double dy = (lm.getY() + World.LANDMARK_SIZE / 2) - (y + getLength() / 2);
 			double dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 			if (addNoise) {
-				dist += RoboMathUtils.nextGaussian(0, sense_noise);
+				dist += RoboMathUtils.nextGaussian(0, senseNoise);
 			}
 			if (isBoundedVision()) {
 				// TODO Limited angle vision
@@ -314,7 +314,7 @@ public class Robot implements IRobot {
 				// bearing += 360;
 
 				// bearing = Util.modulus((bearing), 2 * Math.PI);
-				if (dist <= laserRange && robot_type == RobotType.ROBOT) {
+				if (dist <= laserRange && robotType == RobotType.ROBOT) {
                     System.out.println(i + "  ********************");
                     System.out.println("Dx = " + dx + " , Dy = " + dy);
                     System.out.println("O=" + ort + " , B=" + RoboMathUtils.round(bearing, 2) + " , D="
