@@ -29,7 +29,6 @@ public class HistogramFilterAdvView extends RootView {
 
 	private static final String NO_OF_ROWS_TAG = "NO_OF_ROWS";
 	private static final String NO_OF_COLUMNS_TAG = "NO_OF_COLUMNS";
-	private static final String NO_OF_COLORS_TAG = "NO_OF_COLORS";
 	private static final String CYCLIC_WORLD_TAG = "CYCLIC_WORLD";
 	private static final String MOTION_NOISE_TAG = "MOTION_NOISE";
 	private static final String SENSOR_NOISE_TAG = "SENSOR_NOISE";
@@ -41,13 +40,6 @@ public class HistogramFilterAdvView extends RootView {
 	static int MAX_NO_OF_COLUMNS = 6;
 	static int MIN_NO_OF_COLUMNS = 1;
 	static int DEF_NO_OF_COLUMNS = 4;
-
-	final static int MAX_NO_OF_COLORS = 5;
-	final static int MIN_NO_OF_COLORS = 1;
-	static int DEF_NO_OF_COLORS = 3;
-
-	protected final static String[] sensorNames = { "Red", "Green", "Blue", "Cyan", "Magenta" };
-	protected final static Color[] sensors = { Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA };
 
 	JLabel[][] lblBeliefMap;
 
@@ -65,9 +57,8 @@ public class HistogramFilterAdvView extends RootView {
 	// Robot Sensor Controls
 	JSpinner spnSensorNoise;
 	SpinnerNumberModel spnSensorNoiseModal = new SpinnerNumberModel(0, 0, 1, 0.01);
-	JButton[] btnSensors = { new JButton(""), new JButton(""), new JButton(""), new JButton(""), new JButton("") };
-	JSpinner spnNoOfColors;
-	SpinnerNumberModel spnNoOfColorsModal = new SpinnerNumberModel(DEF_NO_OF_COLORS, MIN_NO_OF_COLORS, MAX_NO_OF_COLORS, 1);
+	protected final static Color[] SENSORS = { Color.RED, Color.GREEN, Color.BLUE };
+	JButton[] btnSensors = { new JButton("Red"), new JButton("Green"), new JButton("Blue") };
 	JButton btnReset;
 	JButton btnApply;
 	JButton btnWorldConfiguration;
@@ -180,18 +171,6 @@ public class HistogramFilterAdvView extends RootView {
 		spnSensorNoise.setValue(DEFAULT_SENSOR_NOISE);
 		pnlRobotSetting.add(spnSensorNoise);
 
-		lblMotion = new JLabel("No Of Sensors");
-		yLoc += height;
-		lblMotion.setBounds(xLoc + spacing, yLoc + spacing, width - spacing, height - spacing);
-		pnlRobotSetting.add(lblMotion);
-
-		spnNoOfColors = new JSpinner();
-		spnNoOfColors.setBounds(xLoc + width + spacing, yLoc + spacing, width - spacing, height - spacing);
-		spnNoOfColors.setToolTipText("");
-		spnNoOfColors.setModel(spnNoOfColorsModal);
-		spnNoOfColors.setValue(DEF_NO_OF_COLORS);
-		pnlRobotSetting.add(spnNoOfColors);
-
 		btnApply = new JButton("Apply Setting");
 		yLoc += height;
 		btnApply.setBounds(xLoc + spacing, yLoc + spacing, width - spacing, height - spacing);
@@ -220,28 +199,14 @@ public class HistogramFilterAdvView extends RootView {
 		JPanel pnlSouth = new JPanel(new GridLayout(1, 5, 10, 10));
 		pnlSouth.setBounds(xLoc + spacing, yLoc + spacing, 2 * width - spacing, height - spacing);
 		RobotSensorListener sensorListener = new RobotSensorListener();
-		for (int i = 0; i < MAX_NO_OF_COLORS; i++) {
+		for (int i = 0; i < SENSORS.length; i++) {
 			btnSensors[i].setActionCommand(Integer.toString(i));
-			btnSensors[i].setBackground(sensors[i]);
+			btnSensors[i].setBackground(SENSORS[i]);
 			btnSensors[i].addActionListener(sensorListener);
+			btnSensors[i].setMnemonic(btnSensors[i].getText().charAt(0));
 			pnlSouth.add(btnSensors[i]);
 		}
-		enableSensors();
 		pnlRobotSetting.add(pnlSouth);
-	}
-
-	private void enableSensors() {
-		for (int i = 0; i < MAX_NO_OF_COLORS; i++) {
-			if (i >= DEF_NO_OF_COLORS) {
-				btnSensors[i].setEnabled(false);
-				btnSensors[i].setText("D");
-				btnSensors[i].setToolTipText("Disabled");
-			} else {
-				btnSensors[i].setEnabled(true);
-				btnSensors[i].setText("E");
-				btnSensors[i].setToolTipText("Enabled");
-			}
-		}
 	}
 
 	private class RobotControlListener implements ActionListener {
@@ -255,22 +220,11 @@ public class HistogramFilterAdvView extends RootView {
 				filter.setMotionNoise(Double.parseDouble(spnMotionNoise.getValue().toString()));
 				filter.setSensorNoise(Double.parseDouble(spnSensorNoise.getValue().toString()));
 				filter.setCyclic(chkCyclic.isSelected());
-				int newSensors = Integer.parseInt(spnNoOfColors.getValue().toString());
-				// review colors of world due to change in no of sensors
-				if (newSensors < DEF_NO_OF_COLORS) {
-					for (int i = 0; i < world.length; i++) {
-						for (int j = 0; j < world[i].length; j++) {
-							world[i][j] %= newSensors;
-						}
-					}
-				}
-				DEF_NO_OF_COLORS = newSensors;
-				enableSensors();
 
 				filter.setWorld(world);
 				pnlBeliefMap.repaint();
 			} else if (o.equals(btnWorldConfiguration)) {
-				WorldBuilder gui = new WorldBuilder(world, DEF_NO_OF_COLORS, sensors);
+				WorldBuilder gui = new WorldBuilder(world, SENSORS.length, SENSORS);
 				gui.setVisible(true);
 				if (gui.isWorldChanged()) {
 					world = gui.getNewWorld();
@@ -291,6 +245,7 @@ public class HistogramFilterAdvView extends RootView {
 			try {
 				int actionIdx = Integer.parseInt(action);
 				filter.move(actionIdx);
+				pnlBeliefMap.repaint();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
@@ -305,6 +260,7 @@ public class HistogramFilterAdvView extends RootView {
 			try {
 				int actionIdx = Integer.parseInt(action);
 				filter.sense(actionIdx);
+				pnlBeliefMap.repaint();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
@@ -345,20 +301,6 @@ public class HistogramFilterAdvView extends RootView {
 					}
 				} catch (Exception e) {
 					System.out.println("Invalid value of tag " + NO_OF_COLUMNS_TAG + ".Loading Default");
-				}
-			}
-			// No of colors
-			if (prop.containsKey(NO_OF_COLORS_TAG)) {
-				try {
-					int noOfColors = Integer.parseInt(prop.getProperty(NO_OF_COLORS_TAG));
-					if (noOfColors > MAX_NO_OF_COLORS || noOfColors < MIN_NO_OF_COLORS) {
-						System.out.println("Invalid value of tag " + NO_OF_COLORS_TAG + " .Expedted : " + MIN_NO_OF_COLORS + "-"
-								+ MAX_NO_OF_COLORS + ".Loading Default");
-					} else {
-						DEF_NO_OF_COLORS = noOfColors;
-					}
-				} catch (Exception e) {
-					System.out.println("Invalid value of tag " + NO_OF_COLORS_TAG + ".Loading Default");
 				}
 			}
 			// Cyclic world or not
@@ -405,12 +347,12 @@ public class HistogramFilterAdvView extends RootView {
 					for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
 						try {
 							world[i][j] = Integer.parseInt(row[j]);
-							if (world[i][j] >= DEF_NO_OF_COLORS) {
-								System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + DEF_NO_OF_COLORS);
+							if (world[i][j] >= SENSORS.length) {
+								System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + SENSORS.length);
 								trueWorld = false;
 							}
 						} catch (Exception e) {
-							System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + DEF_NO_OF_COLORS);
+							System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + SENSORS.length);
 							trueWorld = false;
 						}
 					}
@@ -425,7 +367,7 @@ public class HistogramFilterAdvView extends RootView {
 				Random r = new Random();
 				for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
 					for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
-						world[i][j] = r.nextInt(DEF_NO_OF_COLORS);
+						world[i][j] = r.nextInt(SENSORS.length);
 					}
 				}
 			}
@@ -442,7 +384,6 @@ public class HistogramFilterAdvView extends RootView {
 		// save world
 		prop.setProperty(NO_OF_ROWS_TAG, Integer.toString(DEF_NO_OF_ROWS));
 		prop.setProperty(NO_OF_COLUMNS_TAG, Integer.toString(DEF_NO_OF_COLUMNS));
-		prop.setProperty(NO_OF_COLORS_TAG, Integer.toString(DEF_NO_OF_COLORS));
 
 		for (int i = 0; i < world.length; i++) {
 			String row = "";

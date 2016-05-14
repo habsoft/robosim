@@ -55,7 +55,7 @@ public class RobotBeliefMap extends RPanel {
 				double intensity = Double.parseDouble(view.filter.getProbabilityAt(i, j));
 				// Paint p = new Color(0, 0, 0, (int) (255 * intensity));
 				// graphics.setPaint(p);
-				Color p = view.sensors[view.world[i][j]];
+				Color p = view.SENSORS[view.world[i][j]];
 				graphics.setPaint(new Color(p.getRed(), p.getGreen(), p.getBlue(), 55 + (int) (200 * intensity)));
 
 				graphics.fillRect(j * cellWidth + spacing, i * cellWidth + spacing, cellWidth - spacing, cellWidth - spacing);
