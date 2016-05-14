@@ -19,9 +19,9 @@ public class ParticleSimulator implements Runnable, Iterable<SimulationObject> {
 	private Thread currentThread;
 	private int paricles;
 	IRobot[] particleList;
-	double sense_noise;// For sense function.
-	double steering_noise;// For move function.
-	double forward_noise;// For move function
+	double senseNoise;// For sense function.
+	double steeringNoise;// For move function.
+	double forwardNoise;// For move function
 	double[][] motions;
 	double newParticleRatio = 0;
 	double unSampledRatio = 0;
@@ -43,9 +43,9 @@ public class ParticleSimulator implements Runnable, Iterable<SimulationObject> {
 			int landMarkSize) {
 		this.paricles = particles;
 		particleList = new IRobot[paricles];
-		this.sense_noise = distanceNoise;
-		this.steering_noise = steeringNoise;
-		this.forward_noise = forwardNoise;
+		this.senseNoise = distanceNoise;
+		this.steeringNoise = steeringNoise;
+		this.forwardNoise = forwardNoise;
 		this.motions = motions;
 		this.newParticleRatio = newParticles;
 		this.unSampledRatio = unSampled;
@@ -66,7 +66,7 @@ public class ParticleSimulator implements Runnable, Iterable<SimulationObject> {
 		for (int i = 0; i < paricles; i++) {
 			try {
 				IRobot r = temp.clone();
-				r.setNoise(sense_noise, steering_noise, forward_noise);
+				r.setNoise(senseNoise, steeringNoise, forwardNoise);
 				r.random();
 				objects.add(r);
 				particleList[i] = r;
