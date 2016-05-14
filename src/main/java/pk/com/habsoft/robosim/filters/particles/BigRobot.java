@@ -34,7 +34,7 @@ public class BigRobot extends Robot {
 			double dy = landmark.getY() - this.y;
 			double bearing = Math.atan2(dy, dx) - this.orientation;
 			if (addNoise)
-				bearing += RoboMathUtils.nextGaussian(0, sense_noise);
+				bearing += RoboMathUtils.nextGaussian(0, senseNoise);
 			bearing = RoboMathUtils.modulus(bearing, 2 * Math.PI);
 			z[i] = bearing;
 		}
@@ -53,7 +53,7 @@ public class BigRobot extends Robot {
 			errorBearing = RoboMathUtils.modulus(errorBearing + Math.PI, 2.0 * Math.PI) - Math.PI;
 
 			// update Gaussian
-			double e1 = RoboMathUtils.gaussian(0, Math.pow(sense_noise, 2), Math.pow(errorBearing, 2));
+			double e1 = RoboMathUtils.gaussian(0, Math.pow(senseNoise, 2), Math.pow(errorBearing, 2));
 			error *= e1;
 			// System.out.println("Error bearing " + error_bearing +
 			// " ; ERROR = " + error);
@@ -82,13 +82,13 @@ public class BigRobot extends Robot {
 		// // raise ValueError, 'Robot cant move backwards'
 		// System.err.println("Robot cant move backwards");
 		// }
-		double stearing2 = RoboMathUtils.nextGaussian(stearing, steering_noise);
-		double distance2 = RoboMathUtils.nextGaussian(forward, forward_noise);
+		double stearing2 = RoboMathUtils.nextGaussian(stearing, steeringNoise);
+		double distance2 = RoboMathUtils.nextGaussian(forward, forwardNoise);
 		// # move, and add randomness to the motion command
 		// # calculate beeta
 
 		// add steering drift
-		stearing2 += steering_drift;
+		stearing2 += steeringDrift;
 
 		double beeta = Math.tan(stearing2) * distance2 / length;
 		// # calculate global coordinates

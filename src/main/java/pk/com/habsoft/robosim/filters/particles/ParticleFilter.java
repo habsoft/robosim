@@ -7,17 +7,17 @@ import pk.com.habsoft.robosim.utils.RoboMathUtils;
 import pk.com.habsoft.robosim.utils.Util;
 
 public class ParticleFilter {
-	double sense_noise = 5.0;// For sense function.
-	double steering_noise = 0.05;// For move function.
-	double forward_noise = 0.05;// For move function
+	double senseNoise = 5.0;// For sense function.
+	double steeringNoise = 0.05;// For move function.
+	double forwardNoise = 0.05;// For move function
 
 	public ParticleFilter() {
 	}
 
 	public void setNoise(double senseNoise, double steeringNoise, double forwardNoise) {
-		this.sense_noise = senseNoise;
-		this.steering_noise = steeringNoise;
-		this.forward_noise = forwardNoise;
+		this.senseNoise = senseNoise;
+		this.steeringNoise = steeringNoise;
+		this.forwardNoise = forwardNoise;
 	}
 
 	public double[] getAveragePosition(IRobot[] p) {
