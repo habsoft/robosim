@@ -268,6 +268,8 @@ public class HistogramFilterAdvView extends RootView {
 	}
 
 	public boolean loadProperties() {
+	    
+	    String INVALID_TAG_VALUE = "Invalid value of tag ";
 
 		PANEL_HEIGHT = (int) (screenSize.getHeight() / 2 - 80);
 		PANEL_WIDTH = PANEL_HEIGHT - LABEL_HEIGHT;
@@ -280,13 +282,13 @@ public class HistogramFilterAdvView extends RootView {
 				try {
 					int noOfRows = Integer.parseInt(prop.getProperty(NO_OF_ROWS_TAG));
 					if (noOfRows > MAX_NO_OF_ROWS || noOfRows < MIN_NO_OF_ROWS) {
-						System.out.println("Invalid value of tag " + NO_OF_ROWS_TAG + " .Expedted : " + MIN_NO_OF_ROWS + "-"
+						System.out.println(INVALID_TAG_VALUE + NO_OF_ROWS_TAG + " .Expedted : " + MIN_NO_OF_ROWS + "-"
 								+ MAX_NO_OF_ROWS + ".Loading Default");
 					} else {
 						DEF_NO_OF_ROWS = noOfRows;
 					}
 				} catch (Exception e) {
-					System.out.println("Invalid value of tag " + NO_OF_ROWS_TAG + ".Loading Default");
+					System.out.println(INVALID_TAG_VALUE + NO_OF_ROWS_TAG + ".Loading Default");
 				}
 			}
 			// No of columns
@@ -294,13 +296,13 @@ public class HistogramFilterAdvView extends RootView {
 				try {
 					int noOfColumns = Integer.parseInt(prop.getProperty(NO_OF_COLUMNS_TAG));
 					if (noOfColumns > MAX_NO_OF_COLUMNS || noOfColumns < MIN_NO_OF_COLUMNS) {
-						System.out.println("Invalid value of tag " + NO_OF_COLUMNS_TAG + " .Expedted : " + MIN_NO_OF_COLUMNS + "-"
+						System.out.println(INVALID_TAG_VALUE + NO_OF_COLUMNS_TAG + " .Expedted : " + MIN_NO_OF_COLUMNS + "-"
 								+ MAX_NO_OF_COLUMNS + ".Loading Default");
 					} else {
 						DEF_NO_OF_COLUMNS = noOfColumns;
 					}
 				} catch (Exception e) {
-					System.out.println("Invalid value of tag " + NO_OF_COLUMNS_TAG + ".Loading Default");
+					System.out.println(INVALID_TAG_VALUE + NO_OF_COLUMNS_TAG + ".Loading Default");
 				}
 			}
 			// Cyclic world or not
@@ -308,7 +310,7 @@ public class HistogramFilterAdvView extends RootView {
 				try {
 					DEFAULT_CYCLIC_WORLD = prop.getProperty(CYCLIC_WORLD_TAG).equals("true");
 				} catch (Exception e) {
-					System.out.println("Invalid value of tag " + CYCLIC_WORLD_TAG + ". Loading Default");
+					System.out.println(INVALID_TAG_VALUE + CYCLIC_WORLD_TAG + ". Loading Default");
 				}
 			}
 			// Load motion noise
@@ -316,12 +318,12 @@ public class HistogramFilterAdvView extends RootView {
 				try {
 					double motionNoise = Double.parseDouble(prop.getProperty(MOTION_NOISE_TAG));
 					if (motionNoise > 1 || motionNoise < 0) {
-						System.out.println("Invalid value of tag " + MOTION_NOISE_TAG + " .Expedted : 0-1. Loading Default");
+						System.out.println(INVALID_TAG_VALUE + MOTION_NOISE_TAG + " .Expedted : 0-1. Loading Default");
 					} else {
 						DEFAULT_MOTION_NOISE = motionNoise;
 					}
 				} catch (Exception e) {
-					System.out.println("Invalid value of tag " + MOTION_NOISE_TAG);
+					System.out.println(INVALID_TAG_VALUE + MOTION_NOISE_TAG);
 				}
 			}
 			// Load sensor noise
@@ -329,12 +331,12 @@ public class HistogramFilterAdvView extends RootView {
 				try {
 					double sensorNoise = Double.parseDouble(prop.getProperty(SENSOR_NOISE_TAG));
 					if (sensorNoise > 1 || sensorNoise < 0) {
-						System.out.println("Invalid value of tag " + SENSOR_NOISE_TAG + " .Expedted : 0-1. Loading Default");
+						System.out.println(INVALID_TAG_VALUE + SENSOR_NOISE_TAG + " .Expedted : 0-1. Loading Default");
 					} else {
 						DEFAULT_SENSOR_NOISE = sensorNoise;
 					}
 				} catch (Exception e) {
-					System.out.println("Invalid value of tag " + SENSOR_NOISE_TAG);
+					System.out.println(INVALID_TAG_VALUE + SENSOR_NOISE_TAG);
 				}
 			}
 			// Load world
@@ -357,7 +359,7 @@ public class HistogramFilterAdvView extends RootView {
 						}
 					}
 				} catch (Exception e) {
-					System.out.println("Invalid value of tag " + rowTag + " ." + e.getMessage());
+					System.out.println(INVALID_TAG_VALUE + rowTag + " ." + e.getMessage());
 					trueWorld = false;
 				}
 			}
