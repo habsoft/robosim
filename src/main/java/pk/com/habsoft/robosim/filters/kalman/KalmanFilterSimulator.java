@@ -7,22 +7,22 @@ import pk.com.habsoft.robosim.utils.RoboMathUtils;
 public class KalmanFilterSimulator {
 
 	// simulation parameters
-	int total_time;
-	double measurement_variance;
+	int totalTime;
+	double measurementVariance;
 
 	// #Data Arrays for plotting
-	double[] position_measurements;
-	double[] car_positions;
-	double[] position_kalman;
+	double[] positionMeasurements;
+	double[] carPositions;
+	double[] positionKalman;
 
-	double[] veloc_measurement;
-	double[] car_veloc;
-	double[] veloc_kalman;
+	double[] velocMeasurement;
+	double[] carVeloc;
+	double[] velocKalman;
 
-	double[] measurement_error;
-	double[] kalman_position_error;
-	double[] measurement_verror;
-	double[] kalman_veloc_error;
+	double[] measurementError;
+	double[] kalmanPositionError;
+	double[] measurementVelocError;
+	double[] kalmanVelocError;
 
 	double[][] xx = { { 0 }, { 0 } };
 	double[][] pp = { { 1000.0, 0.0 }, { 0.0, 1000.0 } };
@@ -38,23 +38,23 @@ public class KalmanFilterSimulator {
 	public static final DecimalFormat df = new DecimalFormat("####0.000");
 
 	public KalmanFilterSimulator(int totalTime, double variance, double carSpeed) {
-		this.total_time = totalTime;
-		this.measurement_variance = variance;
+		this.totalTime = totalTime;
+		this.measurementVariance = variance;
 		this.carSpeed = carSpeed;
 
-		position_measurements = new double[totalTime];
-		car_positions = new double[totalTime];
-		position_kalman = new double[totalTime];
+		positionMeasurements = new double[totalTime];
+		carPositions = new double[totalTime];
+		positionKalman = new double[totalTime];
 
-		veloc_measurement = new double[totalTime];
-		car_veloc = new double[totalTime];
-		veloc_kalman = new double[totalTime];
+		velocMeasurement = new double[totalTime];
+		carVeloc = new double[totalTime];
+		velocKalman = new double[totalTime];
 
-		measurement_error = new double[totalTime];
-		kalman_position_error = new double[totalTime];
+		measurementError = new double[totalTime];
+		kalmanPositionError = new double[totalTime];
 
-		measurement_verror = new double[totalTime];
-		kalman_veloc_error = new double[totalTime];
+		measurementVelocError = new double[totalTime];
+		kalmanVelocError = new double[totalTime];
 	}
 
 	// #Returns car distance given of time(t)
@@ -66,12 +66,12 @@ public class KalmanFilterSimulator {
 	public void simulate() {
 		double lastPos = 0;
 		double lastMes = 0;
-		for (int t = 0; t < total_time; t++) {
+		for (int t = 0; t < totalTime; t++) {
 			// #generate measurement and carpos
 			// actual position
 			double carPos = carPos(t);
 			// measured position
-			double measuredPos = RoboMathUtils.nextGaussian(carPos, measurement_variance);
+			double measuredPos = RoboMathUtils.nextGaussian(carPos, measurementVariance);
 
 			// actual velocity
 			double v = carPos - lastPos;
@@ -86,19 +86,19 @@ public class KalmanFilterSimulator {
 			// predicted next position
 			double[][] x = filter.getX().getData();
 
-			veloc_measurement[t] = mv;
-			car_veloc[t] = v;
-			veloc_kalman[t] = x[1][0];
+			velocMeasurement[t] = mv;
+			carVeloc[t] = v;
+			velocKalman[t] = x[1][0];
 
-			position_measurements[t] = measuredPos;
-			car_positions[t] = carPos;
-			position_kalman[t] = x[0][0];
+			positionMeasurements[t] = measuredPos;
+			carPositions[t] = carPos;
+			positionKalman[t] = x[0][0];
 
-			measurement_error[t] = measuredPos - carPos;
-			measurement_verror[t] = mv - v;
+			measurementError[t] = measuredPos - carPos;
+			measurementVelocError[t] = mv - v;
 
-			kalman_position_error[t] = x[0][0] - carPos;
-			kalman_veloc_error[t] = x[1][0] - v;
+			kalmanPositionError[t] = x[0][0] - carPos;
+			kalmanVelocError[t] = x[1][0] - v;
 
 			lastPos = carPos;// #assume dPos/dT ^= veloc
 			lastMes = measuredPos;// #so no need for extra veloc func
@@ -118,43 +118,43 @@ public class KalmanFilterSimulator {
 	}
 
 	public double[] getPositionMeasurements() {
-		return this.position_measurements;
+		return this.positionMeasurements;
 	}
 
 	public double[] getCarPositions() {
-		return this.car_positions;
+		return this.carPositions;
 	}
 
 	public double[] getPositionsKalman() {
-		return this.position_kalman;
+		return this.positionKalman;
 	}
 
 	public double[] getVelocityMeasurements() {
-		return this.veloc_measurement;
+		return this.velocMeasurement;
 	}
 
 	public double[] getCarVelocities() {
-		return this.car_veloc;
+		return this.carVeloc;
 	}
 
 	public double[] getVelocitiesKalman() {
-		return this.veloc_kalman;
+		return this.velocKalman;
 	}
 
 	public double[] getPositionKalmanError() {
-		return this.kalman_position_error;
+		return this.kalmanPositionError;
 	}
 
 	public double[] getPositionMeasurementError() {
-		return this.measurement_error;
+		return this.measurementError;
 	}
 
 	public double[] getVelocityKalmanError() {
-		return this.kalman_veloc_error;
+		return this.kalmanVelocError;
 	}
 
 	public double[] getVelocityMeasurementError() {
-		return this.measurement_verror;
+		return this.measurementVelocError;
 	}
 
 }
