@@ -94,12 +94,13 @@ public class RoboSim extends JFrame implements ActionListener {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+
 					JInternalFrame[] frms = desk.getAllFrames();
 					for (int i = 0; i < frms.length; i++) {
 						try {
 							if (frms[i] instanceof RootView) {
 								((RootView) frms[i]).setClosed(true);
-								// ((RootView) frms[i]).saveProperties();
+								((RootView) frms[i]).saveProperties();
 							}
 						} catch (Exception ex) {
 							ex.printStackTrace();
@@ -110,7 +111,6 @@ public class RoboSim extends JFrame implements ActionListener {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-
 			}
 		});
 	}
@@ -242,10 +242,13 @@ public class RoboSim extends JFrame implements ActionListener {
 	private void showContactDetail() {
 		// URL url = RoboSim.class.getResource("images/about.jpg");
 		Icon ico = new ImageIcon(getClass().getResource("/images/about.jpg"));
-		JOptionPane.showOptionDialog(null,
-				"                RoboSim(Robot Simulator)\nVersion = " + version
-						+ "\nIf you need any help regarding this software, I am just an email away.\nEmail = faisal.hameed.pk@gmail.com\nSkype = faisal.hameed.pk",
-				"About Me", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, ico, new Object[] {}, null);
+		JOptionPane
+				.showOptionDialog(
+						null,
+						"                RoboSim(Robot Simulator)\nVersion = "
+								+ version
+								+ "\nIf you need any help regarding this software, I am just an email away.\nEmail = faisal.hameed.pk@gmail.com\nSkype = faisal.hameed.pk",
+						"About Me", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, ico, new Object[] {}, null);
 
 	}
 

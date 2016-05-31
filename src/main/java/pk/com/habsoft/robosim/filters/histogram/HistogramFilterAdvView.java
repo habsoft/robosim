@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,22 +25,6 @@ import pk.com.habsoft.robosim.utils.UIUtils;
 public class HistogramFilterAdvView extends RootView {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final String NO_OF_ROWS_TAG = "NO_OF_ROWS";
-	private static final String NO_OF_COLUMNS_TAG = "NO_OF_COLUMNS";
-	private static final String CYCLIC_WORLD_TAG = "CYCLIC_WORLD";
-	private static final String MOTION_NOISE_TAG = "MOTION_NOISE";
-	private static final String SENSOR_NOISE_TAG = "SENSOR_NOISE";
-	private static final String MAP_ROW_TAG = "MAP_ROW_";
-
-	static int MAX_NO_OF_ROWS = 6;
-	static int MIN_NO_OF_ROWS = 1;
-	static int DEF_NO_OF_ROWS = 3;
-	static int MAX_NO_OF_COLUMNS = 6;
-	static int MIN_NO_OF_COLUMNS = 1;
-	static int DEF_NO_OF_COLUMNS = 4;
-
-	JLabel[][] lblBeliefMap;
 
 	int[][] world;
 	HistogramFilter filter = null;
@@ -64,10 +47,6 @@ public class HistogramFilterAdvView extends RootView {
 	JButton btnWorldConfiguration;
 	JButton btnResetSimulation;
 
-	static double DEFAULT_SENSOR_NOISE = 0.20;
-	static double DEFAULT_MOTION_NOISE = 0.20;
-	static boolean DEFAULT_CYCLIC_WORLD = false;
-
 	static int PANEL_WIDTH = 300;
 	static int PANEL_HEIGHT = 300;
 
@@ -75,8 +54,10 @@ public class HistogramFilterAdvView extends RootView {
 	RPanel pnlRobotSettings;
 	RPanel pnlBeliefMap;
 
+	HistogramConfig config = new HistogramConfig();
+
 	public HistogramFilterAdvView() {
-		super("Histogram Filter (Markov Localization)", "config/Histogram.properties");
+		super("Histogram Filter (Markov Localization)", "config/Histogram_Adv.properties");
 		setLayout(null);
 		loadProperties();
 
@@ -89,9 +70,9 @@ public class HistogramFilterAdvView extends RootView {
 		// Set this world to Localizer
 		filter = new HistogramFilter(world);
 		// Setting the default noise
-		filter.setMotionNoise(DEFAULT_MOTION_NOISE);
-		filter.setSensorNoise(DEFAULT_SENSOR_NOISE);
-		filter.setCyclic(DEFAULT_CYCLIC_WORLD);
+		filter.setMotionNoise(config.getMotionNoise());
+		filter.setSensorNoise(config.getSensorNoise());
+		filter.setCyclic(config.isCyclicWorld());
 
 		// //////////// Setting Panel
 
@@ -99,7 +80,7 @@ public class HistogramFilterAdvView extends RootView {
 		createSensorsComponents(pnlRobotSettings);
 
 		// ////////// Robot Belief Map
-		pnlBeliefMap = new RobotBeliefMap(this, PANEL_WIDTH * 2, PANEL_HEIGHT * 2, "Robot Belief Map", DEF_NO_OF_ROWS, DEF_NO_OF_COLUMNS);
+		pnlBeliefMap = new RobotBeliefMap(this, PANEL_WIDTH * 2, PANEL_HEIGHT * 2, "Robot Belief Map");
 		pnlBeliefMap.setLocation(PANEL_WIDTH, 0);
 		add(pnlBeliefMap);
 
@@ -145,7 +126,7 @@ public class HistogramFilterAdvView extends RootView {
 		spnMotionNoise.setBounds(xLoc + width + spacing, yLoc + spacing, width - spacing, height - spacing);
 		spnMotionNoise.setToolTipText("Set the ROBOT motion noise.It should be (0-1)");
 		spnMotionNoise.setModel(spnMotionNoiseModal);
-		spnMotionNoise.setValue(DEFAULT_MOTION_NOISE);
+		spnMotionNoise.setValue(config.getMotionNoise());
 		pnlRobotSetting.add(spnMotionNoise);
 
 		lblMotion = new JLabel("Cyclic World");
@@ -156,7 +137,7 @@ public class HistogramFilterAdvView extends RootView {
 		chkCyclic = new JCheckBox("");
 		chkCyclic.setBounds(xLoc + width + spacing, yLoc + spacing, width - spacing, height - spacing);
 		chkCyclic.setToolTipText("UnCheck it if the ROBOT world is not cyclic");
-		chkCyclic.setSelected(DEFAULT_CYCLIC_WORLD);
+		chkCyclic.setSelected(config.isCyclicWorld());
 		pnlRobotSetting.add(chkCyclic);
 
 		lblMotion = new JLabel("Sensor Noise");
@@ -168,7 +149,7 @@ public class HistogramFilterAdvView extends RootView {
 		spnSensorNoise.setBounds(xLoc + width + spacing, yLoc + spacing, width - spacing, height - spacing);
 		spnSensorNoise.setToolTipText("Set the ROBOT sensor noise.It should be (0-1)");
 		spnSensorNoise.setModel(spnSensorNoiseModal);
-		spnSensorNoise.setValue(DEFAULT_SENSOR_NOISE);
+		spnSensorNoise.setValue(config.getSensorNoise());
 		pnlRobotSetting.add(spnSensorNoise);
 
 		btnApply = new JButton("Apply Setting");
@@ -228,8 +209,6 @@ public class HistogramFilterAdvView extends RootView {
 				gui.setVisible(true);
 				if (gui.isWorldChanged()) {
 					world = gui.getNewWorld();
-					DEF_NO_OF_ROWS = world.length;
-					DEF_NO_OF_COLUMNS = world[0].length;
 					filter.setWorld(world);
 					pnlBeliefMap.repaint();
 				}
@@ -268,137 +247,31 @@ public class HistogramFilterAdvView extends RootView {
 	}
 
 	public boolean loadProperties() {
-	    
-	    String INVALID_TAG_VALUE = "Invalid value of tag ";
 
 		PANEL_HEIGHT = (int) (screenSize.getHeight() / 2 - 80);
 		PANEL_WIDTH = PANEL_HEIGHT - LABEL_HEIGHT;
 
-		System.out.println("Property File = " + propertyFile);
+		config = config.loadConfiguration();
 
-		if (super.loadProperties()) {
-			// No of rows
-			if (prop.containsKey(NO_OF_ROWS_TAG)) {
-				try {
-					int noOfRows = Integer.parseInt(prop.getProperty(NO_OF_ROWS_TAG));
-					if (noOfRows > MAX_NO_OF_ROWS || noOfRows < MIN_NO_OF_ROWS) {
-						System.out.println(INVALID_TAG_VALUE + NO_OF_ROWS_TAG + " .Expedted : " + MIN_NO_OF_ROWS + "-"
-								+ MAX_NO_OF_ROWS + ".Loading Default");
-					} else {
-						DEF_NO_OF_ROWS = noOfRows;
-					}
-				} catch (Exception e) {
-					System.out.println(INVALID_TAG_VALUE + NO_OF_ROWS_TAG + ".Loading Default");
-				}
-			}
-			// No of columns
-			if (prop.containsKey(NO_OF_COLUMNS_TAG)) {
-				try {
-					int noOfColumns = Integer.parseInt(prop.getProperty(NO_OF_COLUMNS_TAG));
-					if (noOfColumns > MAX_NO_OF_COLUMNS || noOfColumns < MIN_NO_OF_COLUMNS) {
-						System.out.println(INVALID_TAG_VALUE + NO_OF_COLUMNS_TAG + " .Expedted : " + MIN_NO_OF_COLUMNS + "-"
-								+ MAX_NO_OF_COLUMNS + ".Loading Default");
-					} else {
-						DEF_NO_OF_COLUMNS = noOfColumns;
-					}
-				} catch (Exception e) {
-					System.out.println(INVALID_TAG_VALUE + NO_OF_COLUMNS_TAG + ".Loading Default");
-				}
-			}
-			// Cyclic world or not
-			if (prop.containsKey(CYCLIC_WORLD_TAG)) {
-				try {
-					DEFAULT_CYCLIC_WORLD = prop.getProperty(CYCLIC_WORLD_TAG).equals("true");
-				} catch (Exception e) {
-					System.out.println(INVALID_TAG_VALUE + CYCLIC_WORLD_TAG + ". Loading Default");
-				}
-			}
-			// Load motion noise
-			if (prop.containsKey(MOTION_NOISE_TAG)) {
-				try {
-					double motionNoise = Double.parseDouble(prop.getProperty(MOTION_NOISE_TAG));
-					if (motionNoise > 1 || motionNoise < 0) {
-						System.out.println(INVALID_TAG_VALUE + MOTION_NOISE_TAG + " .Expedted : 0-1. Loading Default");
-					} else {
-						DEFAULT_MOTION_NOISE = motionNoise;
-					}
-				} catch (Exception e) {
-					System.out.println(INVALID_TAG_VALUE + MOTION_NOISE_TAG);
-				}
-			}
-			// Load sensor noise
-			if (prop.containsKey(SENSOR_NOISE_TAG)) {
-				try {
-					double sensorNoise = Double.parseDouble(prop.getProperty(SENSOR_NOISE_TAG));
-					if (sensorNoise > 1 || sensorNoise < 0) {
-						System.out.println(INVALID_TAG_VALUE + SENSOR_NOISE_TAG + " .Expedted : 0-1. Loading Default");
-					} else {
-						DEFAULT_SENSOR_NOISE = sensorNoise;
-					}
-				} catch (Exception e) {
-					System.out.println(INVALID_TAG_VALUE + SENSOR_NOISE_TAG);
-				}
-			}
-			// Load world
-			boolean trueWorld = true;
-			world = new int[DEF_NO_OF_ROWS][DEF_NO_OF_COLUMNS];
-			for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
-				String rowTag = MAP_ROW_TAG + (i + 1);
-				try {
-					String[] row = prop.getProperty(rowTag).split(",");
-					for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
-						try {
-							world[i][j] = Integer.parseInt(row[j]);
-							if (world[i][j] >= SENSORS.length) {
-								System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + SENSORS.length);
-								trueWorld = false;
-							}
-						} catch (Exception e) {
-							System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + SENSORS.length);
-							trueWorld = false;
-						}
-					}
-				} catch (Exception e) {
-					System.out.println(INVALID_TAG_VALUE + rowTag + " ." + e.getMessage());
-					trueWorld = false;
-				}
-			}
-			// if world is invalid then initialize random world
-			if (!trueWorld) {
-				System.out.println("Loading Random Robot Map");
-				Random r = new Random();
-				for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
-					for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
-						world[i][j] = r.nextInt(SENSORS.length);
-					}
-				}
-			}
-		}
+		this.world = config.getWorld();
+
 		return true;
 	}
 
+	@Override
 	public void saveProperties() {
+		config.setCyclicWorld(chkCyclic.isSelected());
+		config.setMotionNoise(Double.parseDouble(String.valueOf(spnMotionNoise.getValue())));
+		config.setSensorNoise(Double.parseDouble(String.valueOf(spnSensorNoise.getValue())));
+		config.setWorld(world);
 
-		prop.setProperty(CYCLIC_WORLD_TAG, Boolean.toString(chkCyclic.isSelected()));
-		prop.setProperty(MOTION_NOISE_TAG, spnMotionNoise.getValue().toString());
-		prop.setProperty(SENSOR_NOISE_TAG, spnSensorNoise.getValue().toString());
+		config.saveConfiguration();
+	}
 
-		// save world
-		prop.setProperty(NO_OF_ROWS_TAG, Integer.toString(DEF_NO_OF_ROWS));
-		prop.setProperty(NO_OF_COLUMNS_TAG, Integer.toString(DEF_NO_OF_COLUMNS));
-
-		for (int i = 0; i < world.length; i++) {
-			String row = "";
-			int j = 0;
-			for (; j < world[i].length - 1; j++) {
-				row += world[i][j] + ",";
-			}
-			row += Integer.toString(world[i][j]);
-			prop.setProperty(MAP_ROW_TAG + (i + 1), row);
-		}
-
-		super.saveProperties();
-
+	@Override
+	public void this_internalFrameClosing() {
+		super.this_internalFrameClosing();
+		config.saveConfiguration();
 	}
 
 	public static void main(String[] args) {

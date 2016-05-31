@@ -16,33 +16,34 @@ public class RobotBeliefMap extends RPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Default cellSize. It will be computed with width,height
-	 */
-	private int cellWidth = 50;// pixel
-	private int cellHeight = 50;// pixel
 	private static int spacing = 1; // pixel
-	int rows;
-	int cols;
+
+	private int width;
+	private int height;
 
 	private Image image;
+	// TODO replace with environment;
 	HistogramFilterAdvView view;
 
-	public RobotBeliefMap(HistogramFilterAdvView view, double width, double height, String label, int rows, int cols) {
+	public RobotBeliefMap(HistogramFilterAdvView view, int width, int height, String label) {
 		super(width, height, label);
 		this.view = view;
-		this.rows = rows;
-		this.cols = cols;
-		this.cellWidth = (int) width / cols;
-		this.cellHeight = (int) height / rows;
+		this.width = width;
+		this.height = height - LABEL_HEIGHT;
 
-		image = new BufferedImage((int) width, (int) height, BufferedImage.BITMASK);
+		image = new BufferedImage(width, height, BufferedImage.BITMASK);
 	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D graphics = (Graphics2D) image.getGraphics();
+
+		int rows = view.world.length;
+		int cols = view.world[0].length;
+
+		// Cell width, height
+		int cWidth = width / cols;// pixel
+		int cHeight = height / rows;// pixel
 
 		graphics.setBackground(Color.red);
 		graphics.setPaint(Color.RED);
@@ -50,7 +51,7 @@ public class RobotBeliefMap extends RPanel {
 			for (int j = 0; j < cols; j++) {
 
 				graphics.setPaint(Color.WHITE);
-				graphics.fillRect(j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+				graphics.fillRect(j * cWidth, i * cHeight, cWidth, cHeight);
 
 				double intensity = Double.parseDouble(view.filter.getProbabilityAt(i, j));
 				// Paint p = new Color(0, 0, 0, (int) (255 * intensity));
@@ -58,10 +59,10 @@ public class RobotBeliefMap extends RPanel {
 				Color p = view.SENSORS[view.world[i][j]];
 				graphics.setPaint(new Color(p.getRed(), p.getGreen(), p.getBlue(), 55 + (int) (200 * intensity)));
 
-				graphics.fillRect(j * cellWidth + spacing, i * cellWidth + spacing, cellWidth - spacing, cellWidth - spacing);
+				graphics.fillRect(j * cWidth + spacing, i * cHeight + spacing, cWidth - spacing, cHeight - spacing);
 
 				graphics.setColor(Color.BLACK);
-				graphics.setFont(new Font("Arial", Font.BOLD, Math.min(cellWidth, cellWidth) / 4));
+				graphics.setFont(new Font("Arial", Font.BOLD, Math.min(cWidth, cHeight) / 4));
 				String str = String.valueOf(view.filter.getProbabilityAt(i, j));
 
 				FontMetrics matrix = graphics.getFontMetrics();
@@ -69,7 +70,7 @@ public class RobotBeliefMap extends RPanel {
 				int wd = matrix.stringWidth(str);
 
 				// Draw Image in center of the cell
-				graphics.drawString(str, (j * (cellWidth) + cellWidth / 2 - wd / 2), (i * (cellWidth) + cellWidth / 2 + ht / 2));
+				graphics.drawString(str, (j * (cWidth) + cWidth / 2 - wd / 2), (i * (cHeight) + cHeight / 2 + ht / 2));
 
 			}
 		}
