@@ -27,8 +27,25 @@ public class RoboMathUtils {
 	}
 
 	public static double gaussian(double mu, double sigma, double x) {
-		return Math.exp(-0.5 * Math.pow((x - mu), 2) / Math.pow(sigma, 2))
-				/ (Math.sqrt(2 * Math.PI * Math.pow(sigma, 2)));
+		return Math.exp(-0.5 * Math.pow((x - mu), 2) / Math.pow(sigma, 2)) / (Math.sqrt(2 * Math.PI * Math.pow(sigma, 2)));
+	}
+
+	public static double euclideanDistance(double[] m, double[] z) {
+		double dist = 0;
+		for (int i = 0; i < z.length; i++) {
+			dist += Math.pow(z[i] - m[i], 2);
+		}
+
+		return Math.sqrt(dist);
+	}
+	
+	public static double manhattanDistance(double[] m, double[] z) {
+		double dist = 0;
+		for (int i = 0; i < z.length; i++) {
+			dist += Math.pow(z[i] - m[i], 2);
+		}
+
+		return Math.sqrt(dist);
 	}
 
 	public static String round(double unrounded, int precision) {
@@ -68,6 +85,10 @@ public class RoboMathUtils {
 		}
 
 		return newValue;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(RoboMathUtils.gaussian(5, 0.1, 4));
 	}
 
 }

@@ -64,4 +64,8 @@ public class Util {
 	public boolean isValidValue(double value, double min, double max) {
 		return value >= min && value <= max;
 	}
+
+	public static void debug(String msg) {
+		System.out.println(msg);
+	}
 }
