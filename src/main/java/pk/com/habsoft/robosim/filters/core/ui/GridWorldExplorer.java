@@ -83,6 +83,7 @@ public class GridWorldExplorer extends JFrame {
             System.out.println("Could not parse GroundedAction string representation of " + actionStringRep + ".\n"
                     + "It is not being assigned to VisualExplorer key " + key + ".");
         } else {
+            System.out.println(key);
             this.keyActionMap.put(key, ga);
         }
     }
