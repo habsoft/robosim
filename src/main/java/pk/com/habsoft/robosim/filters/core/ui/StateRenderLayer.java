@@ -122,7 +122,6 @@ public class StateRenderLayer implements RenderLayer {
 
     @Override
     public void render(Graphics2D g2, float width, float height) {
-        System.out.println("State render " + curState);
         if (this.curState == null) {
             return; // don't render anything if there is no state to render
         }
@@ -142,27 +141,6 @@ public class StateRenderLayer implements RenderLayer {
                 }
             }
         }
-
-        // // draw each object if there is a painter to do so
-        // List<ObjectInstance> objects = curState.getAllObjects();
-        // for (ObjectInstance o : objects) {
-        //
-        // // is there a specific object painter for this object?
-        // if (specificObjectPainters.containsKey(o.getName())) {
-        // List<String> unsetAttributes = o.unsetAttributes();
-        // if (!unsetAttributes.isEmpty()) {
-        // System.out.println("Warning: not rendering object " + o.getName()
-        // + " because it has the following unset attributes: ");
-        // for (String a : unsetAttributes) {
-        // System.out.println("    " + a);
-        // }
-        // continue;
-        // }
-        // specificObjectPainters.get(o.getName()).paintObject(g2, curState, o,
-        // width, height);
-        // }
-        //
-        // }
 
     }
 

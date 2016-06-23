@@ -153,131 +153,131 @@ import pk.com.habsoft.robosim.filters.core.State;
  */
 public abstract class Action {
 
-    /**
-     * The name of the action that can uniquely identify it
-     */
-    protected String name;
+	/**
+	 * The name of the action that can uniquely identify it
+	 */
+	protected String name;
 
-    /**
-     * The domain with which this action is associated
-     */
-    protected Domain domain;
+	/**
+	 * The domain with which this action is associated
+	 */
+	protected Domain domain;
 
-    /**
-     * An observer that will be notified of an actions results every time it is
-     * executed. By default no observer is specified.
-     */
-    protected List<ActionObserver> actionObservers = new ArrayList<ActionObserver>();
+	/**
+	 * An observer that will be notified of an actions results every time it is
+	 * executed. By default no observer is specified.
+	 */
+	protected List<ActionObserver> actionObservers = new ArrayList<ActionObserver>();
 
-    public Action() {
-        // should not be called directly, but may be useful for subclasses of
-        // Action
-    }
+	public Action() {
+		// should not be called directly, but may be useful for subclasses of
+		// Action
+	}
 
-    public Action(String name, Domain domain) {
-        this.name = name;
-        this.domain = domain;
-        this.domain.addAction(this);
-    }
+	public Action(String name, Domain domain) {
+		this.name = name;
+		this.domain = domain;
+		this.domain.addAction(this);
+	}
 
-    /**
-     * Returns the name of the action
-     * 
-     * @return the name of the action
-     */
-    public final String getName() {
-        return name;
-    }
+	/**
+	 * Returns the name of the action
+	 * 
+	 * @return the name of the action
+	 */
+	public final String getName() {
+		return name;
+	}
 
-    /**
-     * Returns the domain to which this action belongs.
-     * 
-     * @return the domain to which this action belongs.
-     */
-    public final Domain getDomain() {
-        return domain;
-    }
+	/**
+	 * Returns the domain to which this action belongs.
+	 * 
+	 * @return the domain to which this action belongs.
+	 */
+	public final Domain getDomain() {
+		return domain;
+	}
 
-    /**
-     * Sets an action observer for this action. Set to null to specify no
-     * observer or to disable observaiton.
-     * 
-     * @param observer
-     *            the observer that will be told of each event when this action
-     *            is executed.
-     */
-    public void addActionObserver(ActionObserver observer) {
-        this.actionObservers.add(observer);
-    }
+	/**
+	 * Sets an action observer for this action. Set to null to specify no
+	 * observer or to disable observaiton.
+	 * 
+	 * @param observer
+	 *            the observer that will be told of each event when this action
+	 *            is executed.
+	 */
+	public void addActionObserver(ActionObserver observer) {
+		this.actionObservers.add(observer);
+	}
 
-    /**
-     * Clears all action observers associated with this action
-     */
-    public void clearAllActionsObservers() {
-        this.actionObservers.clear();
-    }
+	/**
+	 * Clears all action observers associated with this action
+	 */
+	public void clearAllActionsObservers() {
+		this.actionObservers.clear();
+	}
 
-    /**
-     * Performs this action in the specified state using the specified
-     * parameters and returns the resulting state. The input state will not be
-     * modified. If the action is not applicable in state s with parameters
-     * params, then a copy of the input state is returned. In general Action
-     * subclasses should *NOT* override this method and should instead override
-     * the abstract
-     * {@link #performActionHelper(State, burlap.oomdp.singleagent.GroundedAction)}
-     * method. Only override this method if you are seeking to perform memory
-     * optimization with semi-shallow copies of states and know what you're
-     * doing.
-     * 
-     * @param s
-     *            the state in which the action is to be performed.
-     * @param groundedAction
-     *            the {@link burlap.oomdp.singleagent.GroundedAction} specifying
-     *            the parameters to use
-     * @return the state that resulted from applying this action
-     */
-    public State performAction(State s) {
+	/**
+	 * Performs this action in the specified state using the specified
+	 * parameters and returns the resulting state. The input state will not be
+	 * modified. If the action is not applicable in state s with parameters
+	 * params, then a copy of the input state is returned. In general Action
+	 * subclasses should *NOT* override this method and should instead override
+	 * the abstract
+	 * {@link #performActionHelper(State, burlap.oomdp.singleagent.GroundedAction)}
+	 * method. Only override this method if you are seeking to perform memory
+	 * optimization with semi-shallow copies of states and know what you're
+	 * doing.
+	 * 
+	 * @param s
+	 *            the state in which the action is to be performed.
+	 * @param groundedAction
+	 *            the {@link burlap.oomdp.singleagent.GroundedAction} specifying
+	 *            the parameters to use
+	 * @return the state that resulted from applying this action
+	 */
+	public State performAction(State s) {
 
-        State resultState = s.copy();
+		State resultState = s.copy();
 
-        resultState = performActionHelper(resultState);
+		resultState = performActionHelper(resultState);
 
-        for (ActionObserver observer : this.actionObservers) {
-            observer.actionEvent(resultState, resultState);
-        }
+		for (ActionObserver observer : this.actionObservers) {
+			observer.actionEvent(s, resultState, getName());
+		}
 
-        return resultState;
+		return resultState;
 
-    }
+	}
 
-    /**
-     * This method determines what happens when an action is applied in the
-     * given state with the given parameters. The State object s may be directly
-     * modified in this method since the parent method (
-     * {@link #performAction(burlap.oomdp.core.states.State, GroundedAction)}
-     * first copies the input state to pass to this helper method. The resulting
-     * state (which may be s) should then be returned.
-     * 
-     * @param s
-     *            the state to perform the action on
-     * @param groundedAction
-     *            the {@link burlap.oomdp.singleagent.GroundedAction} specifying
-     *            the parameters to use
-     * @return the resulting State from performing this action
-     */
-    protected abstract State performActionHelper(State s);
+	/**
+	 * This method determines what happens when an action is applied in the
+	 * given state with the given parameters. The State object s may be directly
+	 * modified in this method since the parent method (
+	 * {@link #performAction(burlap.oomdp.core.states.State, GroundedAction)}
+	 * first copies the input state to pass to this helper method. The resulting
+	 * state (which may be s) should then be returned.
+	 * 
+	 * @param s
+	 *            the state to perform the action on
+	 * @param groundedAction
+	 *            the {@link burlap.oomdp.singleagent.GroundedAction} specifying
+	 *            the parameters to use
+	 * @return the resulting State from performing this action
+	 */
+	protected abstract State performActionHelper(State s);
 
-    @Override
-    public boolean equals(Object obj) {
-        Action op = (Action) obj;
-        if (op.name.equals(name))
-            return true;
-        return false;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		Action op = (Action) obj;
+		if (op.name.equals(name))
+			return true;
+		return false;
+	}
 
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 
 }
