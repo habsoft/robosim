@@ -38,7 +38,7 @@ public class RoboMathUtils {
 
 		return Math.sqrt(dist);
 	}
-	
+
 	public static double manhattanDistance(double[] m, double[] z) {
 		double dist = 0;
 		for (int i = 0; i < z.length; i++) {
