@@ -123,12 +123,14 @@ public class MotionControllerModule implements ObjectInstance {
 		ObjectInstance agent = s.getObjectsOfClass(GridWorldDomain.CLASS_ROBOT).get(0);
 		int ax = agent.getIntValForAttribute(GridWorldDomain.ATTX);
 		int ay = agent.getIntValForAttribute(GridWorldDomain.ATTY);
+		// TODO theta
 
-		int nx = ax + dir.getDcomp()[0];
-		int ny = ay + dir.getDcomp()[1];
+		// Trim values if wold is cyclic
+		int nx = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTX, ax + dir.getDcomp()[0]);
+		int ny = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTY, ay + dir.getDcomp()[1]);
 
 		// hit wall, so do not change position
-		if (!GridWorldDomain.isOpen(nx, ny, map)) {
+		if (!GridWorldDomain.INSTANCE.isOpen(nx, ny)) {
 			nx = ax;
 			ny = ay;
 		}
@@ -161,15 +163,16 @@ public class MotionControllerModule implements ObjectInstance {
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				// Cell is not occupied.
-				if (!GridWorldDomain.isOpen(i, j, map)) {
+				if (!GridWorldDomain.INSTANCE.isOpen(i, j)) {
 					continue;
 				}
 
 				// Calculate Target location (x,y)
-				int tx = i + targetDir.getDcomp()[0];
-				int ty = j + targetDir.getDcomp()[1];
+				int tx = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTX, i + targetDir.getDcomp()[0]);
+				int ty = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTY, j + targetDir.getDcomp()[1]);
+
 				// hit wall, so do not change position
-				if (!GridWorldDomain.isOpen(tx, ty, map)) {
+				if (!GridWorldDomain.INSTANCE.isOpen(tx, ty)) {
 					tx = i;
 					ty = j;
 				}
@@ -186,10 +189,11 @@ public class MotionControllerModule implements ObjectInstance {
 				for (RobotDirection dir : controllers) {
 
 					// nx,ny are locations around target location.
-					int nx = tx + dir.getDcomp()[0];
-					int ny = ty + dir.getDcomp()[1];
+					int nx = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTX, tx + dir.getDcomp()[0]);
+					int ny = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTY, ty + dir.getDcomp()[1]);
+
 					// hit wall, so do not change position
-					if (!GridWorldDomain.isOpen(nx, ny, map)) {
+					if (!GridWorldDomain.INSTANCE.isOpen(nx, ny)) {
 						nx = tx;
 						ny = ty;
 					}

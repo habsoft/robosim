@@ -9,13 +9,13 @@ public class HistogramMain {
 
 	public static void main(String[] args) {
 		GridWorldDomain domain = new GridWorldDomain(11, 11);
-		domain.initDefaultWorl();
+		domain.initDefaultWorld();
 
 		Domain d = domain.generateDomain();
 
 		// setup initial state
 		State s = domain.getOneRobotBeliefState(d);
-		domain.setAgent(s, 1, 1);
+		domain.setAgent(s, 1, 1, 0);
 		domain.setUniformBelief(s);
 		domain.initializeSensors(s, d, 0.4);
 

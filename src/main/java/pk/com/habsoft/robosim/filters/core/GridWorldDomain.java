@@ -6,18 +6,23 @@ import pk.com.habsoft.robosim.filters.core.objects.GridRobot;
 import pk.com.habsoft.robosim.filters.core.objects.GridRobotBelief;
 import pk.com.habsoft.robosim.filters.sensors.MotionControllerModule;
 import pk.com.habsoft.robosim.filters.sensors.SonarRangeModule;
+import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GridWorldDomain.
  */
 public class GridWorldDomain {
+
+	public static GridWorldDomain INSTANCE;
 
 	/** Constant for the name of the x attribute. */
 	public static final String ATTX = "x";
 
 	/** Constant for the name of the y attribute. */
 	public static final String ATTY = "y";
+
+	/** Constant for the name of the orientation attribute. */
+	public static final String ATT_THETA = "theta";
 
 	/** Constant for the name of the sensor action. */
 	public static final String ACTION_SENSE = "sense";
@@ -28,8 +33,10 @@ public class GridWorldDomain {
 	/** The Constant CLASS_BELIEF. */
 	public static final String CLASS_BELIEF = "belief";
 
+	/** The Constant CLASS_RANGE_SENSORS. */
 	public static final String CLASS_RANGE_SENSORS = "range_sensors";
 
+	/** The Constant CLASS_MOTION_SENSORS. */
 	public static final String CLASS_MOTION_SENSORS = "motion_sensors";
 
 	/** The Constant OPEN. Robot can navigate in open cells. */
@@ -37,6 +44,8 @@ public class GridWorldDomain {
 
 	/** The Constant BLOCK. Occupied space in world */
 	public static final int BLOCK = 1;
+
+	private static Domain domain = null;
 
 	/** The width. */
 	private int width;
@@ -46,6 +55,9 @@ public class GridWorldDomain {
 
 	/** The map. */
 	private int[][] map;
+
+	/** The cyclic world. */
+	private boolean isCyclicWorld = true;
 
 	/**
 	 * Instantiates a new grid world domain.
@@ -59,6 +71,7 @@ public class GridWorldDomain {
 		this.width = width;
 		this.height = height;
 		this.makeEmptyMap();
+		INSTANCE = this;
 	}
 
 	/**
@@ -134,25 +147,40 @@ public class GridWorldDomain {
 	 * Will set the map of the world to the classic Four Rooms map used the
 	 * original options work (Sutton, R.S. and Precup, D. and Singh, S., 1999).
 	 */
-	public void initDefaultWorl() {
+	public void initDefaultWorld() {
+
+		this.width = 3;
+		this.height = 4;
+		makeEmptyMap();
+
 		// this.width = 5;
 		// this.height = 5;
 		// this.makeEmptyMap();
 		// //
 		// horizontalWall(0, 2, 4);
 		// horizontalWall(0, 0, 1);
-		// horizontalWall(2, 2, 2);
+		horizontalWall(0, 0, 0);
 		// //
 		// verticalWall(1, 3, 4);
 		// verticalWall(3, 3, 4);
 
-		this.width = 3;
-		this.height = 4;
-		makeEmptyMap();
-
 		// Add Actions
 	}
 
+	public void setCyclicWorld(boolean isCyclicWorld) {
+		this.isCyclicWorld = isCyclicWorld;
+	}
+
+	/**
+	 * Initialize sensors.
+	 *
+	 * @param s
+	 *            the s
+	 * @param d
+	 *            the d
+	 * @param motionNoise
+	 *            the motion noise
+	 */
 	public void initializeSensors(State s, Domain d, double motionNoise) {
 
 		ObjectInstance sensorModule = new SonarRangeModule(d.getObjectClass(CLASS_RANGE_SENSORS), CLASS_RANGE_SENSORS + 0);
@@ -223,12 +251,31 @@ public class GridWorldDomain {
 	 *            the map
 	 * @return true if cell is not occupied
 	 */
-	public static boolean isOpen(int nx, int ny, int[][] map) {
+	public boolean isOpen(int nx, int ny) {
 		// hit wall, or cell is occupied
-		if (nx < 0 || nx >= map.length || ny < 0 || ny >= map[0].length) {
-			return false;
+		Attribute attx = domain.getAttribute(ATTX);
+		Attribute atty = domain.getAttribute(ATTY);
+		if (!isCyclicWorld) {
+			if (nx < attx.lowerLim || nx >= attx.upperLim || ny < atty.lowerLim || ny >= atty.upperLim) {
+				return false;
+			}
+		} else {
+			// Trim (x,y) if world is cyclic
+			nx = RoboMathUtils.modulus(nx, (int) attx.upperLim, false);
+			ny = RoboMathUtils.modulus(ny, (int) atty.upperLim, false);
 		}
+
 		return map[nx][ny] == OPEN;
+	}
+
+	public int trimValue(String attrib, int val) {
+		int newVal = val;
+		Attribute att = domain.getAttribute(attrib);
+		if (isCyclicWorld) {
+			// TODO while loop in modulus is missing.
+			newVal = RoboMathUtils.modulus(val, (int) att.upperLim, false);
+		}
+		return newVal;
 	}
 
 	/**
@@ -254,19 +301,22 @@ public class GridWorldDomain {
 
 	/**
 	 * Sets the first agent object in s to the specified x and y position.
-	 * 
+	 *
 	 * @param s
 	 *            the state with the agent whose position to set
 	 * @param x
 	 *            the x position of the agent
 	 * @param y
 	 *            the y position of the agent
+	 * @param theta
+	 *            the theta
 	 */
-	public void setAgent(State s, int x, int y) {
+	public void setAgent(State s, int x, int y, int theta) {
 		GridRobot o = (GridRobot) s.getObjectsOfClass(CLASS_ROBOT).get(0);
 
 		o.setValue(ATTX, x);
 		o.setValue(ATTY, y);
+		o.setValue(ATT_THETA, theta);
 	}
 
 	/**
@@ -283,7 +333,7 @@ public class GridWorldDomain {
 		int openCells = 0;
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (isOpen(i, j, map)) {
+				if (isOpen(i, j)) {
 					openCells++;
 				}
 			}
@@ -312,18 +362,22 @@ public class GridWorldDomain {
 	 */
 	public Domain generateDomain() {
 
-		Domain domain = new SADomain();
+		domain = new SADomain();
 
 		// Creates a new Attribute object
 		Attribute xatt = new Attribute(domain, ATTX, Attribute.AttributeType.INT);
-		xatt.setLims(0, this.width - 1);
+		xatt.setLims(0, this.width);
 
 		Attribute yatt = new Attribute(domain, ATTY, Attribute.AttributeType.INT);
-		yatt.setLims(0., this.height - 1);
+		yatt.setLims(0, this.height);
+
+		Attribute theta = new Attribute(domain, ATT_THETA, Attribute.AttributeType.INT);
+		theta.setLims(0, 360);
 
 		ObjectClass agentClass = new ObjectClass(domain, CLASS_ROBOT);
 		agentClass.addAttribute(xatt);
 		agentClass.addAttribute(yatt);
+		agentClass.addAttribute(theta);
 
 		ObjectClass beliefClass = new ObjectClass(domain, CLASS_BELIEF);
 

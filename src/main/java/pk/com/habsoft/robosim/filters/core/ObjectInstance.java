@@ -2,18 +2,18 @@ package pk.com.habsoft.robosim.filters.core;
 
 public interface ObjectInstance {
 
-    public String getName();
+	public String getName();
 
-    public String getClassName();
+	public void setName(String newName);
 
-    public String getObjectDescription();
+	public String getClassName();
 
-    public void setName(String newName);
+	public String getObjectDescription();
 
-    public ObjectInstance copy();
+	public ObjectInstance copy();
 
-    public int getIntValForAttribute(String attx);
+	public ObjectInstance setValue(String attrib, int val);
 
-    ObjectInstance setValue(String attName, int v);
+	public int getIntValForAttribute(String attrib);
 
 }
