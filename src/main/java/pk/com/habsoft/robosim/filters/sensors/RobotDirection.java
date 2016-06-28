@@ -2,21 +2,21 @@ package pk.com.habsoft.robosim.filters.sensors;
 
 public enum RobotDirection {
 
-	NORTH("MoveNorth", "w", 0, new int[] { 0, 1 }), // North
-	SOUTH("MoveSouth", "s", 1, new int[] { 0, -1 }), // South
-	EAST("MoveEast", "d", 2, new int[] { 1, 0 }), // East
-	WEST("MoveWest", "a", 3, new int[] { -1, 0 }); // West
+	NORTH("MoveNorth", "w", 1, 90), // North
+	SOUTH("MoveSouth", "s", 3, 270), // South
+	EAST("MoveEast", "d", 0, 0), // East
+	WEST("MoveWest", "a", 2, 180); // West
 
 	private String actionName;
 	private String shortKey;
 	private int index;
-	private int[] dcomp;
+	private int angle;
 
-	private RobotDirection(String actionName, String shortKey, int index, int[] dcomp) {
+	private RobotDirection(String actionName, String shortKey, int index, int angle) {
 		this.actionName = actionName;
 		this.shortKey = shortKey;
 		this.index = index;
-		this.dcomp = dcomp;
+		this.angle = angle;
 	}
 
 	public String getActionName() {
@@ -43,12 +43,12 @@ public enum RobotDirection {
 		this.index = index;
 	}
 
-	public int[] getDcomp() {
-		return dcomp;
+	public int getAngle() {
+		return angle;
 	}
 
-	public void setDcomp(int[] dcomp) {
-		this.dcomp = dcomp;
+	public void setAngle(int angle) {
+		this.angle = angle;
 	}
 
 }
