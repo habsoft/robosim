@@ -108,7 +108,7 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 
 		// Robot Belief
 		GridRobotBelief robotBelief = (GridRobotBelief) s.getFirstObjectOfClass(GridWorldDomain.CLASS_BELIEF);
-		double[][] belief = robotBelief.getBeliefMap();
+		double[][][] belief = robotBelief.getBeliefMap();
 		double[][] sensorBelief = new double[belief.length][belief[0].length];
 
 		double total = 0;
@@ -132,7 +132,7 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 		// Workaround
 		getActualMeasurement(s, rx, ry, map);
 
-		robotBelief.setBeliefMap(sensorBelief);
+//		robotBelief.setBeliefMap(sensorBelief);
 
 	}
 
