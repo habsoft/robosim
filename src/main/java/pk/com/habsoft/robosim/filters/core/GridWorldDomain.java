@@ -5,6 +5,7 @@ import pk.com.habsoft.robosim.filters.core.actions.SADomain;
 import pk.com.habsoft.robosim.filters.core.objects.GridRobot;
 import pk.com.habsoft.robosim.filters.core.objects.GridRobotBelief;
 import pk.com.habsoft.robosim.filters.sensors.MotionControllerModule;
+import pk.com.habsoft.robosim.filters.sensors.RobotDirection;
 import pk.com.habsoft.robosim.filters.sensors.SonarRangeModule;
 import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
@@ -149,8 +150,8 @@ public class GridWorldDomain {
 	 */
 	public void initDefaultWorld() {
 
-		this.width = 3;
-		this.height = 4;
+		this.width = 2;
+		this.height = 2;
 		makeEmptyMap();
 
 		// this.width = 5;
@@ -159,7 +160,7 @@ public class GridWorldDomain {
 		// //
 		// horizontalWall(0, 2, 4);
 		// horizontalWall(0, 0, 1);
-		horizontalWall(0, 0, 0);
+		// horizontalWall(0, 0, 0);
 		// //
 		// verticalWall(1, 3, 4);
 		// verticalWall(3, 3, 4);
@@ -268,10 +269,10 @@ public class GridWorldDomain {
 		return map[nx][ny] == OPEN;
 	}
 
-	public int trimValue(String attrib, int val) {
+	public int trimValue(String attrib, int val, boolean forceTrim) {
 		int newVal = val;
 		Attribute att = domain.getAttribute(attrib);
-		if (isCyclicWorld) {
+		if (isCyclicWorld || forceTrim) {
 			// TODO while loop in modulus is missing.
 			newVal = RoboMathUtils.modulus(val, (int) att.upperLim, false);
 		}
@@ -340,16 +341,24 @@ public class GridWorldDomain {
 		}
 
 		// Initialize uniform belief
-		double p = 1. / openCells;
-		double[][] belief = new double[width][height];
+		int numOfDirs = RobotDirection.values().length;
+		double p = 1. / (openCells * numOfDirs);
+		double[][][] belief = new double[width][height][RobotDirection.values().length];
 
+		double tp = 0;
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				// belief[i][j] = p;
+				for (int k = 0; k < 1; k++) {
+					belief[i][j][k] = p;
+					tp += p;
+				}
 			}
 		}
-		belief[1][1] = 0.5;
-		belief[0][3] = 0.5;
+		System.out.println("Total probability : " + tp);
+		// belief[1][1][0] = 0.1;
+		// belief[1][1][1] = 0.2;
+		// belief[1][1][2] = 0.3;
+		// belief[1][1][3] = 0.4;
 
 		o.setBeliefMap(belief);
 

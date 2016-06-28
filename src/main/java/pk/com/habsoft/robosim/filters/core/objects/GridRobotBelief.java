@@ -10,7 +10,7 @@ public class GridRobotBelief implements ObjectInstance {
 	ObjectClass objectClass;
 	String objectName;
 
-	double[][] beliefMap;
+	double[][][] beliefMap;
 
 	public GridRobotBelief(ObjectClass objectClass, String objectName) {
 		super();
@@ -52,11 +52,11 @@ public class GridRobotBelief implements ObjectInstance {
 		return new GridRobotBelief(this);
 	}
 
-	public double[][] getBeliefMap() {
+	public double[][][] getBeliefMap() {
 		return beliefMap;
 	}
 
-	public void setBeliefMap(double[][] beliefMap) {
+	public void setBeliefMap(double[][][] beliefMap) {
 		this.beliefMap = beliefMap;
 	}
 
