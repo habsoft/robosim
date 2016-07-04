@@ -1,5 +1,6 @@
 package pk.com.habsoft.robosim.filters.sensors;
 
+import pk.com.habsoft.robosim.filters.core.Direction;
 import pk.com.habsoft.robosim.filters.core.State;
 
 public interface RangeSensor {
@@ -14,10 +15,10 @@ public interface RangeSensor {
 
 	void setNoise(double noise);
 
-	int[] getDir();
-
 	int getMeasurement();
 
 	void setMeasurement(int measurement);
+
+	Direction getDirection();
 
 }

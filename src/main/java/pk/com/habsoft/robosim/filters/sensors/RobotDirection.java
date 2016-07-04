@@ -2,10 +2,10 @@ package pk.com.habsoft.robosim.filters.sensors;
 
 public enum RobotDirection {
 
-	NORTH("MoveNorth", "w", 1, 90), // North
-	SOUTH("MoveSouth", "s", 3, 270), // South
 	EAST("MoveEast", "d", 0, 0), // East
-	WEST("MoveWest", "a", 2, 180); // West
+	NORTH("MoveNorth", "w", 1, 90), // North
+	WEST("MoveWest", "a", 2, 180), // West
+	SOUTH("MoveSouth", "s", 3, 270); // South
 
 	private String actionName;
 	private String shortKey;
