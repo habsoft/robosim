@@ -1,9 +1,10 @@
 package pk.com.habsoft.robosim.filters.sensors;
 
-import static pk.com.habsoft.robosim.utils.Util.debug;
+import static pk.com.habsoft.robosim.filters.core.GridWorldDomain.ATTX;
+import static pk.com.habsoft.robosim.filters.core.GridWorldDomain.ATTY;
+import static pk.com.habsoft.robosim.filters.core.GridWorldDomain.ATT_THETA;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import pk.com.habsoft.robosim.filters.core.Domain;
@@ -13,6 +14,7 @@ import pk.com.habsoft.robosim.filters.core.ObjectInstance;
 import pk.com.habsoft.robosim.filters.core.State;
 import pk.com.habsoft.robosim.filters.core.actions.Action;
 import pk.com.habsoft.robosim.filters.core.objects.GridRobotBelief;
+import pk.com.habsoft.robosim.utils.Util;
 
 /**
  * The Class MotionControllerModule.
@@ -97,16 +99,16 @@ public class MotionControllerModule implements ObjectInstance {
 			new MovementAction(action, domain, map);
 		}
 
-		setProbSucceedTransitionDynamics(1);
+		setSuccessProbability(1);
 
 	}
 
-	public void setProbSucceedTransitionDynamics(double probSuccess) {
+	public void setSuccessProbability(double probSuccess) {
 		// Total number of actions.
 		int na = controllers.size();
 
 		this.probSuccess = probSuccess;
-		this.probAlt = (1. - probSuccess) / na;
+		this.probAlt = (1. - probSuccess) / 1;
 	}
 
 	/**
@@ -119,7 +121,7 @@ public class MotionControllerModule implements ObjectInstance {
 	 *            the dir
 	 * @return the state
 	 */
-	protected State move(State s, int[] dist, int theta) {
+	protected State move(State s, int dist, int theta) {
 
 		ObjectInstance agent = s.getObjectsOfClass(GridWorldDomain.CLASS_ROBOT).get(0);
 		int ax = agent.getIntValForAttribute(GridWorldDomain.ATTX);
@@ -128,9 +130,10 @@ public class MotionControllerModule implements ObjectInstance {
 		// TODO theta
 
 		// Trim values if wold is cyclic
-		int nx = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTX, ax + dist[0], false);
-		int ny = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTY, ay + dist[1], false);
-		int nd = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATT_THETA, ad + theta, false);
+		int nd = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATT_THETA, ad + theta, true);
+		int[] dcomp = getDecomp(dist, nd);
+		int nx = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTX, ax + dcomp[0], false);
+		int ny = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTY, ay + dcomp[1], false);
 
 		// System.out.println(String.format("Old:%d >> New:%d", ad, nd));
 
@@ -150,6 +153,24 @@ public class MotionControllerModule implements ObjectInstance {
 		return s;
 	}
 
+	private int[] getDecomp(int dist, int theta) {
+		if (dist == 0) {
+			return new int[] { 0, 0 };
+		} else {
+			switch (theta) {
+			case 0:
+				return new int[] { dist * 1, 0 };
+			case 90:
+				return new int[] { 0, dist * 1 };
+			case 180:
+				return new int[] { dist * (-1), 0 };
+			case 270:
+				return new int[] { 0, dist * (-1) };
+			}
+		}
+		throw new RuntimeException(String.format("Invalid motion command.[s:%d, T:%d]", dist, theta));
+	}
+
 	/**
 	 * Update belief map.
 	 *
@@ -158,15 +179,23 @@ public class MotionControllerModule implements ObjectInstance {
 	 * @param targetDir
 	 *            the dir
 	 */
-	private void updateBeliefMap(State s, int[] dist, int theta) {
+	private void updateBeliefMap(State s, int dist, int theta) {
 		int width = map.length;
 		int height = map[0].length;
 		int dirs = RobotDirection.values().length;
+		double pSuccess = probSuccess;
+		double pFail = probAlt / (1);
+		if (dist == 0) {
+			pSuccess = 1;
+			pFail = 0;
+		}
 
 		GridRobotBelief belief = (GridRobotBelief) s.getObjectsOfClass(GridWorldDomain.CLASS_BELIEF).get(0);
 		// New belief
+		double[][][] ob = belief.getBeliefMap();
 		double[][][] nb = new double[width][height][dirs];
 		double tp = 0;
+
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				// Cell is not occupied.
@@ -175,77 +204,39 @@ public class MotionControllerModule implements ObjectInstance {
 				}
 
 				for (RobotDirection dir : RobotDirection.values()) {
+					int d = dir.getAngle() / 90;
 
-					// Calculate Target location (x,y)
-					int td = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATT_THETA, dir.getAngle() + theta, true);
-					int tx = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTX, i + getDcompByAngle(td)[0], false);
-					int ty = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTY, j + getDcompByAngle(td)[1], false);
-					// int oldDir = GridWorldDomain.INSTANCE.
+					int pose = trimAttrib(ATT_THETA, dir.getAngle() + theta, true);
+					int[] pdcomp = getDecomp(dist, pose);
+					int xx = trimAttrib(ATTX, i + pdcomp[0], false);
+					int yy = trimAttrib(ATTY, j + pdcomp[1], false);
+					int dd = pose / 90;
 
-					// hit wall, so do not change position
-					if (!GridWorldDomain.INSTANCE.isOpen(tx, ty)) {
-						tx = i;
-						ty = j;
+					if (!GridWorldDomain.INSTANCE.isOpen(xx, yy)) {
+						xx = i;
+						yy = j;
 					}
 
-					// Success probability
-					double prior = belief.getBeliefMap()[i][j][dir.getIndex()];
-					nb[tx][ty][td / 90] += probSuccess * prior;
+					double currentProbability = ob[i][j][d];
+					// Probability of staying in the same point
+					nb[i][j][d] += pFail * currentProbability;
+					// Probability of moving to a new point
+					nb[xx][yy][dd] += pSuccess * currentProbability;
 
-					debug(String.format("Move %d:%d:%d >> %d:%d:%d", i, j, dir.getIndex(), tx, ty, td));
-
-					// Probability calculations due to noise in motion. Because
-					// robot can move in any direction around its target
-					// location
-					// (tx,ty) with probAlt
-
-					// nx,ny are locations around target location.
-					int nx = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTX, tx + getDcompByAngle(dir.getAngle())[0], false);
-					int ny = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTY, ty + getDcompByAngle(dir.getAngle())[1], false);
-					int nd = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATT_THETA, td + dir.getAngle(), true);
-
-					// hit wall, so do not change position
-					if (!GridWorldDomain.INSTANCE.isOpen(nx, ny)) {
-						nx = tx;
-						ny = ty;
+					if (i == 1 && j == 1) {
+						// Util.debug(String.format("Prior :%f : pCF: %f >> %f",
+						// prior, pCF, posterior));
+						Util.debug(String.format("Move %d:%d:%d >> %d:%d:%d", xx, yy, pose, i, j, dir.getAngle()));
 					}
-
-					// Prior probability
-					prior = belief.getBeliefMap()[i][j][dir.getIndex()];
-					// Probability of moving to a new point direction
-					// debug(String.format("Move %s : %d >>  %f",
-					// dir.getActionName(), dir.getIndex(), probAlt));
-					nb[nx][ny][nd / 90] += probAlt * prior;
-					tp += nb[nx][ny][nd / 90];
 				}
-				System.out.println(i + "," + j + " >> " + Arrays.toString(nb[i][j]));
-
 			}
 		}
 		System.out.println("Total probabiliy is %f" + tp);
 		belief.setBeliefMap(nb);
 	}
 
-	public int[] getDcompByAngle(int pose) {
-		int[] dirs = new int[] { 0, 0 };
-		switch (pose) {
-		case 0:
-			dirs = new int[] { 1, 0 };
-			break;
-		case 90:
-			dirs = new int[] { 0, 1 };
-			break;
-		case 180:
-			dirs = new int[] { -1, 0 };
-			break;
-		case 270:
-			dirs = new int[] { 0, -1 };
-			break;
-
-		default:
-			break;
-		}
-		return dirs;
+	private int trimAttrib(String attrib, int val, boolean forceTrim) {
+		return GridWorldDomain.INSTANCE.trimValue(attrib, val, forceTrim);
 	}
 
 	/*
@@ -369,20 +360,16 @@ public class MotionControllerModule implements ObjectInstance {
 		 */
 		@Override
 		protected State performActionHelper(State s) {
-			ObjectInstance agent = s.getObjectsOfClass(GridWorldDomain.CLASS_ROBOT).get(0);
-			int ad = agent.getIntValForAttribute(GridWorldDomain.ATT_THETA);
-
-			int[] dist = new int[] { 0, 0 };
 			int theta = 0;
+			int dist = 0;
 			if (action.equals(RobotDirection.EAST)) {
 				theta = -90;
 			} else if (action.equals(RobotDirection.WEST)) {
 				theta = 90;
 			} else if (action.equals(RobotDirection.NORTH)) {
-				dist = getDcompByAngle(ad);
+				dist = 1;
 			} else if (action.equals(RobotDirection.SOUTH)) {
-				theta = 180;
-				dist = getDcompByAngle(ad);
+				dist = -1;
 			}
 			State n = move(s, dist, theta);
 			return n;

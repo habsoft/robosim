@@ -231,26 +231,10 @@ public class GridWorldVisualizer {
 				// System.out.println(String.format("Theta : %d, Or : %d",
 				// theta, or));
 
+				g2.setStroke(new BasicStroke(5));
 				g2.drawLine(cx, cy, (int) (cx + r1 * Math.cos(Math.toRadians(or))), (int) (cy - r2 * Math.sin(Math.toRadians(or))));
 			}
 
-		}
-
-		private int getOrientation(int theta) {
-			switch (theta) {
-			case 0:
-				return 0;
-			case 1:
-				return 90;
-			case 2:
-				return 180;
-			case 3:
-				return 270;
-
-			default:
-				break;
-			}
-			return 0;
 		}
 
 	}
@@ -336,12 +320,17 @@ public class GridWorldVisualizer {
 				for (int j = 0; j < this.dheight; j++) {
 
 					if (this.map[i][j] == GridWorldDomain.OPEN) {
+						double tpCell = 0;
+						float crx = i * width;
+						float cry = cHeight - j * height;
+
 						for (RobotDirection dir : RobotDirection.values()) {
 							int pose = dir.getIndex();
 							double probability = beliefMap[i][j][pose];
+							tpCell += probability;
 
-							float rx = i * width;
-							float ry = cHeight - j * height;
+							float rx = crx;
+							float ry = cry;
 							if (dir.equals(RobotDirection.NORTH)) {
 								rx += xoffset;
 								ry = ry - height + yoffset;
@@ -362,13 +351,14 @@ public class GridWorldVisualizer {
 							// g2.drawString(i + " : " + j, rx, ry + 30);
 							g2.drawString(df.format(probability), rx, ry);
 
-							// Cell Background
-							g2.setPaint(new Color(p.getRed(), p.getGreen(), p.getBlue(), 55 + (int) (150 * probability)));
-							// g2.setPaint(Color.CYAN);
-							rx = i * width;
-							ry = cHeight - height - j * height;
-							// g2.fill(new Rectangle2D.Float(rx, ry, width,
+							// // Cell Background
+							// g2.setPaint(new Color(p.getRed(), p.getGreen(),
+							// p.getBlue(), 55 + (int) (255 * probability)));
+							//
+							// // g2.setPaint(Color.CYAN);
+							// g2.fill(new Rectangle2D.Float(crx, cry, width,
 							// height));
+
 						}
 
 					}
@@ -437,7 +427,7 @@ public class GridWorldVisualizer {
 
 			// set the color of the object
 			g2.setColor(this.col);
-			g2.setStroke(new BasicStroke(5));
+			g2.setStroke(new BasicStroke(3));
 
 			float domainXScale = this.dwidth;
 			float domainYScale = this.dheight;
@@ -460,7 +450,7 @@ public class GridWorldVisualizer {
 
 			for (RangeSensor sonar : sensors) {
 				// Draw range sensor range
-				int[] dir = sonar.getDir();
+				int[] dir = sonar.getDirection().getDcomp();
 				int range = sonar.getMeasurement();
 
 				float sx = cx + (dir[0] * width * range) - (dir[0] * height / 2);

@@ -58,7 +58,7 @@ public class GridWorldDomain {
 	private int[][] map;
 
 	/** The cyclic world. */
-	private boolean isCyclicWorld = true;
+	private boolean isCyclicWorld = false;
 
 	/**
 	 * Instantiates a new grid world domain.
@@ -150,8 +150,8 @@ public class GridWorldDomain {
 	 */
 	public void initDefaultWorld() {
 
-		this.width = 2;
-		this.height = 2;
+		this.width = 3;
+		this.height = 3;
 		makeEmptyMap();
 
 		// this.width = 5;
@@ -159,13 +159,60 @@ public class GridWorldDomain {
 		// this.makeEmptyMap();
 		// //
 		// horizontalWall(0, 2, 4);
-		// horizontalWall(0, 0, 1);
-		// horizontalWall(0, 0, 0);
+//		horizontalWall(1, 1, 2);
+		horizontalWall(0, 0, 1);
 		// //
 		// verticalWall(1, 3, 4);
 		// verticalWall(3, 3, 4);
 
 		// Add Actions
+	}
+
+	/**
+	 * Sets the uniform belief w.r.t open spaces.
+	 *
+	 * @param s
+	 *            the state
+	 */
+	public void initUniformBelief(State s) {
+
+		GridRobotBelief o = (GridRobotBelief) s.getObjectsOfClass(CLASS_BELIEF).get(0);
+
+		// Count open spaces
+		int openCells = 0;
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				if (isOpen(i, j)) {
+					openCells++;
+				}
+			}
+		}
+
+		// Initialize uniform belief
+		int numOfDirs = RobotDirection.values().length;
+		double p = 1. / (openCells * numOfDirs);
+		double[][][] belief = new double[width][height][RobotDirection.values().length];
+
+		double tp = 0;
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				for (int k = 0; k < numOfDirs; k++) {
+					belief[i][j][k] = p;
+					tp += p;
+				}
+			}
+		}
+		System.out.println("Total probability : " + tp);
+
+		// belief[0][0][0] = 1;
+
+		// belief[0][1][0] =0.4;
+		// belief[1][0][1] = 0.3;
+		// belief[2][1][2] = 0.1;
+		// belief[1][2][3] = 0.2;
+
+		o.setBeliefMap(belief);
+
 	}
 
 	public void setCyclicWorld(boolean isCyclicWorld) {
@@ -182,13 +229,14 @@ public class GridWorldDomain {
 	 * @param motionNoise
 	 *            the motion noise
 	 */
-	public void initializeSensors(State s, Domain d, double motionNoise) {
+	public void initializeSensors(State s, Domain d, double motionNoise, double sensorNoise) {
 
-		ObjectInstance sensorModule = new SonarRangeModule(d.getObjectClass(CLASS_RANGE_SENSORS), CLASS_RANGE_SENSORS + 0);
+		SonarRangeModule sensorModule = new SonarRangeModule(d.getObjectClass(CLASS_RANGE_SENSORS), CLASS_RANGE_SENSORS + 0);
+		sensorModule.setSuccessProbability(1 - sensorNoise);
 		s.addObject(sensorModule);
 
 		MotionControllerModule motionControllerModule = new MotionControllerModule(d.getObjectClass(CLASS_MOTION_SENSORS), CLASS_MOTION_SENSORS + 0, d, map);
-		motionControllerModule.setProbSucceedTransitionDynamics(1 - motionNoise);
+		motionControllerModule.setSuccessProbability(1 - motionNoise);
 		s.addObject(motionControllerModule);
 
 	}
@@ -318,50 +366,6 @@ public class GridWorldDomain {
 		o.setValue(ATTX, x);
 		o.setValue(ATTY, y);
 		o.setValue(ATT_THETA, theta);
-	}
-
-	/**
-	 * Sets the uniform belief w.r.t open spaces.
-	 *
-	 * @param s
-	 *            the state
-	 */
-	public void setUniformBelief(State s) {
-
-		GridRobotBelief o = (GridRobotBelief) s.getObjectsOfClass(CLASS_BELIEF).get(0);
-
-		// Count open spaces
-		int openCells = 0;
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				if (isOpen(i, j)) {
-					openCells++;
-				}
-			}
-		}
-
-		// Initialize uniform belief
-		int numOfDirs = RobotDirection.values().length;
-		double p = 1. / (openCells * numOfDirs);
-		double[][][] belief = new double[width][height][RobotDirection.values().length];
-
-		double tp = 0;
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				for (int k = 0; k < 1; k++) {
-					belief[i][j][k] = p;
-					tp += p;
-				}
-			}
-		}
-		System.out.println("Total probability : " + tp);
-		// belief[1][1][0] = 0.1;
-		// belief[1][1][1] = 0.2;
-		// belief[1][1][2] = 0.3;
-		// belief[1][1][3] = 0.4;
-
-		o.setBeliefMap(belief);
-
 	}
 
 	/**

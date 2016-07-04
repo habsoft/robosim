@@ -15,9 +15,10 @@ public class HistogramMain {
 
 		// setup initial state
 		State s = domain.getOneRobotBeliefState(d);
-		domain.setAgent(s, 0, 0, 0);
-		domain.setUniformBelief(s);
-		domain.initializeSensors(s, d, 0.1);
+		domain.setAgent(s, 1, 0, 0);
+		domain.setCyclicWorld(false);
+		domain.initUniformBelief(s);
+		domain.initializeSensors(s, d, 0.3, 0.2);
 
 		Visualizer v = GridWorldVisualizer.getVisualizer(domain.getMap());
 		v.updateState(s);
