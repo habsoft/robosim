@@ -1,37 +1,39 @@
 package pk.com.habsoft.robosim.filters.sensors;
 
+import pk.com.habsoft.robosim.filters.core.Direction;
 import pk.com.habsoft.robosim.filters.core.GridWorldDomain;
 import pk.com.habsoft.robosim.filters.core.State;
 
 public class SonarRangeSensor implements RangeSensor {
 
-	String dirName;
+	Direction direction;
 	int maxRange;
 	double noise;
-	int[] dir;
+	/*
+	 * Will be calculated on sense()
+	 */
 	int measurement;
 
-	public SonarRangeSensor(String dirName, int maxRange, double noise, int[] dir) {
+	public SonarRangeSensor(Direction direction, int maxRange, double noise) {
 		super();
-		this.dirName = dirName;
+		this.direction = direction;
 		this.maxRange = maxRange;
 		this.noise = noise;
-		this.dir = dir;
 	}
 
 	@Override
 	public void sense(State s, int cx, int cy, int[][] map) {
 		measurement = 0;
 
-		int nx = cx + dir[0];
-		int ny = cy + dir[1];
+		int nx = cx + direction.getDcomp()[0];
+		int ny = cy + direction.getDcomp()[1];
 
 		while (GridWorldDomain.INSTANCE.isOpen(nx, ny) && measurement < getMaxRange()) {
-			nx += dir[0];
-			ny += dir[1];
+			nx += direction.getDcomp()[0];
+			ny += direction.getDcomp()[1];
 			measurement++;
 		}
-		System.out.println(this);
+		// System.out.println(this);
 
 	}
 
@@ -56,15 +58,6 @@ public class SonarRangeSensor implements RangeSensor {
 	}
 
 	@Override
-	public int[] getDir() {
-		return dir;
-	}
-
-	public void setDir(int[] dir) {
-		this.dir = dir;
-	}
-
-	@Override
 	public int getMeasurement() {
 		return measurement;
 	}
@@ -75,8 +68,13 @@ public class SonarRangeSensor implements RangeSensor {
 	}
 
 	@Override
+	public Direction getDirection() {
+		return direction;
+	}
+
+	@Override
 	public String toString() {
-		return "Reading [Dir=" + dirName + ", Dist=" + measurement + "]";
+		return "Reading [Dir=" + direction.getAngle() + ", Dist=" + measurement + "]";
 	}
 
 }

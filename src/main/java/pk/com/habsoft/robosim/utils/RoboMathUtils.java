@@ -80,7 +80,7 @@ public class RoboMathUtils {
 	public static int modulus(int value, int truncate, boolean flag) {
 		int newValue = value % truncate;
 		// to get the same result as python (%) gives
-		if (newValue < 0) {
+		while (newValue < 0) {
 			newValue += truncate;
 		}
 
@@ -88,7 +88,8 @@ public class RoboMathUtils {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(RoboMathUtils.gaussian(5, 0.1, 4));
+//		System.out.println(RoboMathUtils.gaussian(5, 0.1, 4));
+		System.out.println(modulus(270-90-90-90, 360, true));
 	}
 
 }

@@ -28,12 +28,12 @@ public class GridWorldExplorer extends JFrame {
 	}
 
 	public void initGUI() {
-		painter.setPreferredSize(new Dimension(400, 400));
+		painter.setPreferredSize(new Dimension(600, 600));
 
 		getContentPane().add(painter);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(416, 440));
+		setPreferredSize(new Dimension(600, 600));
 
 		addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
