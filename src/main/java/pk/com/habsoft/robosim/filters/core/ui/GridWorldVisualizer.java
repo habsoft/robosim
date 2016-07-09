@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import pk.com.habsoft.robosim.filters.core.GridLocation;
 import pk.com.habsoft.robosim.filters.core.GridWorldDomain;
 import pk.com.habsoft.robosim.filters.core.ObjectInstance;
 import pk.com.habsoft.robosim.filters.core.State;
@@ -218,9 +219,7 @@ public class GridWorldVisualizer {
 			} else {
 				g2.drawOval((int) rx, (int) ry, (int) width, (int) height);
 				// g2.fill(new Ellipse2D.Float(rx, ry, width, height));
-				// draw orientation line
-				g2.setStroke(new BasicStroke(2));
-				g2.setColor(Color.GREEN);
+
 				int r1 = (int) width / 2;
 				int r2 = (int) height / 2;
 				int cx = (int) rx + r1;
@@ -231,7 +230,9 @@ public class GridWorldVisualizer {
 				// System.out.println(String.format("Theta : %d, Or : %d",
 				// theta, or));
 
-				g2.setStroke(new BasicStroke(5));
+				// draw orientation line
+				g2.setColor(Color.GREEN);
+				g2.setStroke(new BasicStroke(8));
 				g2.drawLine(cx, cy, (int) (cx + r1 * Math.cos(Math.toRadians(or))), (int) (cy - r2 * Math.sin(Math.toRadians(or))));
 			}
 
@@ -441,6 +442,7 @@ public class GridWorldVisualizer {
 			ObjectInstance robot = s.getFirstObjectOfClass(GridWorldDomain.CLASS_ROBOT);
 			int rx = robot.getIntValForAttribute(GridWorldDomain.ATTX);
 			int ry = robot.getIntValForAttribute(GridWorldDomain.ATTY);
+			int theta = robot.getIntValForAttribute(GridWorldDomain.ATT_THETA);
 			// Calculate Robot Center points
 			float cx = ((rx * width) + (width / 2));
 			float cy = (cHeight - (ry * height) - (height / 2));
@@ -449,14 +451,17 @@ public class GridWorldVisualizer {
 			List<RangeSensor> sensors = ob.getSensors();
 
 			for (RangeSensor sonar : sensors) {
+				// Rotate angle w.r.t robot direction
+				int rotations = theta + sonar.getDirection().getAngle();
+				rotations = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATT_THETA, rotations, true);
 				// Draw range sensor range
-				int[] dir = sonar.getDirection().getDcomp();
+				int[] dir = GridLocation.getGridLocation(rotations);
 				int range = sonar.getMeasurement();
 
-				float sx = cx + (dir[0] * width * range) - (dir[0] * height / 2);
+				float sx = cx + (dir[0] * width * range) + (dir[0] * width / 2);
 				float sy = cy - ((dir[1] * height * range) + (dir[1] * height / 2));
 
-				// g2.drawLine((int) cx, (int) cy, (int) sx, (int) sy);
+				g2.drawLine((int) cx, (int) cy, (int) sx, (int) sy);
 
 			}
 		}

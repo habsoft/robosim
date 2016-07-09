@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import pk.com.habsoft.robosim.filters.core.Direction;
 import pk.com.habsoft.robosim.filters.core.GridWorldDomain;
 import pk.com.habsoft.robosim.filters.core.ObjectClass;
 import pk.com.habsoft.robosim.filters.core.ObjectInstance;
 import pk.com.habsoft.robosim.filters.core.State;
 import pk.com.habsoft.robosim.filters.core.actions.ActionObserver;
 import pk.com.habsoft.robosim.filters.core.objects.GridRobotBelief;
-import pk.com.habsoft.robosim.utils.RoboMathUtils;
 
 public class SonarRangeModule implements ObjectInstance, ActionObserver {
 
@@ -37,10 +35,10 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 		// TODO config
 		int range = 2;
 		double noise = 0.1;
-		this.sensors.add(new SonarRangeSensor(Direction.NORTH, 1, noise));
-		this.sensors.add(new SonarRangeSensor(Direction.SOUTH, 1, noise));
-		this.sensors.add(new SonarRangeSensor(Direction.EAST, 1, noise));
-		this.sensors.add(new SonarRangeSensor(Direction.WEST, 1, noise));
+		this.sensors.add(new SonarRangeSensor(RobotDirection.EAST, 1, noise));
+		this.sensors.add(new SonarRangeSensor(RobotDirection.NORTH, 1, noise));
+		this.sensors.add(new SonarRangeSensor(RobotDirection.WEST, 1, noise));
+		this.sensors.add(new SonarRangeSensor(RobotDirection.SOUTH, 1, noise));
 	}
 
 	@Override
@@ -125,18 +123,16 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 					continue;
 				}
 
-				for (RangeSensor sensor : sensors) {
-					int angle = sensor.getDirection().getAngle();
+				for (RobotDirection direction : RobotDirection.values()) {
+					int angle = direction.getAngle();
 					int d = angle / 90;
+
 					double[] cellMeasurements = getActualMeasurement(s, r, c, angle, dirs, map);
-					// System.out.println("At angle : " + angle);
-					// print("Cell ", cellMeasurements);
-					boolean hit = hit(z, cellMeasurements);
-					// TODO remove it
-					double prior = Math.max(belief[r][c][d], 0.001);
-					if (hit) {
-						System.out.println(hit + " >> " + prior);
-					}
+
+					boolean hit = match(z, cellMeasurements);
+
+					double prior = belief[r][c][d];
+
 					nb[r][c][d] = prior * (hit ? pSuccess : (1 - pSuccess));
 					total += nb[r][c][d];
 				}
@@ -150,14 +146,13 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 			for (int c = 0; c < cols; c++) {
 				for (int d = 0; d < dirs; d++) {
 					nb[r][c][d] /= total;
-					tp = nb[r][c][d];
+					tp += nb[r][c][d];
 					count++;
-					System.out.println(count);
-					
 				}
 			}
 		}
-		System.out.println("Total Prob  : " + tp);
+		System.out.println("Total cell count : " + count);
+		System.out.println("Sense : Total Prob  : " + tp);
 		// Workaround
 		getActualMeasurement(s, rx, ry, td, dirs, map);
 
@@ -169,32 +164,45 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 		System.out.println(msg + " : " + Arrays.toString(m));
 	}
 
-	public boolean hit(double[] exp, double[] measured) {
+	/**
+	 * Match sensor reading with actual robot reading.
+	 * 
+	 * @param exp
+	 *            Expected measurements
+	 * @param measured
+	 *            Measurement at particular cell
+	 * @return True if reading exacly matched
+	 */
+	public boolean match(double[] exp, double[] measured) {
 		return Arrays.equals(exp, measured);
 	}
 
 	private double[] getActualMeasurement(State s, int x, int y, int theta, int totalZ, int[][] map) {
 		double[] z = new double[totalZ];
 		for (RangeSensor rs : sensors) {
-			rs.sense(s, x, y, map);
+			// Rotate sensor at angle w.r.t robot angle.
+			int nd = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATT_THETA, rs.getDirection().getAngle() + theta, true);
+			rs.sense(s, x, y, theta, map);
 
 			z[rs.getDirection().getAngle() / 90] = rs.getMeasurement();
 		}
 
-		z = rotateAtAngle(z, theta);
+		// z = rotateAtAngle(z, theta);
+		// System.out.println(String.format("x:%d, y:%d, d:%d", x, y, theta));
+		// System.out.println(Arrays.toString(z));
 
 		return z;
 	}
 
-	private static double[] rotateAtAngle(double[] z, int theta) {
-		theta = theta / 90;
-		double[] zz = new double[z.length];
-		for (int i = 0; i < z.length; i++) {
-			zz[RoboMathUtils.modulus((theta - i), z.length, true)] = z[i];
-
-		}
-		return zz;
-	}
+	// private static double[] rotateAtAngle(double[] z, int theta) {
+	// theta = theta / 90;
+	// double[] zz = new double[z.length];
+	// for (int i = 0; i < z.length; i++) {
+	// zz[RoboMathUtils.modulus((theta - i), z.length, true)] = z[i];
+	//
+	// }
+	// return zz;
+	// }
 
 	// public static void main(String[] args) {
 	// double[] z = new double[] { 30, 40, 50, 60 };
@@ -203,20 +211,6 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 	// System.out.println(Arrays.toString(z));
 	// System.out.println(Arrays.toString(r));
 	// }
-
-	public int getAngleIdxDcomp(int[] dirs) {
-		int pose = 0;
-		if (dirs[0] == 1 && dirs[1] == 0) {
-			pose = 0;
-		} else if (dirs[0] == 0 && dirs[1] == 1) {
-			pose = 90;
-		} else if (dirs[0] == -1 && dirs[1] == 0) {
-			pose = 180;
-		} else if (dirs[0] == 0 && dirs[1] == -1) {
-			pose = 270;
-		}
-		return pose / 90;
-	}
 
 	@Override
 	public void actionEvent(State s, State sp, String actionName) {
