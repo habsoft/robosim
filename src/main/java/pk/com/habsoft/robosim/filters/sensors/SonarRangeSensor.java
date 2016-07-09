@@ -1,12 +1,12 @@
 package pk.com.habsoft.robosim.filters.sensors;
 
-import pk.com.habsoft.robosim.filters.core.Direction;
+import pk.com.habsoft.robosim.filters.core.GridLocation;
 import pk.com.habsoft.robosim.filters.core.GridWorldDomain;
 import pk.com.habsoft.robosim.filters.core.State;
 
 public class SonarRangeSensor implements RangeSensor {
 
-	Direction direction;
+	RobotDirection direction;
 	int maxRange;
 	double noise;
 	/*
@@ -14,7 +14,7 @@ public class SonarRangeSensor implements RangeSensor {
 	 */
 	int measurement;
 
-	public SonarRangeSensor(Direction direction, int maxRange, double noise) {
+	public SonarRangeSensor(RobotDirection direction, int maxRange, double noise) {
 		super();
 		this.direction = direction;
 		this.maxRange = maxRange;
@@ -22,18 +22,18 @@ public class SonarRangeSensor implements RangeSensor {
 	}
 
 	@Override
-	public void sense(State s, int cx, int cy, int[][] map) {
+	public void sense(State s, int cx, int cy, int theta, int[][] map) {
 		measurement = 0;
-
-		int nx = cx + direction.getDcomp()[0];
-		int ny = cy + direction.getDcomp()[1];
+		int nd = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATT_THETA, direction.getAngle() + theta, true);
+		int[] dcomp = GridLocation.getGridLocation(nd);
+		int nx = cx + dcomp[0];
+		int ny = cy + dcomp[1];
 
 		while (GridWorldDomain.INSTANCE.isOpen(nx, ny) && measurement < getMaxRange()) {
-			nx += direction.getDcomp()[0];
-			ny += direction.getDcomp()[1];
+			nx += GridLocation.getGridLocation(direction.getAngle())[0];
+			ny += GridLocation.getGridLocation(direction.getAngle())[1];
 			measurement++;
 		}
-		// System.out.println(this);
 
 	}
 
@@ -68,7 +68,7 @@ public class SonarRangeSensor implements RangeSensor {
 	}
 
 	@Override
-	public Direction getDirection() {
+	public RobotDirection getDirection() {
 		return direction;
 	}
 

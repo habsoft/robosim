@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pk.com.habsoft.robosim.filters.core.Domain;
+import pk.com.habsoft.robosim.filters.core.GridLocation;
 import pk.com.habsoft.robosim.filters.core.GridWorldDomain;
 import pk.com.habsoft.robosim.filters.core.ObjectClass;
 import pk.com.habsoft.robosim.filters.core.ObjectInstance;
 import pk.com.habsoft.robosim.filters.core.State;
 import pk.com.habsoft.robosim.filters.core.actions.Action;
 import pk.com.habsoft.robosim.filters.core.objects.GridRobotBelief;
-import pk.com.habsoft.robosim.utils.Util;
 
 /**
  * The Class MotionControllerModule.
@@ -38,7 +38,7 @@ public class MotionControllerModule implements ObjectInstance {
 	double probAlt;
 
 	/** The controllers. */
-	List<RobotDirection> controllers = new ArrayList<>();
+	List<RobotControl> controllers = new ArrayList<>();
 
 	/**
 	 * Instantiates a new motion controller module.
@@ -89,13 +89,13 @@ public class MotionControllerModule implements ObjectInstance {
 	 */
 	protected void initDefaultSensors(Domain domain, int[][] map) {
 
-		controllers.add(RobotDirection.NORTH);
-		controllers.add(RobotDirection.SOUTH);
-		controllers.add(RobotDirection.EAST);
-		controllers.add(RobotDirection.WEST);
+		controllers.add(RobotControl.MOVE_FORWARD);
+		controllers.add(RobotControl.MOVE_BACKWARD);
+		controllers.add(RobotControl.TURN_RIGHT);
+		controllers.add(RobotControl.TURN_LEFT);
 
 		// Register Actions
-		for (RobotDirection action : controllers) {
+		for (RobotControl action : controllers) {
 			new MovementAction(action, domain, map);
 		}
 
@@ -104,11 +104,9 @@ public class MotionControllerModule implements ObjectInstance {
 	}
 
 	public void setSuccessProbability(double probSuccess) {
-		// Total number of actions.
-		int na = controllers.size();
 
 		this.probSuccess = probSuccess;
-		this.probAlt = (1. - probSuccess) / 1;
+		this.probAlt = 1. - probSuccess;
 	}
 
 	/**
@@ -121,7 +119,9 @@ public class MotionControllerModule implements ObjectInstance {
 	 *            the dir
 	 * @return the state
 	 */
-	protected State move(State s, int dist, int theta) {
+	protected State move(State s, RobotControl action) {
+		int dist = action.getDistance();
+		int theta = action.getAngle();
 
 		ObjectInstance agent = s.getObjectsOfClass(GridWorldDomain.CLASS_ROBOT).get(0);
 		int ax = agent.getIntValForAttribute(GridWorldDomain.ATTX);
@@ -131,7 +131,7 @@ public class MotionControllerModule implements ObjectInstance {
 
 		// Trim values if wold is cyclic
 		int nd = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATT_THETA, ad + theta, true);
-		int[] dcomp = getDecomp(dist, nd);
+		int[] dcomp = GridLocation.getGridLocation(dist, nd);
 		int nx = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTX, ax + dcomp[0], false);
 		int ny = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATTY, ay + dcomp[1], false);
 
@@ -153,24 +153,6 @@ public class MotionControllerModule implements ObjectInstance {
 		return s;
 	}
 
-	private int[] getDecomp(int dist, int theta) {
-		if (dist == 0) {
-			return new int[] { 0, 0 };
-		} else {
-			switch (theta) {
-			case 0:
-				return new int[] { dist * 1, 0 };
-			case 90:
-				return new int[] { 0, dist * 1 };
-			case 180:
-				return new int[] { dist * (-1), 0 };
-			case 270:
-				return new int[] { 0, dist * (-1) };
-			}
-		}
-		throw new RuntimeException(String.format("Invalid motion command.[s:%d, T:%d]", dist, theta));
-	}
-
 	/**
 	 * Update belief map.
 	 *
@@ -184,7 +166,7 @@ public class MotionControllerModule implements ObjectInstance {
 		int height = map[0].length;
 		int dirs = RobotDirection.values().length;
 		double pSuccess = probSuccess;
-		double pFail = probAlt / (1);
+		double pFail = probAlt;
 		if (dist == 0) {
 			pSuccess = 1;
 			pFail = 0;
@@ -194,7 +176,6 @@ public class MotionControllerModule implements ObjectInstance {
 		// New belief
 		double[][][] ob = belief.getBeliefMap();
 		double[][][] nb = new double[width][height][dirs];
-		double tp = 0;
 
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
@@ -207,7 +188,7 @@ public class MotionControllerModule implements ObjectInstance {
 					int d = dir.getAngle() / 90;
 
 					int pose = trimAttrib(ATT_THETA, dir.getAngle() + theta, true);
-					int[] pdcomp = getDecomp(dist, pose);
+					int[] pdcomp = GridLocation.getGridLocation(dist, pose);
 					int xx = trimAttrib(ATTX, i + pdcomp[0], false);
 					int yy = trimAttrib(ATTY, j + pdcomp[1], false);
 					int dd = pose / 90;
@@ -223,15 +204,22 @@ public class MotionControllerModule implements ObjectInstance {
 					// Probability of moving to a new point
 					nb[xx][yy][dd] += pSuccess * currentProbability;
 
-					if (i == 1 && j == 1) {
-						// Util.debug(String.format("Prior :%f : pCF: %f >> %f",
-						// prior, pCF, posterior));
-						Util.debug(String.format("Move %d:%d:%d >> %d:%d:%d", xx, yy, pose, i, j, dir.getAngle()));
-					}
 				}
 			}
 		}
-		System.out.println("Total probabiliy is %f" + tp);
+
+		double tp = 0;
+		int count = 0;
+		for (int r = 0; r < width; r++) {
+			for (int c = 0; c < height; c++) {
+				for (int d = 0; d < dirs; d++) {
+					tp += nb[r][c][d];
+					count++;
+				}
+			}
+		}
+		System.out.println("Total cell count : " + count);
+		System.out.println("Mov : Total Prob  : " + tp);
 		belief.setBeliefMap(nb);
 	}
 
@@ -316,11 +304,11 @@ public class MotionControllerModule implements ObjectInstance {
 		return null;
 	}
 
-	public List<RobotDirection> getControllers() {
+	public List<RobotControl> getControllers() {
 		return controllers;
 	}
 
-	public void setControllers(List<RobotDirection> controllers) {
+	public void setControllers(List<RobotControl> controllers) {
 		this.controllers = controllers;
 	}
 
@@ -330,7 +318,7 @@ public class MotionControllerModule implements ObjectInstance {
 	public class MovementAction extends Action {
 
 		/** The action. */
-		RobotDirection action;
+		RobotControl action;
 
 		/** The map. */
 		int[][] map;
@@ -345,7 +333,7 @@ public class MotionControllerModule implements ObjectInstance {
 		 * @param map
 		 *            the map
 		 */
-		public MovementAction(RobotDirection action, Domain domain, int[][] map) {
+		public MovementAction(RobotControl action, Domain domain, int[][] map) {
 			super(action.getActionName(), domain);
 			this.action = action;
 			this.map = map;
@@ -360,18 +348,7 @@ public class MotionControllerModule implements ObjectInstance {
 		 */
 		@Override
 		protected State performActionHelper(State s) {
-			int theta = 0;
-			int dist = 0;
-			if (action.equals(RobotDirection.EAST)) {
-				theta = -90;
-			} else if (action.equals(RobotDirection.WEST)) {
-				theta = 90;
-			} else if (action.equals(RobotDirection.NORTH)) {
-				dist = 1;
-			} else if (action.equals(RobotDirection.SOUTH)) {
-				dist = -1;
-			}
-			State n = move(s, dist, theta);
+			State n = move(s, action);
 			return n;
 		}
 	}

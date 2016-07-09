@@ -1,10 +1,14 @@
 package pk.com.habsoft.robosim.filters.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pk.com.habsoft.robosim.filters.core.actions.Action;
 import pk.com.habsoft.robosim.filters.core.actions.SADomain;
 import pk.com.habsoft.robosim.filters.core.objects.GridRobot;
 import pk.com.habsoft.robosim.filters.core.objects.GridRobotBelief;
 import pk.com.habsoft.robosim.filters.sensors.MotionControllerModule;
+import pk.com.habsoft.robosim.filters.sensors.RobotControl;
 import pk.com.habsoft.robosim.filters.sensors.RobotDirection;
 import pk.com.habsoft.robosim.filters.sensors.SonarRangeModule;
 import pk.com.habsoft.robosim.utils.RoboMathUtils;
@@ -150,16 +154,16 @@ public class GridWorldDomain {
 	 */
 	public void initDefaultWorld() {
 
-		this.width = 3;
-		this.height = 3;
+		this.width = 5;
+		this.height = 5;
 		makeEmptyMap();
 
 		// this.width = 5;
 		// this.height = 5;
 		// this.makeEmptyMap();
 		// //
-		// horizontalWall(0, 2, 4);
-//		horizontalWall(1, 1, 2);
+		horizontalWall(0, 1, 4);
+		horizontalWall(1, 1, 2);
 		horizontalWall(0, 0, 1);
 		// //
 		// verticalWall(1, 3, 4);
@@ -448,6 +452,19 @@ public class GridWorldDomain {
 			return s;
 		}
 
+	}
+
+	public List<KeyActionBinding> getKeyActionsBindings() {
+		List<KeyActionBinding> actions = new ArrayList<>();
+
+		// Add action controls
+		for (RobotControl ctrl : RobotControl.values()) {
+			actions.add(new KeyActionBinding(ctrl.getShortKey(), ctrl.getActionName()));
+		}
+
+		// TODO Add sensor controls.
+
+		return actions;
 	}
 
 }

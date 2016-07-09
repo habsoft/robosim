@@ -1,11 +1,8 @@
 package pk.com.habsoft.robosim.filters.sensors;
 
-import pk.com.habsoft.robosim.filters.core.Direction;
 import pk.com.habsoft.robosim.filters.core.State;
 
 public interface RangeSensor {
-
-	void sense(State s, int cx, int cy, int[][] map);
 
 	int getMaxRange();
 
@@ -19,6 +16,8 @@ public interface RangeSensor {
 
 	void setMeasurement(int measurement);
 
-	Direction getDirection();
+	RobotDirection getDirection();
+
+	void sense(State s, int cx, int cy, int theta, int[][] map);
 
 }
