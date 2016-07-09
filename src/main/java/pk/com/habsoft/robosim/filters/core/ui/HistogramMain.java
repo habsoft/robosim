@@ -1,8 +1,12 @@
 package pk.com.habsoft.robosim.filters.core.ui;
 
+import java.util.List;
+
 import pk.com.habsoft.robosim.filters.core.Domain;
 import pk.com.habsoft.robosim.filters.core.GridWorldDomain;
+import pk.com.habsoft.robosim.filters.core.KeyActionBinding;
 import pk.com.habsoft.robosim.filters.core.State;
+import pk.com.habsoft.robosim.filters.core.actions.Action;
 import pk.com.habsoft.robosim.filters.sensors.RobotDirection;
 
 public class HistogramMain {
@@ -15,7 +19,7 @@ public class HistogramMain {
 
 		// setup initial state
 		State s = domain.getOneRobotBeliefState(d);
-		domain.setAgent(s, 1, 0, 0);
+		domain.setAgent(s, 0, 0, 0);
 		domain.setCyclicWorld(false);
 		domain.initUniformBelief(s);
 		domain.initializeSensors(s, d, 0.3, 0.2);
@@ -26,12 +30,11 @@ public class HistogramMain {
 		GridWorldExplorer exp = new GridWorldExplorer(d, v, s);
 
 		// TODO
-		// d.getActionKeyBindings();
+		List<KeyActionBinding> act = domain.getKeyActionsBindings();
+		for (KeyActionBinding action : act) {
+			exp.addKeyAction(action.getKey(), action.getActionName());
+		}
 		// set control keys to use w-s-a-d
-		exp.addKeyAction(RobotDirection.NORTH.getShortKey(), RobotDirection.NORTH.getActionName());
-		exp.addKeyAction(RobotDirection.SOUTH.getShortKey(), RobotDirection.SOUTH.getActionName());
-		exp.addKeyAction(RobotDirection.EAST.getShortKey(), RobotDirection.EAST.getActionName());
-		exp.addKeyAction(RobotDirection.WEST.getShortKey(), RobotDirection.WEST.getActionName());
 
 		exp.addKeyAction("l", GridWorldDomain.ACTION_SENSE);
 
