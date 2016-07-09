@@ -12,69 +12,70 @@ import pk.com.habsoft.robosim.internal.RPanel;
 
 public class RobotBeliefMap extends RPanel {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Default cellSize. It will be computed with width,height
-	 */
-	private int cellWidth = 50;// pixel
-	private int cellHeight = 50;// pixel
-	private static int spacing = 1; // pixel
-	int rows;
-	int cols;
+    private static int spacing = 1; // pixel
 
-	private Image image;
-	HistogramFilterAdvView view;
+    private double dWidth;
+    private double dHeight;
 
-	public RobotBeliefMap(HistogramFilterAdvView view, double width, double height, String label, int rows, int cols) {
-		super(width, height, label);
-		this.view = view;
-		this.rows = rows;
-		this.cols = cols;
-		this.cellWidth = (int) width / cols;
-		this.cellHeight = (int) height / rows;
+    private Image image;
+    HistogramFilterAdvView view;
 
-		image = new BufferedImage((int) width, (int) height, BufferedImage.BITMASK);
-	}
+    public RobotBeliefMap(HistogramFilterAdvView view, double width, double height, String label) {
+        super(width, height, label);
+        this.view = view;
+        this.dWidth = width;
+        this.dHeight = height;
 
-	public void paint(Graphics g) {
-		super.paint(g);
-		Graphics2D graphics = (Graphics2D) image.getGraphics();
+        image = new BufferedImage((int) width, (int) height, BufferedImage.BITMASK);
+    }
 
-		graphics.setBackground(Color.red);
-		graphics.setPaint(Color.RED);
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
 
-				graphics.setPaint(Color.WHITE);
-				graphics.fillRect(j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+        int rows = view.world.length;
+        int cols = view.world[0].length;
+        int cellWidth = (int) dWidth / cols;
+        int cellHeight = (int) dHeight / rows;
 
-				double intensity = Double.parseDouble(view.filter.getProbabilityAt(i, j));
-				// Paint p = new Color(0, 0, 0, (int) (255 * intensity));
-				// graphics.setPaint(p);
-				Color p = view.SENSORS[view.world[i][j]];
-				graphics.setPaint(new Color(p.getRed(), p.getGreen(), p.getBlue(), 55 + (int) (200 * intensity)));
+        graphics.setBackground(Color.red);
+        graphics.setPaint(Color.RED);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
 
-				graphics.fillRect(j * cellWidth + spacing, i * cellWidth + spacing, cellWidth - spacing, cellWidth - spacing);
+                graphics.setPaint(Color.WHITE);
+                graphics.fillRect(j * cellHeight, i * cellWidth, cellHeight, cellWidth);
 
-				graphics.setColor(Color.BLACK);
-				graphics.setFont(new Font("Arial", Font.BOLD, Math.min(cellWidth, cellWidth) / 4));
-				String str = String.valueOf(view.filter.getProbabilityAt(i, j));
+                double intensity = Double.parseDouble(view.filter.getProbabilityAt(i, j));
+                // Paint p = new Color(0, 0, 0, (int) (255 * intensity));
+                // graphics.setPaint(p);
+                Color p = new Color(200, 0, 0);
+                graphics.setPaint(new Color(p.getRed(), p.getGreen(), p.getBlue(), 55 + (int) (200 * intensity)));
 
-				FontMetrics matrix = graphics.getFontMetrics();
-				int ht = matrix.getAscent();
-				int wd = matrix.stringWidth(str);
+                graphics.fillRect(j * cellWidth + spacing, i * cellWidth + spacing, cellWidth - spacing, cellWidth
+                        - spacing);
 
-				// Draw Image in center of the cell
-				graphics.drawString(str, (j * (cellWidth) + cellWidth / 2 - wd / 2), (i * (cellWidth) + cellWidth / 2 + ht / 2));
+                graphics.setColor(Color.BLACK);
+                graphics.setFont(new Font("Arial", Font.BOLD, Math.min(cellWidth, cellWidth) / 4));
+                String str = String.valueOf(view.filter.getProbabilityAt(i, j));
 
-			}
-		}
+                FontMetrics matrix = graphics.getFontMetrics();
+                int ht = matrix.getAscent();
+                int wd = matrix.stringWidth(str);
 
-		g.drawImage(image, 0, LABEL_HEIGHT, this);
-	}
+                // Draw Image in center of the cell
+                graphics.drawString(str, (j * (cellWidth) + cellWidth / 2 - wd / 2),
+                        (i * (cellWidth) + cellWidth / 2 + ht / 2));
+
+            }
+        }
+
+        g.drawImage(image, 0, LABEL_HEIGHT, this);
+    }
 
 }
