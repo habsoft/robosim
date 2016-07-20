@@ -78,6 +78,7 @@ public class RoboMathUtils {
 	 * @return modulus value equivalent to python modulus
 	 */
 	public static int modulus(int value, int truncate, boolean flag) {
+		System.out.println("val ; "+value);
 		int newValue = value % truncate;
 		// to get the same result as python (%) gives
 		while (newValue < 0) {
@@ -89,7 +90,14 @@ public class RoboMathUtils {
 
 	public static void main(String[] args) {
 //		System.out.println(RoboMathUtils.gaussian(5, 0.1, 4));
-		System.out.println(modulus(270-90-90-90, 360, true));
+		System.out.println(modulus(1_2, 360, true));
+		
+		System.out.println((5%5));
+		System.out.println((-6%5));
+		System.out.println((17%5));
+		System.out.println((6%5));
+		
+		System.out.println(modulus(-6, 5, false));
 	}
 
 }
