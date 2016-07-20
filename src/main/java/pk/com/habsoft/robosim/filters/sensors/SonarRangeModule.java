@@ -8,10 +8,9 @@ import pk.com.habsoft.robosim.filters.core.GridWorldDomain;
 import pk.com.habsoft.robosim.filters.core.ObjectClass;
 import pk.com.habsoft.robosim.filters.core.ObjectInstance;
 import pk.com.habsoft.robosim.filters.core.State;
-import pk.com.habsoft.robosim.filters.core.actions.ActionObserver;
 import pk.com.habsoft.robosim.filters.core.objects.GridRobotBelief;
 
-public class SonarRangeModule implements ObjectInstance, ActionObserver {
+public class SonarRangeModule implements ObjectInstance {
 
 	ObjectClass objectClass;
 	String objectName;
@@ -37,7 +36,7 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 		double noise = 0.1;
 		this.sensors.add(new SonarRangeSensor(RobotDirection.EAST, 1, noise));
 		this.sensors.add(new SonarRangeSensor(RobotDirection.NORTH, 1, noise));
-		this.sensors.add(new SonarRangeSensor(RobotDirection.WEST, 1, noise));
+//		this.sensors.add(new SonarRangeSensor(RobotDirection.WEST, 1, noise));
 		this.sensors.add(new SonarRangeSensor(RobotDirection.SOUTH, 1, noise));
 	}
 
@@ -131,7 +130,7 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 
 					boolean hit = match(z, cellMeasurements);
 
-					double prior = belief[r][c][d];
+					double prior = Math.max(belief[r][c][d], 0.0001);
 
 					nb[r][c][d] = prior * (hit ? pSuccess : (1 - pSuccess));
 					total += nb[r][c][d];
@@ -187,43 +186,7 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 			z[rs.getDirection().getAngle() / 90] = rs.getMeasurement();
 		}
 
-		// z = rotateAtAngle(z, theta);
-		// System.out.println(String.format("x:%d, y:%d, d:%d", x, y, theta));
-		// System.out.println(Arrays.toString(z));
-
 		return z;
-	}
-
-	// private static double[] rotateAtAngle(double[] z, int theta) {
-	// theta = theta / 90;
-	// double[] zz = new double[z.length];
-	// for (int i = 0; i < z.length; i++) {
-	// zz[RoboMathUtils.modulus((theta - i), z.length, true)] = z[i];
-	//
-	// }
-	// return zz;
-	// }
-
-	// public static void main(String[] args) {
-	// double[] z = new double[] { 30, 40, 50, 60 };
-	// double[] r = SonarRangeModule.rotateAtAngle(z, 90);
-	//
-	// System.out.println(Arrays.toString(z));
-	// System.out.println(Arrays.toString(r));
-	// }
-
-	@Override
-	public void actionEvent(State s, State sp, String actionName) {
-		System.out.println("ActionEvent : " + actionName);
-		if (!actionName.equals(GridWorldDomain.ACTION_SENSE)) {
-			resetMeasurements();
-		}
-	}
-
-	private void resetMeasurements() {
-		for (RangeSensor rangeSensor : sensors) {
-			rangeSensor.setMeasurement(0);
-		}
 	}
 
 	public void setSuccessProbability(double pSuccess) {
