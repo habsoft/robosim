@@ -49,6 +49,6 @@ Please email [Faisal Hameed](mailto:faisal.hameed.pk@gmail.com) with any feedbac
 
 Background and Contributors
 ---------------------------
-Inspired from an online course [Artificial Intelligence for Robotics] (https://www.udacity.com/course/artificial-intelligence-for-robotics--cs373) tought by [Sebastian Thrun](https://en.wikipedia.org/wiki/Sebastian_Thrun).
+Inspired from an online course [Artificial Intelligence for Robotics] (https://www.udacity.com/course/artificial-intelligence-for-robotics--cs373) taught by [Sebastian Thrun](https://en.wikipedia.org/wiki/Sebastian_Thrun).
 This **Robot Simulator** was originally started by [Faisal Hameed](https://pk.linkedin.com/in/faisalhameedpk
 ) in April 2012 and its first version [1.0.1] (https://sourceforge.net/projects/r-localization/files/RoboSim%20ver%201.0.1.rar/download) was release in July 2012.

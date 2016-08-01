@@ -1,3 +1,6 @@
+1. Changelist
+2. Simplify property saving.
+
 High Priority.
 1. JavaDoc
 2. Installation steps
