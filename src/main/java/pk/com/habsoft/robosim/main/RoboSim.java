@@ -51,7 +51,7 @@ public class RoboSim extends JFrame implements ActionListener {
 	// final static String version = " 1.3.1 (2014-1-28)";
 	// PIC controller
 	// final static String version = " 1.3.2 (2014-4-1)";
-	final static String version = "  1.6.0 (2016-05-05)";
+	final static String version = "  1.6.0 (2016-05-iii05)";
 	private static final long serialVersionUID = 1L;
 
 	private JDesktopPane desk;
