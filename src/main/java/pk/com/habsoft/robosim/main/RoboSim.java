@@ -24,6 +24,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import pk.com.habsoft.robosim.filters.core.ui.HistogramMain;
 import pk.com.habsoft.robosim.filters.histogram.HistogramFilterView;
 import pk.com.habsoft.robosim.filters.kalman.KalmanFilterView;
 import pk.com.habsoft.robosim.filters.particles.views.ParticleFilterView;
@@ -54,7 +55,7 @@ public class RoboSim extends JFrame implements ActionListener {
 	// Some code cleanup.
 	// final static String version = "  1.6.0 (2016-05-05)";
 	// Histogram Filter with SonarRangeFinder
-	final static String version = "  1.7.0 (2016-08-01)";
+	final static String version = "  2.0.0 (2016-08-14)";
 	private static final long serialVersionUID = 1L;
 
 	private JDesktopPane desk;
@@ -137,8 +138,13 @@ public class RoboSim extends JFrame implements ActionListener {
 
 		// Histogram Filters
 		JInternalFrame histogramFilter = new HistogramFilterView();
-		mnLocalization.add(new AddFrameAction("Histogram Filter", histogramFilter));
+		mnLocalization.add(new AddFrameAction("Histogram Filter(Color Sensor)", histogramFilter));
 		desk.add(histogramFilter);
+
+		// Histogram Filters
+		JInternalFrame histogramFilter2 = new HistogramMain();
+		mnLocalization.add(new AddFrameAction("Histogram Filter(Sonar Range Finder)", histogramFilter2));
+		desk.add(histogramFilter2);
 
 		// Kalman Filters
 		JInternalFrame kalmanFilter = new KalmanFilterView();
