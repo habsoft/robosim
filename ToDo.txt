@@ -1,3 +1,6 @@
+1. Changelist
+2. Simplify property saving.
+
 High Priority.
 1. JavaDoc
 2. Installation steps
@@ -7,14 +10,12 @@ High Priority.
 6. CheckStyle
 7. Travis build
 8. Gradle build
+9.i18n support
+10.Logging
 
 Low Priority
-0.i18n support
-1.Logging
 2. Stochastic motion for DFS, BFS and A*
-4.Car speed and Car Velocity in Kalman Filter
 5.Twiddle
-6.PID Controller
 7.Group nearest particles for multiple ghost
 8.Count total created instances in path planning and smoothing
 9.Multiple worlds for path planning

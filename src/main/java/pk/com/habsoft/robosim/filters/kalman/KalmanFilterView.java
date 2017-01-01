@@ -83,7 +83,7 @@ public class KalmanFilterView extends RootView {
 		pnlVelocityError.setSize(pnlWidth, pnlHeight);
 		pnlVelocityError.setBounds(pnlWidth, pnlHeight, pnlWidth, pnlHeight);
 
-		pnlControls = new RPanel(pnlWidth * 2, screenSize.height - (pnlHeight * 2), "Control Panel");
+		pnlControls = new RPanel(pnlWidth * 2, screenSize.height - (pnlHeight * 2), "Settings");
 		pnlControls.setLayoutMgr(new FlowLayout());
 
 		pnlControls.add(UIUtils.createSpinnerPanel("Total Time", spnTotalTime, DEFAULT_TOTAL_TIME, MIN_TOTAL_TIME,
