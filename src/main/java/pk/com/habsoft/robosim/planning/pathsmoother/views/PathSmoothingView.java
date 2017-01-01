@@ -74,17 +74,17 @@ public class PathSmoothingView extends RootView implements WorldListener {
 		pnlLocationMap.add(drawingPanel, BorderLayout.CENTER);
 
 		// Controls Panel
-		pnlAlgorithms = new AlgorithmPanel(world, prop, PANEL_CONTROL_WIDTH, PANEL_CONTROL_HEIGHT, "Algorithm Settings");
+		pnlAlgorithms = new AlgorithmPanel(world, prop, PANEL_CONTROL_WIDTH, PANEL_CONTROL_HEIGHT, "Algorithms Panel");
 		pnlAlgorithms.setLocation(PANEL_WORLD_WIDTH, 0);
 
 		// Smoothing Panel
-		pnlSmoothControl = new SmoothingControlPanel(prop, PANEL_SMOOTH_WIDTH, PANEL_SMOOTH_HEIGHT, "Smothing (Gradient Descent)");
+		pnlSmoothControl = new SmoothingControlPanel(prop, PANEL_SMOOTH_WIDTH, PANEL_SMOOTH_HEIGHT, "Smothing Panel");
 		pnlSmoothControl.setLocation(PANEL_WORLD_WIDTH, PANEL_CONTROL_HEIGHT);
 		pnlSmoothControl.setDrawingPanel(drawingPanel);
 		// createOutputPanelContents(pnlOutput);
 
 		// Statistics Panel
-		pnlStatistics = new StatisticsPanel(PANEL_OUTPUT_WIDTH, PANEL_OUTPUT_HEIGHT, "Results");
+		pnlStatistics = new StatisticsPanel(PANEL_OUTPUT_WIDTH, PANEL_OUTPUT_HEIGHT, "Output Panel");
 		pnlStatistics.setLocation(PANEL_WORLD_WIDTH, PANEL_CONTROL_HEIGHT + PANEL_SMOOTH_HEIGHT);
 
 		// South Control Panel

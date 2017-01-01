@@ -37,7 +37,7 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 		double noise = 0.1;
 		this.sensors.add(new SonarRangeSensor(RobotDirection.EAST, 1, noise));
 		this.sensors.add(new SonarRangeSensor(RobotDirection.NORTH, 1, noise));
-		//this.sensors.add(new SonarRangeSensor(RobotDirection.WEST, 1, noise));
+		this.sensors.add(new SonarRangeSensor(RobotDirection.WEST, 1, noise));
 		this.sensors.add(new SonarRangeSensor(RobotDirection.SOUTH, 1, noise));
 	}
 

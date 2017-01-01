@@ -41,6 +41,7 @@ public class HistogramFilterView extends RootView {
 
 	private static final String NO_OF_ROWS_TAG = "NO_OF_ROWS";
 	private static final String NO_OF_COLUMNS_TAG = "NO_OF_COLUMNS";
+	private static final String NO_OF_COLORS_TAG = "NO_OF_COLORS";
 	private static final String CYCLIC_WORLD_TAG = "CYCLIC_WORLD";
 	private static final String MOTION_NOISE_TAG = "MOTION_NOISE";
 	private static final String SENSOR_NOISE_TAG = "SENSOR_NOISE";
@@ -58,6 +59,13 @@ public class HistogramFilterView extends RootView {
 	static int MAX_NO_OF_COLUMNS = 6;
 	static int MIN_NO_OF_COLUMNS = 1;
 	static int DEF_NO_OF_COLUMNS = 4;
+
+	final static int MAX_NO_OF_COLORS = 5;
+	final static int MIN_NO_OF_COLORS = 1;
+	static int DEF_NO_OF_COLORS = 3;
+
+	protected final static String[] sensorNames = { "Red", "Green", "Blue", "Cyan", "Magenta" };
+	protected final static Color[] sensors = { Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA };
 
 	JLabel[][] lblLocationMap;
 	JLabel[][] lblBeliefMap;
@@ -77,10 +85,9 @@ public class HistogramFilterView extends RootView {
 	// Robot Sensor Controls
 	JSpinner spnSensorNoise;
 	SpinnerNumberModel spnSensorNoiseModal = new SpinnerNumberModel(0, 0, 1, 0.01);
-	
-	protected final static String[] sensorNames = { "Red", "Green", "Blue", "Cyan", "Magenta" };
-	protected final static Color[] sensors = { Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA };
-	JButton[] btnSensors = { new JButton("R"), new JButton("G"), new JButton("B"), new JButton("C") };
+	JButton[] btnSensors = { new JButton(""), new JButton(""), new JButton(""), new JButton(""), new JButton("") };
+	JSpinner spnNoOfColors;
+	SpinnerNumberModel spnNoOfColorsModal = new SpinnerNumberModel(DEF_NO_OF_COLORS, MIN_NO_OF_COLORS, MAX_NO_OF_COLORS, 1);
 	JButton btnReset;
 	JButton btnApply;
 	JButton btnWorldConfiguration;
@@ -124,7 +131,7 @@ public class HistogramFilterView extends RootView {
 		filter.setCyclic(DEFAULT_CYCLIC_WORLD);
 
 		// Robot Location Panel
-		pnlLocationMap = new RPanel(PANEL_WIDTH, PANEL_HEIGHT, "Robot Environment");
+		pnlLocationMap = new RPanel(PANEL_WIDTH, PANEL_HEIGHT, "Robot Location Map");
 		createWorldMapComponents();
 
 		// ////////// Robot Belief Map
@@ -300,6 +307,18 @@ public class HistogramFilterView extends RootView {
 		spnSensorNoise.setValue(DEFAULT_SENSOR_NOISE);
 		pnlRobotSetting.add(spnSensorNoise);
 
+		lblMotion = new JLabel("No Of Sensors");
+		yLoc += height;
+		lblMotion.setBounds(xLoc + spacing, yLoc + spacing, width - spacing, height - spacing);
+		pnlRobotSetting.add(lblMotion);
+
+		spnNoOfColors = new JSpinner();
+		spnNoOfColors.setBounds(xLoc + width + spacing, yLoc + spacing, width - spacing, height - spacing);
+		spnNoOfColors.setToolTipText("");
+		spnNoOfColors.setModel(spnNoOfColorsModal);
+		spnNoOfColors.setValue(DEF_NO_OF_COLORS);
+		pnlRobotSetting.add(spnNoOfColors);
+
 		btnApply = new JButton("Apply Setting");
 		yLoc += height;
 		btnApply.setBounds(xLoc + spacing, yLoc + spacing, width - spacing, height - spacing);
@@ -325,23 +344,37 @@ public class HistogramFilterView extends RootView {
 		pnlRobotSetting.add(header);
 
 		yLoc += height;
-		JPanel pnlSouth = new JPanel(new GridLayout(1, 4, 10, 10));
+		JPanel pnlSouth = new JPanel(new GridLayout(1, 5, 10, 10));
 		pnlSouth.setBounds(xLoc + spacing, yLoc + spacing, 2 * width - spacing, height - spacing);
 		RobotSensorListener sensorListener = new RobotSensorListener();
-		for (int i = 0; i < btnSensors.length; i++) {
+		for (int i = 0; i < MAX_NO_OF_COLORS; i++) {
 			btnSensors[i].setActionCommand(String.valueOf(i));
-			btnSensors[i].setMnemonic(btnSensors[i].getText().charAt(0));
 			btnSensors[i].setBackground(sensors[i]);
 			btnSensors[i].addActionListener(sensorListener);
 			pnlSouth.add(btnSensors[i]);
 		}
+		enableSensors();
 		pnlRobotSetting.add(pnlSouth);
+	}
+
+	private void enableSensors() {
+		for (int i = 0; i < MAX_NO_OF_COLORS; i++) {
+			if (i >= DEF_NO_OF_COLORS) {
+				btnSensors[i].setEnabled(false);
+				btnSensors[i].setText("D");
+				btnSensors[i].setToolTipText("Disabled");
+			} else {
+				btnSensors[i].setEnabled(true);
+				btnSensors[i].setText("E");
+				btnSensors[i].setToolTipText("Enabled");
+			}
+		}
 	}
 
 	private void setWorldColors() {
 		for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
 			for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
-				lblLocationMap[i][j].setBackground(sensors[world[i][j] % btnSensors.length]);
+				lblLocationMap[i][j].setBackground(sensors[world[i][j] % DEF_NO_OF_COLORS]);
 			}
 		}
 	}
@@ -356,7 +389,7 @@ public class HistogramFilterView extends RootView {
 		public void actionPerformed(ActionEvent e) {
 			Object o = e.getSource();
 			if (o.equals(btnBuildSimulation)) {
-				SimulationBuilder sim = new SimulationBuilder(commands, btnSensors.length, btnNames.length);
+				SimulationBuilder sim = new SimulationBuilder(commands, DEF_NO_OF_COLORS, btnNames.length);
 				commands = sim.getNewCommands();
 				simulator.setCommands(commands);
 				simulator.reset();
@@ -394,13 +427,24 @@ public class HistogramFilterView extends RootView {
 				filter.setMotionNoise(Double.parseDouble(spnMotionNoise.getValue().toString()));
 				filter.setSensorNoise(Double.parseDouble(spnSensorNoise.getValue().toString()));
 				filter.setCyclic(chkCyclic.isSelected());
+				int newSensors = Integer.parseInt(spnNoOfColors.getValue().toString());
+				// review colors of world due to change in no of sensors
+				if (newSensors < DEF_NO_OF_COLORS) {
+					for (int i = 0; i < world.length; i++) {
+						for (int j = 0; j < world[i].length; j++) {
+							world[i][j] %= newSensors;
+						}
+					}
+				}
+				DEF_NO_OF_COLORS = newSensors;
+				enableSensors();
 				setWorldColors();
 
 				filter.setWorld(world);
 				// review motions commands
 				for (int i = 0; i < commands.length; i++) {
 					if (commands[i][1] == HistogramSimulator.SENSE) {
-						commands[i][0] %= btnSensors.length;
+						commands[i][0] %= DEF_NO_OF_COLORS;
 					} else if (commands[i][1] == HistogramSimulator.MOVE) {
 						commands[i][0] %= btnNames.length;
 					}
@@ -408,7 +452,7 @@ public class HistogramFilterView extends RootView {
 				simulator.setCommands(commands);
 				repaint();
 			} else if (o.equals(btnWorldConfiguration)) {
-				WorldBuilder gui = new WorldBuilder(world, btnSensors.length, sensors);
+				WorldBuilder gui = new WorldBuilder(world, DEF_NO_OF_COLORS, sensors);
 				gui.setVisible(true);
 				if (gui.isWorldChanged()) {
 					world = gui.getNewWorld();
@@ -521,6 +565,20 @@ public class HistogramFilterView extends RootView {
 					System.out.println(INVALID_TAG_VALUE + NO_OF_COLUMNS_TAG + ".Loading Default");
 				}
 			}
+			// No of colors
+			if (prop.containsKey(NO_OF_COLORS_TAG)) {
+				try {
+					int noOfColors = Integer.parseInt(prop.getProperty(NO_OF_COLORS_TAG));
+					if (noOfColors > MAX_NO_OF_COLORS || noOfColors < MIN_NO_OF_COLORS) {
+						System.out.println(INVALID_TAG_VALUE + NO_OF_COLORS_TAG + " .Expedted : " + MIN_NO_OF_COLORS + "-"
+								+ MAX_NO_OF_COLORS + ".Loading Default");
+					} else {
+						DEF_NO_OF_COLORS = noOfColors;
+					}
+				} catch (Exception e) {
+					System.out.println(INVALID_TAG_VALUE + NO_OF_COLORS_TAG + ".Loading Default");
+				}
+			}
 			// Cyclic world or not
 			if (prop.containsKey(CYCLIC_WORLD_TAG)) {
 				try {
@@ -565,12 +623,12 @@ public class HistogramFilterView extends RootView {
 					for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
 						try {
 							world[i][j] = Integer.parseInt(row[j]);
-							if (world[i][j] >= btnSensors.length) {
-								System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + btnSensors.length);
+							if (world[i][j] >= DEF_NO_OF_COLORS) {
+								System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + DEF_NO_OF_COLORS);
 								trueWorld = false;
 							}
 						} catch (Exception e) {
-							System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + btnSensors.length);
+							System.out.println("Invalid value at " + i + "," + j + "  Expecting 0 - " + DEF_NO_OF_COLORS);
 							trueWorld = false;
 						}
 					}
@@ -585,7 +643,7 @@ public class HistogramFilterView extends RootView {
 				Random r = new Random();
 				for (int i = 0; i < DEF_NO_OF_ROWS; i++) {
 					for (int j = 0; j < DEF_NO_OF_COLUMNS; j++) {
-						world[i][j] = r.nextInt(btnSensors.length);
+						world[i][j] = r.nextInt(DEF_NO_OF_COLORS);
 					}
 				}
 			}
@@ -605,7 +663,7 @@ public class HistogramFilterView extends RootView {
 					cmd[i][1] = moveOrSense;
 
 					if (moveOrSense == HistogramSimulator.SENSE) {
-						cmd[i][0] %= btnSensors.length;
+						cmd[i][0] %= DEF_NO_OF_COLORS;
 					} else if (moveOrSense == HistogramSimulator.MOVE) {
 						cmd[i][0] %= btnMotions.length;
 					}
@@ -626,6 +684,7 @@ public class HistogramFilterView extends RootView {
 		// save world
 		prop.setProperty(NO_OF_ROWS_TAG, Integer.toString(DEF_NO_OF_ROWS));
 		prop.setProperty(NO_OF_COLUMNS_TAG, Integer.toString(DEF_NO_OF_COLUMNS));
+		prop.setProperty(NO_OF_COLORS_TAG, Integer.toString(DEF_NO_OF_COLORS));
 
 		for (int i = 0; i < world.length; i++) {
 			String row = "";

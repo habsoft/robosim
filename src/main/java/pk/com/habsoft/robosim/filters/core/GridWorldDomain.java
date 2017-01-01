@@ -158,11 +158,16 @@ public class GridWorldDomain {
 		this.height = 5;
 		makeEmptyMap();
 
-		// horizontalWall(1, 1, 2);
+		// this.width = 5;
+		// this.height = 5;
+		// this.makeEmptyMap();
+		// //
+		horizontalWall(0, 1, 4);
+		horizontalWall(1, 1, 2);
 		horizontalWall(0, 0, 1);
-		horizontalWall(1, 2, 2);
-
-		verticalWall(3, 4, 4);
+		// //
+		// verticalWall(1, 3, 4);
+		// verticalWall(3, 3, 4);
 
 		// Add Actions
 	}
@@ -304,17 +309,14 @@ public class GridWorldDomain {
 		Attribute attx = domain.getAttribute(ATTX);
 		Attribute atty = domain.getAttribute(ATTY);
 		if (!isCyclicWorld) {
-			System.out.println("chk 1");
 			if (nx < attx.lowerLim || nx >= attx.upperLim || ny < atty.lowerLim || ny >= atty.upperLim) {
 				return false;
 			}
 		} else {
-			System.out.println("chk 0");
 			// Trim (x,y) if world is cyclic
 			nx = RoboMathUtils.modulus(nx, (int) attx.upperLim, false);
 			ny = RoboMathUtils.modulus(ny, (int) atty.upperLim, false);
 		}
-		System.out.println("chk  2 : " + (map[nx][ny] == OPEN));
 
 		return map[nx][ny] == OPEN;
 	}

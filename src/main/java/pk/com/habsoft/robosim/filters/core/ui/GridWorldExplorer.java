@@ -1,36 +1,26 @@
 package pk.com.habsoft.robosim.filters.core.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.text.DefaultCaret;
 
 import pk.com.habsoft.robosim.filters.core.Domain;
 import pk.com.habsoft.robosim.filters.core.State;
 import pk.com.habsoft.robosim.filters.core.actions.Action;
-import pk.com.habsoft.robosim.internal.RootView;
 
-public class GridWorldExplorer {
+public class GridWorldExplorer extends JFrame {
 
-	private static final String HELP_TEXT = "Use keys (A,S,D,W) to move left, back, right and forward respectively. Use key (L) to scan environment using Sonar Range Sensors. ";
-	RootView frame;
 	State baseState;
 	Visualizer painter;
 
 	protected Domain domain;
 	protected Map<String, Action> keyActionMap;
-	protected JTextArea stateConsole;
 
-	public GridWorldExplorer(RootView frame, Domain domain, Visualizer painter, State baseState) {
-		this.frame = frame;
+	public GridWorldExplorer(Domain domain, Visualizer painter, State baseState) {
 		this.domain = domain;
 		this.painter = painter;
 		this.baseState = baseState;
@@ -40,25 +30,12 @@ public class GridWorldExplorer {
 	public void initGUI() {
 		painter.setPreferredSize(new Dimension(600, 600));
 
-		this.stateConsole = new JTextArea(40, 40);
-		this.stateConsole.setLineWrap(true);
-		DefaultCaret caret = (DefaultCaret) this.stateConsole.getCaret();
-		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-		this.stateConsole.setEditable(false);
-		this.stateConsole.setMargin(new Insets(10, 5, 10, 5));
-		this.stateConsole.setText(HELP_TEXT);
+		getContentPane().add(painter);
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setPreferredSize(new Dimension(600, 600));
 
-		JScrollPane shellScroll = new JScrollPane(this.stateConsole, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		shellScroll.setPreferredSize(new Dimension(600, 50));
-
-		frame.add(shellScroll, BorderLayout.SOUTH);
-
-		frame.add(painter);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(600, 600));
-
-		frame.addKeyListener(new KeyListener() {
+		addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 			}
 
@@ -85,7 +62,7 @@ public class GridWorldExplorer {
 
 		});
 
-		frame.pack();
+		pack();
 	}
 
 	/**

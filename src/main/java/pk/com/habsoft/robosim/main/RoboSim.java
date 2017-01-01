@@ -24,7 +24,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import pk.com.habsoft.robosim.filters.core.ui.HistogramMain;
 import pk.com.habsoft.robosim.filters.histogram.HistogramFilterView;
 import pk.com.habsoft.robosim.filters.kalman.KalmanFilterView;
 import pk.com.habsoft.robosim.filters.particles.views.ParticleFilterView;
@@ -35,7 +34,7 @@ import pk.com.habsoft.robosim.smoothing.views.PIDControllerView;
 
 public class RoboSim extends JFrame implements ActionListener {
 	// Numbus, Napkin
-	private final static String APPLICATION_TITLE = "RoboSim (Robot Simulator)";
+	final static String appTitle = "RoboSim (Robot Simulator)";
 	// First version
 	// final static String version = "1.0.3.2012-07-12";
 	// final static String version = "1.1.0.2012-09-26";
@@ -50,12 +49,9 @@ public class RoboSim extends JFrame implements ActionListener {
 	// final static String version = " 1.3.0 (2013-6-20)";
 	// Bounded angle in Particle Filter
 	// final static String version = " 1.3.1 (2014-1-28)";
-	// PID controller
+	// PIC controller
 	// final static String version = " 1.3.2 (2014-4-1)";
-	// Some code cleanup.
-	// final static String version = "  1.6.0 (2016-05-05)";
-	// Histogram Filter with SonarRangeFinder
-	final static String version = "  2.0.0 (2016-08-14)";
+	final static String version = "  1.6.0 (2016-05-05)";
 	private static final long serialVersionUID = 1L;
 
 	private JDesktopPane desk;
@@ -138,13 +134,8 @@ public class RoboSim extends JFrame implements ActionListener {
 
 		// Histogram Filters
 		JInternalFrame histogramFilter = new HistogramFilterView();
-		mnLocalization.add(new AddFrameAction("Histogram Filter(Color Sensor)", histogramFilter));
+		mnLocalization.add(new AddFrameAction("Histogram Filter", histogramFilter));
 		desk.add(histogramFilter);
-
-		// Histogram Filters
-		JInternalFrame histogramFilter2 = new HistogramMain();
-		mnLocalization.add(new AddFrameAction("Histogram Filter(Sonar Range Finder)", histogramFilter2));
-		desk.add(histogramFilter2);
 
 		// Kalman Filters
 		JInternalFrame kalmanFilter = new KalmanFilterView();
@@ -168,17 +159,16 @@ public class RoboSim extends JFrame implements ActionListener {
 
 		// ///////////////////////////////////////////////////////////////
 
-		// Optimization Menu
-		JMenu mnOptimization = new JMenu("Optimization");
+		// Smoothing Menu
+		JMenu mnSmoothing = new JMenu("Smoothing");
 
 		JInternalFrame gradientDescent = new PathSmoothingView();
-		mnOptimization.add(new AddFrameAction("Gradient Descent", gradientDescent));
+		mnSmoothing.add(new AddFrameAction("Gradient Descent", gradientDescent));
 		desk.add(gradientDescent);
 
-		// Control Menu
-		JMenu mnControl = new JMenu("Controller");
+		//
 		JInternalFrame pidController = new PIDControllerView();
-		mnControl.add(new AddFrameAction("PID Controller", pidController));
+		mnSmoothing.add(new AddFrameAction("PID Controller", pidController));
 		desk.add(pidController);
 
 		// //////////////////////////////////////////////////////////////
@@ -195,8 +185,7 @@ public class RoboSim extends JFrame implements ActionListener {
 		mb.add(mnFile);
 		mb.add(mnLocalization);
 		mb.add(mnPlanning);
-		mb.add(mnOptimization);
-		mb.add(mnControl);
+		mb.add(mnSmoothing);
 		mb.add(mnHelp);
 	}
 
@@ -253,15 +242,16 @@ public class RoboSim extends JFrame implements ActionListener {
 	private void showContactDetail() {
 		// URL url = RoboSim.class.getResource("images/about.jpg");
 		Icon ico = new ImageIcon(getClass().getResource("/images/about.jpg"));
-		JOptionPane.showOptionDialog(null, "                RoboSim(Robot Simulator)\nVersion = " + version
-				+ "\nIf you need any help regarding this software, I am just an email away.\nEmail = faisal.hameed.pk@gmail.com\nSkype = faisal.hameed.pk", "About Me", JOptionPane.DEFAULT_OPTION,
-				JOptionPane.QUESTION_MESSAGE, ico, new Object[] {}, null);
+		JOptionPane.showOptionDialog(null,
+				"                RoboSim(Robot Simulator)\nVersion = " + version
+						+ "\nIf you need any help regarding this software, I am just an email away.\nEmail = faisal.hameed.pk@gmail.com\nSkype = faisal.hameed.pk",
+				"About Me", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, ico, new Object[] {}, null);
 
 	}
 
 	public static void main(String[] args) {
 
-		RoboSim robosim = new RoboSim(APPLICATION_TITLE + version);
+		RoboSim robosim = new RoboSim(appTitle + version);
 
 		Toolkit tool = Toolkit.getDefaultToolkit();
 		robosim.setSize(tool.getScreenSize());
