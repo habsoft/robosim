@@ -6,8 +6,6 @@ import pk.com.habsoft.robosim.filters.core.Domain;
 import pk.com.habsoft.robosim.filters.core.GridWorldDomain;
 import pk.com.habsoft.robosim.filters.core.KeyActionBinding;
 import pk.com.habsoft.robosim.filters.core.State;
-import pk.com.habsoft.robosim.filters.core.actions.Action;
-import pk.com.habsoft.robosim.filters.sensors.RobotDirection;
 
 public class HistogramMain {
 
@@ -17,12 +15,16 @@ public class HistogramMain {
 
 		Domain d = domain.generateDomain();
 
+		// Setup Noise
+		double motionNoise = 0.1;
+		double sensorNoise = 0.1;
+
 		// setup initial state
 		State s = domain.getOneRobotBeliefState(d);
-		domain.setAgent(s, 0, 0, 0);
+		domain.setAgent(s, 4, 2, 0);
 		domain.setCyclicWorld(false);
 		domain.initUniformBelief(s);
-		domain.initializeSensors(s, d, 0.3, 0.2);
+		domain.initializeSensors(s, d, motionNoise, sensorNoise);
 
 		Visualizer v = GridWorldVisualizer.getVisualizer(domain.getMap());
 		v.updateState(s);

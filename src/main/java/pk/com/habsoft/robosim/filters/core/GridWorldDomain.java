@@ -154,18 +154,15 @@ public class GridWorldDomain {
 	 */
 	public void initDefaultWorld() {
 
-		this.width = 5;
+		this.width = 8;
 		this.height = 5;
 		makeEmptyMap();
 
-		// this.width = 5;
-		// this.height = 5;
-		// this.makeEmptyMap();
-		// //
-		horizontalWall(0, 1, 4);
-		horizontalWall(1, 1, 2);
-		horizontalWall(0, 0, 1);
-		// //
+		horizontalWall(0, 0, 0);
+		horizontalWall(7, 7, 0);
+		horizontalWall(0, 0, 4);
+		horizontalWall(7, 7, 4);
+
 		// verticalWall(1, 3, 4);
 		// verticalWall(3, 3, 4);
 
@@ -207,13 +204,6 @@ public class GridWorldDomain {
 			}
 		}
 		System.out.println("Total probability : " + tp);
-
-		// belief[0][0][0] = 1;
-
-		// belief[0][1][0] =0.4;
-		// belief[1][0][1] = 0.3;
-		// belief[2][1][2] = 0.1;
-		// belief[1][2][3] = 0.2;
 
 		o.setBeliefMap(belief);
 

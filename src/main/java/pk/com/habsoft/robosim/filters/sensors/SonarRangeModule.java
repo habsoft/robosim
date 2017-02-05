@@ -17,6 +17,7 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 	String objectName;
 
 	List<RangeSensor> sensors = new ArrayList<>();
+	// This is default accuracy of laser sensor, will be overridden
 	private double pSuccess = 0.8;
 
 	public SonarRangeModule(ObjectClass objectClass, String objectName) {
@@ -35,9 +36,9 @@ public class SonarRangeModule implements ObjectInstance, ActionObserver {
 		// TODO config
 		int range = 2;
 		double noise = 0.1;
-		this.sensors.add(new SonarRangeSensor(RobotDirection.EAST, 1, noise));
+		this.sensors.add(new SonarRangeSensor(RobotDirection.EAST, 2, noise));
 		this.sensors.add(new SonarRangeSensor(RobotDirection.NORTH, 1, noise));
-		this.sensors.add(new SonarRangeSensor(RobotDirection.WEST, 1, noise));
+		this.sensors.add(new SonarRangeSensor(RobotDirection.WEST, 0, noise));
 		this.sensors.add(new SonarRangeSensor(RobotDirection.SOUTH, 1, noise));
 	}
 
