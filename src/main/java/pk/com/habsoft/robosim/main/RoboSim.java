@@ -143,7 +143,7 @@ public class RoboSim extends JFrame implements ActionListener {
 
 		// Histogram Filters
 		JInternalFrame histogramFilter2 = new HistogramMain();
-		mnLocalization.add(new AddFrameAction("Histogram Filter(Sonar Range Finder)", histogramFilter2));
+		mnLocalization.add(new AddFrameAction("Histogram Filter(Laser Sensor)", histogramFilter2));
 		desk.add(histogramFilter2);
 
 		// Kalman Filters

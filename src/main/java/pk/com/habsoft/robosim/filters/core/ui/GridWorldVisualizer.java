@@ -456,7 +456,7 @@ public class GridWorldVisualizer {
 				rotations = GridWorldDomain.INSTANCE.trimValue(GridWorldDomain.ATT_THETA, rotations, true);
 				// Draw range sensor range
 				int[] dir = GridLocation.getGridLocation(rotations);
-				int range = sonar.getMeasurement();
+				int range = sonar.getMaxRange();
 
 				float sx = cx + (dir[0] * width * range) + (dir[0] * width / 2);
 				float sy = cy - ((dir[1] * height * range) + (dir[1] * height / 2));

@@ -56,7 +56,7 @@ public class GridWorldExplorer {
 		frame.add(painter);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(600, 600));
+		frame.setPreferredSize(new Dimension(600, 800));
 
 		frame.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {

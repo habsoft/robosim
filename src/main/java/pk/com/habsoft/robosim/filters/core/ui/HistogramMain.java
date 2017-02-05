@@ -35,6 +35,7 @@ public class HistogramMain extends RootView {
 		HistogramMain view1 = new HistogramMain();
 		view1.initGUI();
 
+		desk.add(view1);
 		view1.setVisible(true);
 
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -53,12 +54,16 @@ public class HistogramMain extends RootView {
 
 		Domain d = domain.generateDomain();
 
+		// Setup Noise
+		double motionNoise = 0.1;
+		double sensorNoise = 0.1;
+
 		// setup initial state
 		State s = domain.getOneRobotBeliefState(d);
-		domain.setAgent(s, 0, 0, 0);
+		domain.setAgent(s, 4, 2, 0);
 		domain.setCyclicWorld(false);
 		domain.initUniformBelief(s);
-		domain.initializeSensors(s, d, 0.3, 0.2);
+		domain.initializeSensors(s, d, motionNoise, sensorNoise);
 
 		Visualizer v = GridWorldVisualizer.getVisualizer(domain.getMap());
 		v.updateState(s);
@@ -76,9 +81,9 @@ public class HistogramMain extends RootView {
 
 		exp.initGUI();
 
-		super.add(this);
+		// super.add(v);
 
-		setSize(500, 500);
+		setSize(screenSize.getWidth(), screenSize.getHeight() - 60);
 		setVisible(true);
 	}
 }
