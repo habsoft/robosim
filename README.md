@@ -2,7 +2,12 @@
 
 Java based portable simulator to visualize and understand the *Robot Localization*, *Path planning*, *Path Smoothing* and *PID controller* concepts.
 
-### Contents
+![alt text](https://a.fsdn.com/con/app/proj/r-localization/screenshots/5.Path%20Smoother.png/1 "Logo Title Text 1")
+
+## Blog : robosimblog.wordpress.com
+## Download : https://sourceforge.net/projects/r-localization/
+
+### Modules
 * Filters
   * Histogram Filters
   * Kalman Filters
